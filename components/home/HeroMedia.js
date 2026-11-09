@@ -89,12 +89,12 @@ export default function HeroMedia({ desktop, mobile }) {
                 <button
                     type="button"
                     onClick={toggle}
-                    className="absolute bottom-5 right-4 z-20 inline-flex items-center gap-2 rounded-full border border-paper/25 bg-ink/50 px-3.5 py-2 text-[13px] text-paper transition hover:bg-ink/80 md:right-8 md:bottom-8"
+                    className="absolute bottom-5 right-4 z-20 grid size-11 place-items-center rounded-full border border-paper/30 bg-ink/55 text-paper backdrop-blur-sm transition hover:bg-ink/80 md:bottom-8 md:right-8"
                     aria-pressed={!muted}
                     aria-label={muted ? "Turn sound on" : "Turn sound off"}
+                    title={muted ? "Sound on" : "Sound off"}
                 >
-                    {muted ? <VolumeX size={16} aria-hidden /> : <Volume2 size={16} aria-hidden />}
-                    {muted ? "Sound off" : "Sound on"}
+                    {muted ? <VolumeX size={18} aria-hidden /> : <Volume2 size={18} aria-hidden />}
                 </button>
             )}
         </>

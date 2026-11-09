@@ -18,14 +18,16 @@ export default function Hero({ hero, nextHarvest }) {
 
     return (
         <section className="relative isolate flex min-h-[calc(100svh-64px)] overflow-hidden bg-ink text-paper md:min-h-[calc(100svh-108px)]">
-            <div className="absolute inset-0 -z-10">
+            {/* No z-index on this layer on purpose: the sound button inside it
+                (z-20) must stack above the copy (z-10) to stay clickable. */}
+            <div className="absolute inset-0">
                 <HeroMedia desktop={hero.desktop} mobile={hero.mobile} />
                 {/* Legibility: strong at the bottom where the copy sits, light at the top. */}
                 <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/45 to-ink/10" />
                 <div className="absolute inset-0 hidden bg-gradient-to-r from-ink/70 via-ink/20 to-transparent md:block" />
             </div>
 
-            <div className="wrap flex flex-col justify-end pb-24 pt-28 md:pb-20">
+            <div className="wrap relative z-10 flex flex-col justify-end pb-24 pt-28 md:pb-20">
                 <p className="label text-leaf">Rajshahi · since 2021</p>
                 <h1 className="mt-5 max-w-[13ch] text-display font-medium">{title}</h1>
                 <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-paper/80 md:text-xl">{subtitle}</p>
