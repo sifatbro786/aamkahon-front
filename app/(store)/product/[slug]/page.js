@@ -5,10 +5,12 @@ import BuyBox from "@/components/product/BuyBox";
 import InquiryForm from "@/components/product/InquiryForm";
 import ProductCard from "@/components/product/ProductCard";
 import ProductGallery from "@/components/product/ProductGallery";
+import ProductReviews from "@/components/product/ProductReviews";
+import Stars from "@/components/ui/Stars";
 import Badge from "@/components/ui/Badge";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import { SITE_URL } from "@/lib/config";
-import { getProductBySlug, getProducts, getRelated } from "@/lib/data/catalog";
+import { getProductBySlug, getProductReviews, getProducts, getRelated } from "@/lib/data/catalog";
 import { fullDate } from "@/lib/format";
 import { allImages, mediaUrl } from "@/lib/media";
 import { availabilityBadge, displayPrice, harvestDate, isPriceHidden, unitOf } from "@/lib/store/productView";
@@ -43,7 +45,7 @@ export default async function ProductPage({ params }) {
     const product = await getProductBySlug(slug);
     if (!product || product.isActive === false) notFound();
 
-    const related = await getRelated(product, 4);
+    const [related, reviewData] = await Promise.all([getRelated(product, 4), getProductReviews(product._id)]);
     const images = allImages(product);
     const badge = availabilityBadge(product);
     const hidden = isPriceHidden(product);
@@ -61,6 +63,9 @@ export default async function ProductPage({ params }) {
         sku: product.sku,
         brand: { "@type": "Brand", name: "Aamkahon" },
         image: images.map((i) => (i.src.startsWith("http") ? i.src : `${SITE_URL}${i.src}`)),
+        ...(reviewData.totalReviews
+            ? { aggregateRating: { "@type": "AggregateRating", ratingValue: reviewData.averageRating.toFixed(1), reviewCount: reviewData.totalReviews } }
+            : {}),
         ...(hidden || price == null
             ? {}
             : {
@@ -100,6 +105,14 @@ export default async function ProductPage({ params }) {
                             <p lang="bn" className="font-bangla mt-2 text-2xl text-mango-deep">
                                 {product.nameBn}
                             </p>
+                        )}
+                        {reviewData.totalReviews > 0 && (
+                            <a href="#reviews-title" className="mt-3 inline-flex items-center gap-2 text-[14px] text-muted hover:text-ink">
+                                <Stars value={reviewData.averageRating} />
+                                <span className="num">
+                                    {reviewData.averageRating.toFixed(1)} · {reviewData.totalReviews} {reviewData.totalReviews === 1 ? "review" : "reviews"}
+                                </span>
+                            </a>
                         )}
                         {product.description && <p className="mt-6 text-[17px] leading-relaxed text-ink/80">{product.description}</p>}
 
@@ -160,6 +173,8 @@ export default async function ProductPage({ params }) {
                     </div>
                 )}
             </div>
+
+            <ProductReviews data={reviewData} />
 
             {related.length > 0 && (
                 <section className="border-t border-line bg-paper-2/50 py-14 md:py-20" aria-labelledby="related-title">

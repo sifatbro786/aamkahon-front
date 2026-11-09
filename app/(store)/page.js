@@ -6,8 +6,9 @@ import OrchardReels from "@/components/home/OrchardReels";
 import ProductShelf from "@/components/home/ProductShelf";
 import SeasonBoard from "@/components/home/SeasonBoard";
 import StoryBlock from "@/components/home/StoryBlock";
+import Testimonials from "@/components/home/Testimonials";
 import WholesaleBand from "@/components/home/WholesaleBand";
-import { getHero, getHomepageSections, getProducts, getShippingRates } from "@/lib/data/catalog";
+import { getFeaturedReviews, getHero, getHomepageSections, getProducts, getShippingRates } from "@/lib/data/catalog";
 import { dayMonth } from "@/lib/format";
 import { wholesaleTier } from "@/lib/store/productView";
 
@@ -20,11 +21,12 @@ const sectionHref = (s) =>
           : "/shop";
 
 export default async function HomePage() {
-    const [hero, sections, preOrder, rates] = await Promise.all([
+    const [hero, sections, preOrder, rates, quotes] = await Promise.all([
         getHero(),
         getHomepageSections(),
         getProducts({ availability: "pre_order", limit: 50, sortBy: "displayOrder", sortOrder: "asc" }),
         getShippingRates(),
+        getFeaturedReviews(6),
     ]);
 
     const calendar = preOrder.products;
@@ -43,7 +45,7 @@ export default async function HomePage() {
     return (
         <>
             <IntroLoader />
-            <Hero hero={hero.desktop} nextHarvest={nextHarvest} />
+            <Hero hero={hero} nextHarvest={nextHarvest} />
             <SeasonBoard advancePercent={advance} firstHarvest={nextHarvest ? dayMonth(nextHarvest.preOrder.expectedDate) : null} />
             {first && <ProductShelf section={first} href={sectionHref(first)} />}
             <HarvestCalendar products={calendar} />
@@ -51,6 +53,7 @@ export default async function HomePage() {
                 <ProductShelf key={s._id} section={s} href={sectionHref(s)} />
             ))}
             <WholesaleBand example={example} />
+            <Testimonials reviews={quotes} />
             <OrchardReels />
             <DeliveryBlock rates={rates} />
             <StoryBlock />

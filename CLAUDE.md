@@ -1,8 +1,9 @@
 # Aamkahon frontend — working context
 
 Next.js 16.4.5 App Router (JS), Cache Components + Partial Prefetching + React
-Compiler, Tailwind v4. Storefront now, admin at /admin in Phase 5 (port of the
-Footpath Vite admin, grey dashboard style). Backend: sibling repo
+Compiler, Tailwind v4. Storefront in app/(store); admin at /admin (the
+Footpath Vite admin ported file for file, grey dashboard style). Deploy:
+DEPLOY.md. Backend: sibling repo
 `amkahon-back` (read its CLAUDE.md: envelopes, pricing rules, new endpoints).
 Project status and next steps: `HANDOVER.md`. Read
 `node_modules/next/dist/docs/` before using a Next API (AGENTS.md).
@@ -66,6 +67,23 @@ count-up stats, no tape/sticker decoration. Real photos and the client's own
 vertical videos, ledger-style tables and rules. `.wrap` = page gutter.
 Horizontal scrollers scroll inside their own box (`-mx-4 px-4 scroll-px-4`),
 the page never scrolls sideways (checked at 390 px and 1440 px).
+
+## Admin (/admin)
+
+- `app/admin/[[...slug]]/page.js` hosts the whole admin SPA (`admin/AdminApp.js`),
+  client only, role gate admin/executive, redirects to /login otherwise.
+- `admin/src/**` = Footpath admin files (pages, components, layouts, api). They
+  import `@/admin/router` instead of react-router-dom: `admin/router.js` implements
+  Link/NavLink/useNavigate/useParams/useLocation/Outlet/Navigate on next/navigation.
+  Add a page: put it in admin/src/pages/admin, register it in `admin/routes.js`
+  (literal paths before :params) and in `layouts/admin/adminNavConfig.js`.
+- `admin/src/api/axiosInstance.js` re-exports `lib/api/client` (same token, same demo adapter).
+- Aamkahon additions: Pre-bookings (OrdersManagement with orderType="pre_order"),
+  Inquiries inbox, product form "Wholesale & Season" tab + variant wholesale price
+  and weight, shipping rate base kg + per kg, "Pre-booked" status everywhere.
+- Static demo: `lib/demo/adminDemo.js` (fictional orders, inquiries, users, stats
+  built from the fixtures). Admin reads need the demo token; writes return 403.
+- ESLint: React Compiler rules are warnings for admin/src (ported code, see eslint.config.mjs).
 
 ## Media
 

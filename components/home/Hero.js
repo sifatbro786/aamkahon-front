@@ -1,59 +1,52 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
-import HeroVideo from "@/components/home/HeroVideo";
+import HeroMedia from "@/components/home/HeroMedia";
 import { fullDate } from "@/lib/format";
 
 /**
- * Copy comes from the admin-editable hero (GET /api/hero `items`), media from
- * the same record. The client's clip is a vertical phone video, so instead of
- * stretching it across a wide screen (it is 360 px wide) it sits in a tall
- * frame beside the headline, the way it was shot.
+ * One full screen hero (no slider: a carousel hides every message but the
+ * first and costs load time). Copy and media come from Admin > Homepage hero
+ * (HeroContent, via GET /api/hero `items`); phones get their own media record,
+ * so the vertical orchard reel fills a phone and a landscape video or photo
+ * fills a desktop.
  */
 export default function Hero({ hero, nextHarvest }) {
-    const title = hero?.title || "Mangoes picked late, on purpose";
-    const subtitle =
-        hero?.subtitle || "From Rajshahi orchards to your door. Wholesale and retail, with 2027 pre-booking open now.";
-    const video = hero?.mediaType === "video" ? hero.mediaUrl : "/videos/hero-loop.mp4";
+    const copy = hero.desktop || hero.mobile || {};
+    const title = copy.title || "Mangoes picked late, on purpose";
+    const subtitle = copy.subtitle || "Rajshahi orchards to your door. Wholesale and retail, with 2027 pre-booking open now.";
 
     return (
-        <section className="relative overflow-hidden bg-ink text-paper">
-            <div className="wrap grid items-center gap-10 pb-14 pt-10 md:pb-20 md:pt-14 lg:grid-cols-12 lg:gap-8 lg:pb-24">
-                <div className="lg:col-span-7">
-                    <p className="label text-leaf">Rajshahi · since 2021</p>
-                    <h1 className="mt-5 max-w-[14ch] text-display font-medium">{title}</h1>
-                    <p className="mt-6 max-w-xl text-lg leading-relaxed text-paper/75 md:text-xl">{subtitle}</p>
+        <section className="relative isolate flex min-h-[calc(100svh-64px)] overflow-hidden bg-ink text-paper md:min-h-[calc(100svh-108px)]">
+            <div className="absolute inset-0 -z-10">
+                <HeroMedia desktop={hero.desktop} mobile={hero.mobile} />
+                {/* Legibility: strong at the bottom where the copy sits, light at the top. */}
+                <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/45 to-ink/10" />
+                <div className="absolute inset-0 hidden bg-gradient-to-r from-ink/70 via-ink/20 to-transparent md:block" />
+            </div>
 
-                    <div className="mt-8 flex flex-wrap gap-3">
-                        <Link href={hero?.buttonLink || "/shop?availability=pre_order"} className="btn btn-mango">
-                            {hero?.buttonText || "Pre-book mangoes"} <ArrowRight size={17} aria-hidden />
-                        </Link>
-                        <Link href="/shop?category=khejurer-gur" className="btn btn-ghost-light">
-                            Buy winter gur
-                        </Link>
-                    </div>
+            <div className="wrap flex flex-col justify-end pb-24 pt-28 md:pb-20">
+                <p className="label text-leaf">Rajshahi · since 2021</p>
+                <h1 className="mt-5 max-w-[13ch] text-display font-medium">{title}</h1>
+                <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-paper/80 md:text-xl">{subtitle}</p>
 
-                    {nextHarvest && (
-                        <Link
-                            href={`/product/${nextHarvest.slug}`}
-                            className="group mt-12 flex max-w-md items-center gap-4 border-t border-line-dark pt-5"
-                        >
-                            <span className="label shrink-0 text-paper/45">First harvest</span>
-                            <span className="min-w-0 truncate text-paper/90 group-hover:text-paper">
-                                {nextHarvest.name.replace(/ Mango$/, "")}, {fullDate(nextHarvest.preOrder?.expectedDate)}
-                            </span>
-                        </Link>
-                    )}
+                <div className="mt-8 flex flex-wrap gap-3">
+                    <Link href={copy.buttonLink || "/shop?availability=pre_order"} className="btn btn-mango">
+                        {copy.buttonText || "Pre-book mangoes"} <ArrowRight size={17} aria-hidden />
+                    </Link>
+                    <Link href="/shop?category=khejurer-gur" className="btn btn-ghost-light bg-ink/20">
+                        Buy winter gur
+                    </Link>
                 </div>
 
-                <figure className="lg:col-span-5 lg:justify-self-end">
-                    <div className="relative mx-auto aspect-[4/5] w-full max-w-[460px] overflow-hidden rounded-[22px] bg-ink-2 sm:aspect-[3/4] lg:aspect-[9/14] lg:w-[400px]">
-                        <HeroVideo src={video} poster="/videos/hero-poster.jpg" label="Aerial view of a mango orchard in bloom" />
-                    </div>
-                    <figcaption className="mx-auto mt-3 max-w-[460px] text-sm text-paper/50 lg:w-[400px]">
-                        An Aamkahon orchard in bloom, filmed from above.
-                    </figcaption>
-                </figure>
+                {nextHarvest && (
+                    <Link href={`/product/${nextHarvest.slug}`} className="group mt-10 flex max-w-md items-center gap-4 border-t border-paper/20 pt-5">
+                        <span className="label shrink-0 text-paper/55">First harvest</span>
+                        <span className="min-w-0 truncate text-paper/90 group-hover:text-paper">
+                            {nextHarvest.name.replace(/ Mango$/, "")}, {fullDate(nextHarvest.preOrder?.expectedDate)}
+                        </span>
+                    </Link>
+                )}
             </div>
         </section>
     );

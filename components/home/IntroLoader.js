@@ -3,8 +3,11 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const KEY = "aamkahon.intro.seen";
-const MIN_MS = 3200; // long enough to read, short enough not to annoy
-const MAX_MS = 5000; // never hold the page longer than this
+// The CSS sequence ends at ~3.2 s (bar full). A short settle after that lets
+// the finished mark sit for a beat before the curtain lifts, so the intro
+// always plays to the end instead of being cut off mid-fill.
+const MIN_MS = 3900;
+const MAX_MS = 5500; // never hold the page longer than this, even on slow networks
 
 /**
  * First-visit intro for the homepage (once per browser session).
@@ -16,7 +19,7 @@ const MAX_MS = 5000; // never hold the page longer than this
  * only lifts once the window has loaded (min 3.2 s, max 5 s).
  */
 export default function IntroLoader() {
-    const [phase, setPhase] = useState("show"); // show -> leave -> gone
+    const [phase, setPhase] = useState("show"); // show -> done -> leave -> gone
 
     useEffect(() => {
         let seen = false;
@@ -41,12 +44,14 @@ export default function IntroLoader() {
             leaveTimer = setTimeout(() => setPhase("leave"), wait);
         };
         const hardStop = setTimeout(() => setPhase("leave"), MAX_MS);
+        const doneTimer = setTimeout(() => setPhase((p) => (p === "show" ? "done" : p)), reduced ? 600 : 3250);
         if (document.readyState === "complete") finish();
         else window.addEventListener("load", finish, { once: true });
 
         return () => {
             clearTimeout(leaveTimer);
             clearTimeout(hardStop);
+            clearTimeout(doneTimer);
             window.removeEventListener("load", finish);
             document.documentElement.style.overflow = "";
         };
@@ -70,7 +75,7 @@ export default function IntroLoader() {
                     __html: `try{if(sessionStorage.getItem("${KEY}")==="1")document.documentElement.setAttribute("data-intro-seen","")}catch(e){}`,
                 }}
             />
-            <div id="ak-intro" className={`ak-intro ${phase === "leave" ? "ak-intro--leave" : ""}`} role="status" aria-label="Loading Aamkahon">
+            <div id="ak-intro" className={`ak-intro ${phase === "done" ? "ak-intro--done" : ""} ${phase === "leave" ? "ak-intro--done ak-intro--leave" : ""}`} role="status" aria-label="Loading Aamkahon">
                 <div className="ak-intro__inner">
                     <div className="ak-intro__fruit">
                         <Image src="/images/logo-icon.png" alt="" width={421} height={320} priority className="ak-intro__ghost" />

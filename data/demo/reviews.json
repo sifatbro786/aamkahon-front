@@ -1,0 +1,518 @@
+{
+  "byProduct": {
+    "1a71b55f607b154fde0cd77f": {
+      "success": true,
+      "reviews": [
+        {
+          "_id": "83dd7341600d808952ebfeae",
+          "product": "1a71b55f607b154fde0cd77f",
+          "user": {
+            "_id": "6874ec7dfd6df3452fea55e9",
+            "name": "Tanvir Rahman"
+          },
+          "rating": 5,
+          "comment": "গত বছর গোপালভোগ নিয়েছিলাম, বাজারের আমের সাথে কোনো তুলনাই হয় না। প্যাকিংও খুব ভালো ছিল।",
+          "status": "approved",
+          "helpfulCount": 0,
+          "createdAt": "2026-06-04T00:00:00.000Z"
+        },
+        {
+          "_id": "da01253da7fe808f36090bfb",
+          "product": "1a71b55f607b154fde0cd77f",
+          "user": {
+            "_id": "d552911fac2a52435c30f9eb",
+            "name": "Nusrat Jahan"
+          },
+          "rating": 5,
+          "comment": "Ordered two boxes last season. Every single mango was ripe and sweet, nothing sour or chemical smelling. Booking again for 2027.",
+          "status": "approved",
+          "helpfulCount": 0,
+          "createdAt": "2026-05-25T00:00:00.000Z"
+        }
+      ],
+      "totalPages": 1,
+      "currentPage": 1,
+      "total": 2,
+      "ratingStats": [
+        {
+          "_id": 5,
+          "count": 2
+        }
+      ],
+      "averageRating": 5,
+      "totalReviews": 2
+    },
+    "d1ee9777f7873aad865325d7": {
+      "success": true,
+      "reviews": [
+        {
+          "_id": "98219e9b0dd127487ac9d733",
+          "product": "d1ee9777f7873aad865325d7",
+          "user": {
+            "_id": "4d12f8e1218594c85f878ab6",
+            "name": "Ayesha Siddiqua"
+          },
+          "rating": 4,
+          "comment": "Very sweet and fragrant. Took one extra day to reach Sylhet, but the fruit held up fine.",
+          "status": "approved",
+          "helpfulCount": 0,
+          "createdAt": "2026-06-16T00:00:00.000Z"
+        },
+        {
+          "_id": "3bffb3202b84ea3bbe84ada0",
+          "product": "d1ee9777f7873aad865325d7",
+          "user": {
+            "_id": "571a84bca569cf17c95bd03e",
+            "name": "Mahmudul Hasan"
+          },
+          "rating": 5,
+          "comment": "Proper Rajshahi Khirsapat. The box arrived in Dhaka in two days and only one fruit was bruised, which they replaced next order.",
+          "status": "approved",
+          "helpfulCount": 0,
+          "createdAt": "2026-06-14T00:00:00.000Z"
+        }
+      ],
+      "totalPages": 1,
+      "currentPage": 1,
+      "total": 2,
+      "ratingStats": [
+        {
+          "_id": 4,
+          "count": 1
+        },
+        {
+          "_id": 5,
+          "count": 1
+        }
+      ],
+      "averageRating": 4.5,
+      "totalReviews": 2
+    },
+    "35f7b3415229e22b8c586cc0": {
+      "success": true,
+      "reviews": [
+        {
+          "_id": "95dcba112adabb54b0051611",
+          "product": "35f7b3415229e22b8c586cc0",
+          "user": {
+            "_id": "23f1fe06ecda08b6612a2641",
+            "name": "Farzana Akter"
+          },
+          "rating": 5,
+          "comment": "Langra stays green so I was nervous, but they ripened perfectly on the counter in two days. Kids loved them.",
+          "status": "approved",
+          "helpfulCount": 0,
+          "createdAt": "2026-06-26T00:00:00.000Z"
+        }
+      ],
+      "totalPages": 1,
+      "currentPage": 1,
+      "total": 1,
+      "ratingStats": [
+        {
+          "_id": 5,
+          "count": 1
+        }
+      ],
+      "averageRating": 5,
+      "totalReviews": 1
+    },
+    "aff15646820f300f3a537398": {
+      "success": true,
+      "reviews": [
+        {
+          "_id": "8c8ec8067a20e6a163389a53",
+          "product": "aff15646820f300f3a537398",
+          "user": {
+            "_id": "418899fdcfce72e64159f196",
+            "name": "Sharmin Sultana"
+          },
+          "rating": 5,
+          "comment": "আম্রপালি এত মিষ্টি হতে পারে জানতাম না। ছোট সাইজ কিন্তু স্বাদ অসাধারণ।",
+          "status": "approved",
+          "helpfulCount": 0,
+          "createdAt": "2026-07-02T00:00:00.000Z"
+        }
+      ],
+      "totalPages": 1,
+      "currentPage": 1,
+      "total": 1,
+      "ratingStats": [
+        {
+          "_id": 5,
+          "count": 1
+        }
+      ],
+      "averageRating": 5,
+      "totalReviews": 1
+    },
+    "c58845bf5f9a13e41c0e5384": {
+      "success": true,
+      "reviews": [
+        {
+          "_id": "029ee492e80929b4cecb725c",
+          "product": "c58845bf5f9a13e41c0e5384",
+          "user": {
+            "_id": "21d6ef5e289a88e572b07f12",
+            "name": "Rakib Hossain"
+          },
+          "rating": 4,
+          "comment": "We buy Fazli in bulk for our sweet shop. Good size, fair wholesale price, and they call before dispatch.",
+          "status": "approved",
+          "helpfulCount": 0,
+          "createdAt": "2026-07-06T00:00:00.000Z"
+        }
+      ],
+      "totalPages": 1,
+      "currentPage": 1,
+      "total": 1,
+      "ratingStats": [
+        {
+          "_id": 4,
+          "count": 1
+        }
+      ],
+      "averageRating": 4,
+      "totalReviews": 1
+    },
+    "efba1a937b7c6f7f92e7def6": {
+      "success": true,
+      "reviews": [
+        {
+          "_id": "3c43c7edeaaf2f90981ff0e6",
+          "product": "efba1a937b7c6f7f92e7def6",
+          "user": {
+            "_id": "d552911fac2a52435c30f9eb",
+            "name": "Nusrat Jahan"
+          },
+          "rating": 5,
+          "comment": "শীতের পিঠার জন্য পাটালি নিলাম। ঘ্রাণটাই আসল খেজুরের গুড়ের মতো।",
+          "status": "approved",
+          "helpfulCount": 0,
+          "createdAt": "2026-10-24T00:00:00.000Z"
+        },
+        {
+          "_id": "befb02153b4ccca3af1f105a",
+          "product": "efba1a937b7c6f7f92e7def6",
+          "user": {
+            "_id": "a8c905bd2e3fb5a6b37a8d12",
+            "name": "Imran Chowdhury"
+          },
+          "rating": 5,
+          "comment": "Real patali gur, slightly smoky and not overly sweet. You can tell there is no sugar mixed in.",
+          "status": "approved",
+          "helpfulCount": 0,
+          "createdAt": "2026-10-20T00:00:00.000Z"
+        }
+      ],
+      "totalPages": 1,
+      "currentPage": 1,
+      "total": 2,
+      "ratingStats": [
+        {
+          "_id": 5,
+          "count": 2
+        }
+      ],
+      "averageRating": 5,
+      "totalReviews": 2
+    },
+    "14b46cfe7d9dcd9fe86ef414": {
+      "success": true,
+      "reviews": [
+        {
+          "_id": "8960999171603cf9f5d4bd29",
+          "product": "14b46cfe7d9dcd9fe86ef414",
+          "user": {
+            "_id": "6874ec7dfd6df3452fea55e9",
+            "name": "Tanvir Rahman"
+          },
+          "rating": 5,
+          "comment": "The clay pot jhola gur is exactly like what we had in the village. Perfect for payesh.",
+          "status": "approved",
+          "helpfulCount": 0,
+          "createdAt": "2026-10-23T00:00:00.000Z"
+        }
+      ],
+      "totalPages": 1,
+      "currentPage": 1,
+      "total": 1,
+      "ratingStats": [
+        {
+          "_id": 5,
+          "count": 1
+        }
+      ],
+      "averageRating": 5,
+      "totalReviews": 1
+    },
+    "0e8aa463a9e0899bcc5fac72": {
+      "success": true,
+      "reviews": [
+        {
+          "_id": "70f399838553999cbd6c42a2",
+          "product": "0e8aa463a9e0899bcc5fac72",
+          "user": {
+            "_id": "23f1fe06ecda08b6612a2641",
+            "name": "Farzana Akter"
+          },
+          "rating": 5,
+          "comment": "Nolen gur this good is hard to find in Dhaka. Light, floral, gone in a week at our house.",
+          "status": "approved",
+          "helpfulCount": 0,
+          "createdAt": "2026-10-26T00:00:00.000Z"
+        }
+      ],
+      "totalPages": 1,
+      "currentPage": 1,
+      "total": 1,
+      "ratingStats": [
+        {
+          "_id": 5,
+          "count": 1
+        }
+      ],
+      "averageRating": 5,
+      "totalReviews": 1
+    },
+    "9e946cff85e40f92e3b1525b": {
+      "success": true,
+      "reviews": [
+        {
+          "_id": "a470cd09fef3c69ef58b277c",
+          "product": "9e946cff85e40f92e3b1525b",
+          "user": {
+            "_id": "4d12f8e1218594c85f878ab6",
+            "name": "Ayesha Siddiqua"
+          },
+          "rating": 4,
+          "comment": "Grainy, nutty ghee with a proper aroma. The paper and thread seal is a lovely touch.",
+          "status": "approved",
+          "helpfulCount": 0,
+          "createdAt": "2026-10-12T00:00:00.000Z"
+        }
+      ],
+      "totalPages": 1,
+      "currentPage": 1,
+      "total": 1,
+      "ratingStats": [
+        {
+          "_id": 4,
+          "count": 1
+        }
+      ],
+      "averageRating": 4,
+      "totalReviews": 1
+    }
+  },
+  "featured": {
+    "success": true,
+    "count": 12,
+    "reviews": [
+      {
+        "_id": "70f399838553999cbd6c42a2",
+        "product": {
+          "_id": "0e8aa463a9e0899bcc5fac72",
+          "name": "Nolen Gur Premium",
+          "slug": "nolen-gur-premium"
+        },
+        "user": {
+          "_id": "23f1fe06ecda08b6612a2641",
+          "name": "Farzana Akter"
+        },
+        "rating": 5,
+        "comment": "Nolen gur this good is hard to find in Dhaka. Light, floral, gone in a week at our house.",
+        "status": "approved",
+        "helpfulCount": 0,
+        "createdAt": "2026-10-26T00:00:00.000Z"
+      },
+      {
+        "_id": "3c43c7edeaaf2f90981ff0e6",
+        "product": {
+          "_id": "efba1a937b7c6f7f92e7def6",
+          "name": "Khejurer Patali Gur",
+          "slug": "khejurer-patali-gur"
+        },
+        "user": {
+          "_id": "d552911fac2a52435c30f9eb",
+          "name": "Nusrat Jahan"
+        },
+        "rating": 5,
+        "comment": "শীতের পিঠার জন্য পাটালি নিলাম। ঘ্রাণটাই আসল খেজুরের গুড়ের মতো।",
+        "status": "approved",
+        "helpfulCount": 0,
+        "createdAt": "2026-10-24T00:00:00.000Z"
+      },
+      {
+        "_id": "8960999171603cf9f5d4bd29",
+        "product": {
+          "_id": "14b46cfe7d9dcd9fe86ef414",
+          "name": "Khejurer Jhola Gur",
+          "slug": "khejurer-jhola-gur"
+        },
+        "user": {
+          "_id": "6874ec7dfd6df3452fea55e9",
+          "name": "Tanvir Rahman"
+        },
+        "rating": 5,
+        "comment": "The clay pot jhola gur is exactly like what we had in the village. Perfect for payesh.",
+        "status": "approved",
+        "helpfulCount": 0,
+        "createdAt": "2026-10-23T00:00:00.000Z"
+      },
+      {
+        "_id": "befb02153b4ccca3af1f105a",
+        "product": {
+          "_id": "efba1a937b7c6f7f92e7def6",
+          "name": "Khejurer Patali Gur",
+          "slug": "khejurer-patali-gur"
+        },
+        "user": {
+          "_id": "a8c905bd2e3fb5a6b37a8d12",
+          "name": "Imran Chowdhury"
+        },
+        "rating": 5,
+        "comment": "Real patali gur, slightly smoky and not overly sweet. You can tell there is no sugar mixed in.",
+        "status": "approved",
+        "helpfulCount": 0,
+        "createdAt": "2026-10-20T00:00:00.000Z"
+      },
+      {
+        "_id": "8c8ec8067a20e6a163389a53",
+        "product": {
+          "_id": "aff15646820f300f3a537398",
+          "name": "Amrapali Mango",
+          "slug": "amrapali-mango"
+        },
+        "user": {
+          "_id": "418899fdcfce72e64159f196",
+          "name": "Sharmin Sultana"
+        },
+        "rating": 5,
+        "comment": "আম্রপালি এত মিষ্টি হতে পারে জানতাম না। ছোট সাইজ কিন্তু স্বাদ অসাধারণ।",
+        "status": "approved",
+        "helpfulCount": 0,
+        "createdAt": "2026-07-02T00:00:00.000Z"
+      },
+      {
+        "_id": "95dcba112adabb54b0051611",
+        "product": {
+          "_id": "35f7b3415229e22b8c586cc0",
+          "name": "Langra Mango",
+          "slug": "langra-mango"
+        },
+        "user": {
+          "_id": "23f1fe06ecda08b6612a2641",
+          "name": "Farzana Akter"
+        },
+        "rating": 5,
+        "comment": "Langra stays green so I was nervous, but they ripened perfectly on the counter in two days. Kids loved them.",
+        "status": "approved",
+        "helpfulCount": 0,
+        "createdAt": "2026-06-26T00:00:00.000Z"
+      },
+      {
+        "_id": "3bffb3202b84ea3bbe84ada0",
+        "product": {
+          "_id": "d1ee9777f7873aad865325d7",
+          "name": "Khirsapat Mango",
+          "slug": "khirsapat-mango"
+        },
+        "user": {
+          "_id": "571a84bca569cf17c95bd03e",
+          "name": "Mahmudul Hasan"
+        },
+        "rating": 5,
+        "comment": "Proper Rajshahi Khirsapat. The box arrived in Dhaka in two days and only one fruit was bruised, which they replaced next order.",
+        "status": "approved",
+        "helpfulCount": 0,
+        "createdAt": "2026-06-14T00:00:00.000Z"
+      },
+      {
+        "_id": "83dd7341600d808952ebfeae",
+        "product": {
+          "_id": "1a71b55f607b154fde0cd77f",
+          "name": "Gopalbhog Mango",
+          "slug": "gopalbhog-mango"
+        },
+        "user": {
+          "_id": "6874ec7dfd6df3452fea55e9",
+          "name": "Tanvir Rahman"
+        },
+        "rating": 5,
+        "comment": "গত বছর গোপালভোগ নিয়েছিলাম, বাজারের আমের সাথে কোনো তুলনাই হয় না। প্যাকিংও খুব ভালো ছিল।",
+        "status": "approved",
+        "helpfulCount": 0,
+        "createdAt": "2026-06-04T00:00:00.000Z"
+      },
+      {
+        "_id": "da01253da7fe808f36090bfb",
+        "product": {
+          "_id": "1a71b55f607b154fde0cd77f",
+          "name": "Gopalbhog Mango",
+          "slug": "gopalbhog-mango"
+        },
+        "user": {
+          "_id": "d552911fac2a52435c30f9eb",
+          "name": "Nusrat Jahan"
+        },
+        "rating": 5,
+        "comment": "Ordered two boxes last season. Every single mango was ripe and sweet, nothing sour or chemical smelling. Booking again for 2027.",
+        "status": "approved",
+        "helpfulCount": 0,
+        "createdAt": "2026-05-25T00:00:00.000Z"
+      },
+      {
+        "_id": "a470cd09fef3c69ef58b277c",
+        "product": {
+          "_id": "9e946cff85e40f92e3b1525b",
+          "name": "Premium Gawa Ghee",
+          "slug": "premium-gawa-ghee"
+        },
+        "user": {
+          "_id": "4d12f8e1218594c85f878ab6",
+          "name": "Ayesha Siddiqua"
+        },
+        "rating": 4,
+        "comment": "Grainy, nutty ghee with a proper aroma. The paper and thread seal is a lovely touch.",
+        "status": "approved",
+        "helpfulCount": 0,
+        "createdAt": "2026-10-12T00:00:00.000Z"
+      },
+      {
+        "_id": "029ee492e80929b4cecb725c",
+        "product": {
+          "_id": "c58845bf5f9a13e41c0e5384",
+          "name": "Surma Fazli Mango",
+          "slug": "surma-fazli-mango"
+        },
+        "user": {
+          "_id": "21d6ef5e289a88e572b07f12",
+          "name": "Rakib Hossain"
+        },
+        "rating": 4,
+        "comment": "We buy Fazli in bulk for our sweet shop. Good size, fair wholesale price, and they call before dispatch.",
+        "status": "approved",
+        "helpfulCount": 0,
+        "createdAt": "2026-07-06T00:00:00.000Z"
+      },
+      {
+        "_id": "98219e9b0dd127487ac9d733",
+        "product": {
+          "_id": "d1ee9777f7873aad865325d7",
+          "name": "Khirsapat Mango",
+          "slug": "khirsapat-mango"
+        },
+        "user": {
+          "_id": "4d12f8e1218594c85f878ab6",
+          "name": "Ayesha Siddiqua"
+        },
+        "rating": 4,
+        "comment": "Very sweet and fragrant. Took one extra day to reach Sylhet, but the fruit held up fine.",
+        "status": "approved",
+        "helpfulCount": 0,
+        "createdAt": "2026-06-16T00:00:00.000Z"
+      }
+    ]
+  }
+}

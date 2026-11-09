@@ -1,8 +1,8 @@
 {
-  "desktopVideos": [
-    "/videos/hero-loop.mp4"
+  "desktopVideos": [],
+  "desktopImages": [
+    "/images/mango-cut-halves.jpg"
   ],
-  "desktopImages": [],
   "mobileVideos": [
     "/videos/hero-loop.mp4"
   ],
@@ -11,18 +11,18 @@
     {
       "_id": "51bd3f29265e0b463a7bbb02",
       "title": "Mangoes picked late, on purpose",
-      "subtitle": "From Rajshahi orchards to your door. Wholesale and retail, with 2027 pre-booking open now.",
+      "subtitle": "Rajshahi orchards to your door. Wholesale and retail, with 2027 pre-booking open now.",
       "buttonText": "Pre-book mangoes",
       "buttonLink": "/shop?availability=pre_order",
-      "mediaType": "video",
-      "mediaUrl": "/videos/hero-loop.mp4",
+      "mediaType": "image",
+      "mediaUrl": "/images/mango-cut-halves.jpg",
       "deviceType": "desktop",
       "order": 0
     },
     {
       "_id": "dfe9c04f599bd975185d7395",
       "title": "Mangoes picked late, on purpose",
-      "subtitle": "From Rajshahi orchards to your door.",
+      "subtitle": "Rajshahi orchards to your door. Wholesale and retail, with 2027 pre-booking open now.",
       "buttonText": "Pre-book mangoes",
       "buttonLink": "/shop?availability=pre_order",
       "mediaType": "video",

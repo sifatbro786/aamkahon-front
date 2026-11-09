@@ -190,6 +190,19 @@ html[data-intro-seen] #ak-intro {
         transform 0.85s var(--ease-out-soft),
         opacity 0.6s ease 0.25s;
 }
+/* Finished: the bar dissolves and the mark gives one soft breath. */
+.ak-intro--done .ak-intro__bar {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+.ak-intro--done .ak-intro__fruit {
+    animation: ak-breathe 0.65s var(--ease-out-soft);
+}
+@keyframes ak-breathe {
+    50% {
+        transform: scale(1.06);
+    }
+}
 .ak-intro--leave {
     transform: translateY(-100%);
     opacity: 0;

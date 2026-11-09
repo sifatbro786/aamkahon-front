@@ -62,7 +62,7 @@ Read this first in any new chat. Update it at the end of every phase.
 - [x] Phase 3  Next.js foundation, data layer, logic port, homepage (2026-11-09)
 - [x] Phase 3 fixes (FB icon, hero video autoplay + sound, story colour, STR credit, intro loader, 404/error/privacy/terms)
 - [x] Phase 4  storefront pages (2026-11-09)
-- [ ] Phase 5
+- [x] Phase 5  admin, static demo admin, deploy docs (2026-11-09)
 
 ### Phase 1 done
 - amkahon-back = footpath-backend copy (no .git/.env/tests/audit). Stationery seeds removed (seedStorefront.js still
@@ -133,12 +133,41 @@ Backend: trackOrder response adds orderType, preOrder, codOnlinePaymentAmount, t
 QA: eslint 0, next build OK, 21 pages x 390/1440 px no horizontal overflow, no console errors; bag/pre-book flow
 clicked through (mixed bag notice works). Real payment untested: needs Sifat's SSLCommerz sandbox credentials + DB.
 
-### Phase 5 plan (next)
-- /admin inside Next (client-only, grey dashboard): port Footpath admin pages (dashboard, products incl. new fields:
-  nameBn, unit, priceVisibility, wholesale {enabled,minQty,price}, variant wholesalePrice/weight, minOrderQty,
-  availability, preOrder; categories, orders + Pre-bookings tab (?orderType=pre_order, "Pre-booked" status),
-  Inquiries inbox (/api/admin/inquiries), shipping rates with baseWeightKg/perKgCharge, hero, navbar, sections,
-  coupons, reviews, users). Brand colour accent only.
-- Static demo: admin fixtures (orders, inquiries, users, stats) in the emulator, writes refused with a toast.
-- Final responsive QA, Vercel config (NEXT_PUBLIC_DATA_MODE=static), VPS deploy notes for Gemini (pm2 fork, nginx,
-  env, seed, fixtures), base-candidate list for Footpath.
+### Phase 5 done
+- Intro loader now always plays to the end (min 3.9 s, max 5.5 s) with a short "done" beat before lifting.
+- Admin at /admin: Footpath admin ported file for file into admin/src (see CLAUDE.md "Admin"). Router shim
+  admin/router.js; route table admin/routes.js; catch-all app/admin/[[...slug]]/page.js.
+- New admin screens: Pre-bookings, Inquiries (status tabs with counts, call/WhatsApp, quote, notes, delete).
+  Product form "Wholesale & Season" tab (Bangla name, unit, min order, price display show/inquiry/TBA, wholesale
+  tier, availability, pre-order date/advance/cap/note) + variant wholesale price and packed weight.
+  Shipping rate modal: base kg + per kg. "Pre-booked" status in lists, badges, detail (with advance + harvest box).
+  Currency labels BDT. Active nav uses brand ink + mango.
+- Static demo admin: lib/demo/adminDemo.js (10 fictional orders incl. 3 pre-bookings, 5 inquiries, users,
+  dashboard analytics). All 20 admin pages render with no console errors at 1440 px; no overflow at 390 px.
+- Backend: `app.set("trust proxy", 1)` in production (rate limiters behind nginx).
+- Docs: amkahon-front/DEPLOY.md (Vercel static + VPS: env, pm2, nginx, certbot, checks), ecosystem.config.cjs in
+  both repos (pm2 fork, 1 instance), amkahon-back/BASE_CANDIDATES.md (what to port back to Footpath, critical first).
+- New deps: react-hot-toast, recharts (run npm install in amkahon-front).
+
+### Post Phase 5 changes (2026-11-10)
+- Hero: ONE full screen block, no slider. Media per device from Admin > Homepage hero (HeroContent):
+  desktop = landscape video or photo (placeholder now: /images/mango-cut-halves.jpg), phone = vertical reel
+  (/videos/hero-loop.mp4). components/home/HeroMedia.js mounts only the current breakpoint's media, sound toggle
+  for video, falls back to bundled media on error. Waiting for Sifat's landscape video -> put it in
+  public/videos (or upload in admin) and set it as the desktop media.
+- Admin: "Homepage Hero" editor (shared text/button + desktop/phone media with upload). New backend route
+  POST /api/admin/upload/hero-video (mp4/webm, 60 MB, uploads/hero). Hidden from nav AND routes: A+ Content,
+  Campaigns, Cart Campaigns, Hero Slides (pages kept in admin/src for future clients).
+- Reviews: 12 DEMO placeholder reviews in seed/data.js (seed reviewers @seed.aamkahon.local). seed.js adds them
+  only outside production (or with --with-demo-reviews); `npm run seed -- --purge-demo-reviews` removes them and
+  recomputes ratings. MUST be replaced with real reviews (Facebook page has 13) or purged before launch.
+  Storefront: product page "What buyers say" (+ stars under title, AggregateRating JSON-LD), homepage testimonials
+  (GET /api/reviews/featured). Fixtures include reviews.json.
+- Security: public product reviews populated reviewer email; now name only (BASE_CANDIDATES item 4).
+- To apply on Sifat's DB: `cd amkahon-back && npm run seed -- --reset` (updates hero records + adds demo reviews).
+
+### Open items / next steps
+- Real SSLCommerz sandbox run end to end (needs credentials) and a live seed on Atlas.
+- Client to confirm real prices, harvest dates, refund terms, whether ghee stays.
+- Footpath base: apply BASE_CANDIDATES.md items 1 to 3 (security) as soon as possible.
+- Admin uses the ported grey style; per-page polish only if the client asks.

@@ -155,8 +155,8 @@
               "campaignPrice": null
             }
           ],
-          "averageRating": 0,
-          "numReviews": 0,
+          "averageRating": 5,
+          "numReviews": 2,
           "weight": 0,
           "unit": "box",
           "priceVisibility": "show",
@@ -323,8 +323,8 @@
               "campaignPrice": null
             }
           ],
-          "averageRating": 0,
-          "numReviews": 0,
+          "averageRating": 4.5,
+          "numReviews": 2,
           "weight": 0,
           "unit": "box",
           "priceVisibility": "show",
@@ -491,8 +491,8 @@
               "campaignPrice": null
             }
           ],
-          "averageRating": 0,
-          "numReviews": 0,
+          "averageRating": 5,
+          "numReviews": 1,
           "weight": 0,
           "unit": "box",
           "priceVisibility": "show",
@@ -654,8 +654,8 @@
               "campaignPrice": null
             }
           ],
-          "averageRating": 0,
-          "numReviews": 0,
+          "averageRating": 5,
+          "numReviews": 1,
           "weight": 0,
           "unit": "box",
           "priceVisibility": "show",
@@ -817,8 +817,8 @@
               "campaignPrice": null
             }
           ],
-          "averageRating": 0,
-          "numReviews": 0,
+          "averageRating": 4,
+          "numReviews": 1,
           "weight": 0,
           "unit": "box",
           "priceVisibility": "show",
@@ -1438,8 +1438,8 @@
               "campaignPrice": null
             }
           ],
-          "averageRating": 0,
-          "numReviews": 0,
+          "averageRating": 5,
+          "numReviews": 2,
           "weight": 0,
           "unit": "pack",
           "priceVisibility": "show",
@@ -1597,8 +1597,8 @@
               "campaignPrice": null
             }
           ],
-          "averageRating": 0,
-          "numReviews": 0,
+          "averageRating": 5,
+          "numReviews": 1,
           "weight": 0,
           "unit": "pack",
           "priceVisibility": "show",
@@ -1704,8 +1704,8 @@
           "variantOptions": [],
           "hasVariants": false,
           "variants": [],
-          "averageRating": 0,
-          "numReviews": 0,
+          "averageRating": 5,
+          "numReviews": 1,
           "weight": 1.4,
           "unit": "jar",
           "priceVisibility": "show",
