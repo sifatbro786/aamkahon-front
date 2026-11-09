@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# client media originals (large, kept out of git)
+/media-originals/
+/.xfer/

@@ -1,0 +1,46 @@
+{
+  "success": true,
+  "rates": [
+    {
+      "locationType": "dhaka_inside",
+      "deliveryType": "Home Delivery",
+      "baseCharge": 120,
+      "baseWeightKg": 5,
+      "perKgCharge": 15,
+      "freeShippingThreshold": null,
+      "reducedShippingThreshold": null,
+      "reducedShippingAmount": null
+    },
+    {
+      "locationType": "dhaka_sub",
+      "deliveryType": "Home Delivery",
+      "baseCharge": 150,
+      "baseWeightKg": 5,
+      "perKgCharge": 18,
+      "freeShippingThreshold": null,
+      "reducedShippingThreshold": null,
+      "reducedShippingAmount": null
+    },
+    {
+      "locationType": "outside_dhaka",
+      "deliveryType": "Home Delivery",
+      "baseCharge": 200,
+      "baseWeightKg": 5,
+      "perKgCharge": 22,
+      "freeShippingThreshold": null,
+      "reducedShippingThreshold": null,
+      "reducedShippingAmount": null
+    },
+    {
+      "locationType": "outside_dhaka",
+      "deliveryType": "Courier",
+      "baseCharge": 160,
+      "baseWeightKg": 5,
+      "perKgCharge": 18,
+      "freeShippingThreshold": null,
+      "reducedShippingThreshold": null,
+      "reducedShippingAmount": null
+    }
+  ],
+  "lowestFreeShippingThreshold": null
+}

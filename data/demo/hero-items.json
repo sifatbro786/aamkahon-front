@@ -1,0 +1,31 @@
+{
+  "success": true,
+  "message": "Hero items fetched successfully",
+  "data": [
+    {
+      "_id": "bc5df45167cdd23f9b8152b3",
+      "title": "Winter gur is here",
+      "subtitle": "Patali, jhola and nolen from this season's tap.",
+      "buttonText": "Shop gur",
+      "mediaType": "image",
+      "mediaUrl": "/images/gur-clay-pots.jpg",
+      "deviceType": "both",
+      "order": 0,
+      "duration": 6000,
+      "isActive": true
+    },
+    {
+      "_id": "0528a9cd8fb275ca8f571f15",
+      "title": "Buying for a shop or office?",
+      "subtitle": "Wholesale prices start at 5 boxes. Bigger volumes, ask us for a quote.",
+      "buttonText": "Wholesale",
+      "mediaType": "image",
+      "mediaUrl": "/images/packing-house-boxes.jpg",
+      "deviceType": "both",
+      "order": 1,
+      "duration": 6000,
+      "isActive": true
+    }
+  ],
+  "count": 2
+}

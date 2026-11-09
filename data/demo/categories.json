@@ -1,0 +1,135 @@
+{
+  "success": true,
+  "count": 7,
+  "total": 7,
+  "data": [
+    {
+      "_id": "8c76eb7d158342067d00b796",
+      "id": "8c76eb7d158342067d00b796",
+      "name": "Mango",
+      "slug": "mango",
+      "description": "Rajshahi and Chapainawabganj mangoes, picked late on purpose so every box arrives fully ripe.",
+      "parentCategory": null,
+      "isActive": true,
+      "image": {
+        "url": "/images/ripe-mangoes-branch.jpg",
+        "public_id": "seed/ripe-mangoes-branch.jpg"
+      },
+      "level": 0,
+      "createdAt": "2026-11-01T00:00:00.000Z",
+      "updatedAt": "2026-11-01T00:00:00.000Z"
+    },
+    {
+      "_id": "949f20157f656513c069bd02",
+      "id": "949f20157f656513c069bd02",
+      "name": "Rajshahi Mango",
+      "slug": "rajshahi-mango",
+      "description": "Gopalbhog, Khirsapat and Langra from orchards around Rajshahi.",
+      "parentCategory": {
+        "_id": "8c76eb7d158342067d00b796",
+        "name": "Mango",
+        "slug": "mango"
+      },
+      "isActive": true,
+      "image": {
+        "url": "/images/gopalbhog-net-rajshahi.jpg",
+        "public_id": "seed/gopalbhog-net-rajshahi.jpg"
+      },
+      "level": 1,
+      "createdAt": "2026-11-01T00:00:00.000Z",
+      "updatedAt": "2026-11-01T00:00:00.000Z"
+    },
+    {
+      "_id": "250f40363d8cb40ce31a9a61",
+      "id": "250f40363d8cb40ce31a9a61",
+      "name": "Chapainawabganj Mango",
+      "slug": "chapainawabganj-mango",
+      "description": "Late season varieties: Amrapali, Surma Fazli, BARI 4 and Gourmoti.",
+      "parentCategory": {
+        "_id": "8c76eb7d158342067d00b796",
+        "name": "Mango",
+        "slug": "mango"
+      },
+      "isActive": true,
+      "image": {
+        "url": "/images/mangoes-on-tree-bagged.jpg",
+        "public_id": "seed/mangoes-on-tree-bagged.jpg"
+      },
+      "level": 1,
+      "createdAt": "2026-11-01T00:00:00.000Z",
+      "updatedAt": "2026-11-01T00:00:00.000Z"
+    },
+    {
+      "_id": "b460fd6b33ed24d8b4bdbea3",
+      "id": "b460fd6b33ed24d8b4bdbea3",
+      "name": "Khejurer Gur",
+      "slug": "khejurer-gur",
+      "description": "Date palm jaggery from the winter tap. Patali, jhola and nolen, made in small batches.",
+      "parentCategory": null,
+      "isActive": true,
+      "image": {
+        "url": "/images/gur-clay-pots.jpg",
+        "public_id": "seed/gur-clay-pots.jpg"
+      },
+      "level": 0,
+      "createdAt": "2026-11-01T00:00:00.000Z",
+      "updatedAt": "2026-11-01T00:00:00.000Z"
+    },
+    {
+      "_id": "8fed302ee5682b1d16b7323f",
+      "id": "8fed302ee5682b1d16b7323f",
+      "name": "Patali Gur",
+      "slug": "patali-gur",
+      "description": "Set into cakes in clay moulds. Keeps for months.",
+      "parentCategory": {
+        "_id": "b460fd6b33ed24d8b4bdbea3",
+        "name": "Khejurer Gur",
+        "slug": "khejurer-gur"
+      },
+      "isActive": true,
+      "image": {
+        "url": "/images/date-palm-tree.jpg",
+        "public_id": "seed/date-palm-tree.jpg"
+      },
+      "level": 1,
+      "createdAt": "2026-11-01T00:00:00.000Z",
+      "updatedAt": "2026-11-01T00:00:00.000Z"
+    },
+    {
+      "_id": "75217f88b02922927f1651bb",
+      "id": "75217f88b02922927f1651bb",
+      "name": "Jhola and Nolen Gur",
+      "slug": "jhola-and-nolen-gur",
+      "description": "Pourable gur, the first sap of the season.",
+      "parentCategory": {
+        "_id": "b460fd6b33ed24d8b4bdbea3",
+        "name": "Khejurer Gur",
+        "slug": "khejurer-gur"
+      },
+      "isActive": true,
+      "image": {
+        "url": "/images/gur-clay-pots.jpg",
+        "public_id": "seed/gur-clay-pots.jpg"
+      },
+      "level": 1,
+      "createdAt": "2026-11-01T00:00:00.000Z",
+      "updatedAt": "2026-11-01T00:00:00.000Z"
+    },
+    {
+      "_id": "d6f25764f7ba3dde84e46b03",
+      "id": "d6f25764f7ba3dde84e46b03",
+      "name": "Farm Pantry",
+      "slug": "farm-pantry",
+      "description": "Small batch staples we make between seasons.",
+      "parentCategory": null,
+      "isActive": true,
+      "image": {
+        "url": "/images/gawa-ghee-jars.jpg",
+        "public_id": "seed/gawa-ghee-jars.jpg"
+      },
+      "level": 0,
+      "createdAt": "2026-11-01T00:00:00.000Z",
+      "updatedAt": "2026-11-01T00:00:00.000Z"
+    }
+  ]
+}

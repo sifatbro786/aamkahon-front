@@ -59,7 +59,10 @@ Read this first in any new chat. Update it at the end of every phase.
 ## Status
 - [x] Phase 1  backend copy + rebrand + base fixes (2026-11-09)
 - [x] Phase 2  wholesale, pre-booking, hidden price, inquiries, weight shipping, seed (2026-11-09)
-- [ ] Phase 3  [ ] Phase 4  [ ] Phase 5
+- [x] Phase 3  Next.js foundation, data layer, logic port, homepage (2026-11-09)
+- [x] Phase 3 fixes (FB icon, hero video autoplay + sound, story colour, STR credit, intro loader, 404/error/privacy/terms)
+- [x] Phase 4  storefront pages (2026-11-09)
+- [ ] Phase 5
 
 ### Phase 1 done
 - amkahon-back = footpath-backend copy (no .git/.env/tests/audit). Stationery seeds removed (seedStorefront.js still
@@ -87,10 +90,55 @@ Read this first in any new chat. Update it at the end of every phase.
 - public/images renamed to meaningful names (duplicate calendar removed). Only local photos used, no Unsplash needed.
 - Verified: pricing unit assertions pass, all files pass node --check, server boots. DB untestable from Claude's sandbox.
 
-### Phase 3 plan (next)
-- scripts/buildFixtures.js in amkahon-back: seed/data.js -> API-shaped JSON in amkahon-front/src/data/demo
-  (shapes verified against the controllers; same deterministic ids).
-- Next.js 16 foundation: read node_modules/next/dist/docs first. Tailwind v4 @theme tokens from the logo,
-  Google Sans + Bangla fallback, layout (header, footer, mobile nav), data layer (NEXT_PUBLIC_DATA_MODE static|api),
-  port logic layer from footpath-frontend (api, cart context dual-mode, variants, orderAccess, auth),
-  homepage with hero video. Compress the two big videos.
+### Phase 3 done (read amkahon-front/CLAUDE.md for the frontend rules)
+- Fonts self-hosted via npm (@fontsource-variable/google-sans incl. Bengali, @fontsource/tiro-bangla for Bangla
+  accents). next/font/google avoided on purpose: builds must not need Google Fonts network access.
+- Tokens from the logo in app/globals.css @theme. Transparent logo assets: logo-lockup.png, logo-mark.png, icon-256.png.
+- Data layer: lib/data/catalog.js (server, "use cache" 1 min) + lib/api/* (axios, Bearer token) + lib/demo/emulator.js
+  (static mode for both, writes refused, demo admin demo@aamkahon.com / demo1234).
+- amkahon-back: scripts/buildFixtures.js (`npm run fixtures`) -> amkahon-front/data/demo/*.json from seed/data.js.
+  Backend additions: GET /api/products accepts availability= and wholesale=true; GET /api/hero adds `items` (full objects).
+- Ported: AuthContext, CartContext (dual mode + wholesale display tier + no mixed pre-order bag), variants.js,
+  orderAccess.js (key aamkahon.orderToken.), cartLine.js, productView.js.
+- Homepage: Hero (vertical drone video in a tall frame), SeasonBoard, ProductShelf x2 (API sections), HarvestCalendar
+  (from pre-order products), WholesaleBand (real tier numbers), OrchardReels (3 client videos), DeliveryBlock
+  (live weight rates), StoryBlock (FB bio quote). Header (sticky, mobile menu) + footer.
+- Videos: public/videos = hero-loop.mp4 (1 MB), harvest-pile (2 MB), langra-harvest (13 MB), gur-making (60 s, 10 MB)
+  + posters. Originals in media-originals/ (gitignored). public/videos/hero-bg-video.mp4 is now unused (delete it).
+- Verified: eslint 0 errors, `next build` OK (static), screenshots at 390 px and 1440 px, no horizontal overflow.
+- Known gaps for Phase 4: bag button opens nothing yet (CartDrawer), linked pages (/shop, /product, /wholesale,
+  /story, /delivery, /track-order, /login, /account) not built yet.
+
+### Phase 3 fixes (after Sifat's review)
+- Footer: Facebook + WhatsApp icons (components/ui/BrandIcons.js), privacy/terms links, "Developed by STR Solutions LTD" (strsltd.com).
+- Hero video: React does not render `muted` into SSR HTML, so autoplay was blocked. components/home/HeroVideo.js mutes via
+  ref + play(), adds a Sound on/off toggle, falls back to /videos/hero-loop.mp4 if the DB points at a missing file.
+  hero-loop.mp4 re-encoded WITH audio (20 s). DB seeded in Phase 2 still has /videos/hero-bg-video.mp4: run
+  `npm run seed -- --reset` in amkahon-back (or edit Hero in admin) to point it at /videos/hero-loop.mp4.
+- Story section now bg-forest (new token) so it no longer merges with the ink footer.
+- Intro loader (components/home/IntroLoader.js): homepage, once per browser session, 3.2 s min / 5 s max, waits for
+  window load; inline script + html[data-intro-seen] CSS prevents a flash on repeat visits.
+- Pages: app/not-found.js (root, with header/footer), (store)/not-found.js, (store)/error.js, app/global-error.js,
+  /privacy, /terms (components/ui/LegalPage.js, content as data).
+
+### Phase 4 done
+Routes: /shop (URL filters: q, category incl. children, availability, wholesale=1, sort, page; Suspense + PPR),
+/product/[slug] (gallery, variant axes, wholesale ladder, pre-book terms, MOQ, WhatsApp, inquiry form for inquiry/TBA,
+A+ via DOMPurify client-only, related, JSON-LD; generateStaticParams with placeholder fallback), CartDrawer + /cart,
+/checkout (port of Footpath flow; pre-order bag = advance only; summary from /checkout/calculate; guest token saved
+before redirect; static mode disables ordering), /order/success|fail|cancel, /track-order, /login /register
+/verify-email /forgot-password /reset-password, /account (orders + pre-bookings), /wholesale (live wholesale price list
++ quote form), /story, /delivery (live rates + worked example), /contact, sitemap.xml, robots.txt (static demo = noindex).
+Backend: trackOrder response adds orderType, preOrder, codOnlinePaymentAmount, totalWeightKg.
+QA: eslint 0, next build OK, 21 pages x 390/1440 px no horizontal overflow, no console errors; bag/pre-book flow
+clicked through (mixed bag notice works). Real payment untested: needs Sifat's SSLCommerz sandbox credentials + DB.
+
+### Phase 5 plan (next)
+- /admin inside Next (client-only, grey dashboard): port Footpath admin pages (dashboard, products incl. new fields:
+  nameBn, unit, priceVisibility, wholesale {enabled,minQty,price}, variant wholesalePrice/weight, minOrderQty,
+  availability, preOrder; categories, orders + Pre-bookings tab (?orderType=pre_order, "Pre-booked" status),
+  Inquiries inbox (/api/admin/inquiries), shipping rates with baseWeightKg/perKgCharge, hero, navbar, sections,
+  coupons, reviews, users). Brand colour accent only.
+- Static demo: admin fixtures (orders, inquiries, users, stats) in the emulator, writes refused with a toast.
+- Final responsive QA, Vercel config (NEXT_PUBLIC_DATA_MODE=static), VPS deploy notes for Gemini (pm2 fork, nginx,
+  env, seed, fixtures), base-candidate list for Footpath.

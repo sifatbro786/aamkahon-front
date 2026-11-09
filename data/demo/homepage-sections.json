@@ -1,0 +1,1739 @@
+{
+  "success": true,
+  "sections": [
+    {
+      "_id": "cff604c26c28dcb8d5ae7b3e",
+      "title": "Pre-book the 2027 season",
+      "description": "Lock today's price with a 25% advance. Pay the rest on delivery.",
+      "attributeKey": "Season",
+      "attributeValue": "Pre-booking 2027",
+      "productLimit": 8,
+      "sortBy": "createdAt",
+      "sortOrder": "asc",
+      "sectionType": "attribute-based",
+      "isActive": true,
+      "displayOrder": 1,
+      "showInHomepage": true,
+      "products": [
+        {
+          "_id": "1a71b55f607b154fde0cd77f",
+          "id": "1a71b55f607b154fde0cd77f",
+          "name": "Gopalbhog Mango",
+          "slug": "gopalbhog-mango",
+          "nameBn": "গোপালভোগ",
+          "description": "The first mango of the Rajshahi season. Thin skin, no fibre, and a honeyed sweetness that is gone by the end of June. The district opens harvest on 22 May; we wait seven more days so the fruit finishes ripening on the tree.",
+          "bulletPoints": [
+            "Harvested 30 May, seven days after the district date",
+            "Formalin and carbide free, ripened naturally",
+            "Packed in ventilated 10 kg and 20 kg cartons"
+          ],
+          "brand": "Aamkahon",
+          "sku": "AK-MG-GPB",
+          "category": {
+            "_id": "8c76eb7d158342067d00b796",
+            "id": "8c76eb7d158342067d00b796",
+            "name": "Mango",
+            "slug": "mango",
+            "parentCategory": null
+          },
+          "subCategory": {
+            "_id": "949f20157f656513c069bd02",
+            "id": "949f20157f656513c069bd02",
+            "name": "Rajshahi Mango",
+            "slug": "rajshahi-mango",
+            "parentCategory": {
+              "_id": "8c76eb7d158342067d00b796",
+              "name": "Mango",
+              "slug": "mango",
+              "parentCategory": null
+            }
+          },
+          "basePrice": 1350,
+          "discountType": "none",
+          "discountValue": 0,
+          "price": 1350,
+          "currency": "BDT",
+          "isUnderCampaign": false,
+          "campaignDiscount": {
+            "isActive": false,
+            "discountType": "none",
+            "discountValue": 0
+          },
+          "stock": 0,
+          "lowStockAlert": 5,
+          "isFeatured": true,
+          "isActive": true,
+          "displayOrder": 1,
+          "publishDate": "2026-11-01T00:00:00.000Z",
+          "imageGroups": [
+            {
+              "name": "Main",
+              "images": [
+                {
+                  "url": "/images/gopalbhog-net-rajshahi.jpg",
+                  "alt": "Gopalbhog mangoes in a net bag",
+                  "public_id": "seed/gopalbhog-net-rajshahi.jpg"
+                },
+                {
+                  "url": "/images/mango-cut-halves.jpg",
+                  "alt": "Gopalbhog cut open",
+                  "public_id": "seed/mango-cut-halves.jpg"
+                },
+                {
+                  "url": "/images/aamkahon-box-10kg.jpg",
+                  "alt": "Aamkahon 10 kg carton",
+                  "public_id": "seed/aamkahon-box-10kg.jpg"
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "key": "Origin",
+              "value": "Rajshahi"
+            },
+            {
+              "key": "Season",
+              "value": "Pre-booking 2027"
+            },
+            {
+              "key": "Harvest",
+              "value": "30 May"
+            },
+            {
+              "key": "Sweetness",
+              "value": "Very sweet"
+            }
+          ],
+          "variantOptions": [
+            {
+              "name": "Pack",
+              "values": [
+                "10 kg box",
+                "20 kg box"
+              ]
+            }
+          ],
+          "hasVariants": true,
+          "variants": [
+            {
+              "options": [
+                {
+                  "name": "Pack",
+                  "value": "10 kg box"
+                }
+              ],
+              "basePrice": 1350,
+              "discountType": "none",
+              "discountValue": 0,
+              "price": 1350,
+              "stock": 0,
+              "imageGroupName": "",
+              "sku": "AK-MG-GPB-1",
+              "order": 0,
+              "wholesalePrice": 1150,
+              "weight": 10.8,
+              "campaignPrice": null
+            },
+            {
+              "options": [
+                {
+                  "name": "Pack",
+                  "value": "20 kg box"
+                }
+              ],
+              "basePrice": 2600,
+              "discountType": "none",
+              "discountValue": 0,
+              "price": 2600,
+              "stock": 0,
+              "imageGroupName": "",
+              "sku": "AK-MG-GPB-2",
+              "order": 1,
+              "wholesalePrice": 2250,
+              "weight": 21.5,
+              "campaignPrice": null
+            }
+          ],
+          "averageRating": 0,
+          "numReviews": 0,
+          "weight": 0,
+          "unit": "box",
+          "priceVisibility": "show",
+          "wholesale": {
+            "enabled": true,
+            "minQty": 5,
+            "price": 1150
+          },
+          "minOrderQty": 1,
+          "availability": "pre_order",
+          "preOrder": {
+            "expectedDate": "2027-05-30T00:00:00.000Z",
+            "advancePercent": 25,
+            "maxQtyPerOrder": 200,
+            "note": "Ships from 30 May 2027"
+          },
+          "purchaseCount": 0,
+          "viewCount": 0,
+          "createdAt": "2026-11-01T00:00:00.000Z",
+          "updatedAt": "2026-11-01T00:00:00.000Z",
+          "finalPrice": 1350,
+          "isUnderValidCampaign": false,
+          "campaignInfo": null,
+          "discountAmount": 0,
+          "isOnSale": false
+        },
+        {
+          "_id": "d1ee9777f7873aad865325d7",
+          "id": "d1ee9777f7873aad865325d7",
+          "name": "Khirsapat Mango",
+          "slug": "khirsapat-mango",
+          "nameBn": "ক্ষীরসাপাত",
+          "description": "Known in Dhaka as Himsagar. Deep yellow flesh, a faint milky aroma and almost no fibre. GI registered. We pick five days after the district opens harvest on 30 May.",
+          "bulletPoints": [
+            "Harvested 4 June",
+            "GI registered variety",
+            "Best eaten within four days of arrival"
+          ],
+          "brand": "Aamkahon",
+          "sku": "AK-MG-KSP",
+          "category": {
+            "_id": "8c76eb7d158342067d00b796",
+            "id": "8c76eb7d158342067d00b796",
+            "name": "Mango",
+            "slug": "mango",
+            "parentCategory": null
+          },
+          "subCategory": {
+            "_id": "949f20157f656513c069bd02",
+            "id": "949f20157f656513c069bd02",
+            "name": "Rajshahi Mango",
+            "slug": "rajshahi-mango",
+            "parentCategory": {
+              "_id": "8c76eb7d158342067d00b796",
+              "name": "Mango",
+              "slug": "mango",
+              "parentCategory": null
+            }
+          },
+          "basePrice": 1500,
+          "discountType": "none",
+          "discountValue": 0,
+          "price": 1500,
+          "currency": "BDT",
+          "isUnderCampaign": false,
+          "campaignDiscount": {
+            "isActive": false,
+            "discountType": "none",
+            "discountValue": 0
+          },
+          "stock": 0,
+          "lowStockAlert": 5,
+          "isFeatured": true,
+          "isActive": true,
+          "displayOrder": 2,
+          "publishDate": "2026-11-01T00:00:00.000Z",
+          "imageGroups": [
+            {
+              "name": "Main",
+              "images": [
+                {
+                  "url": "/images/ripe-mangoes-branch.jpg",
+                  "alt": "Khirsapat ripening on the branch",
+                  "public_id": "seed/ripe-mangoes-branch.jpg"
+                },
+                {
+                  "url": "/images/mango-cut-halves.jpg",
+                  "alt": "Khirsapat flesh",
+                  "public_id": "seed/mango-cut-halves.jpg"
+                },
+                {
+                  "url": "/images/packing-house-boxes.jpg",
+                  "alt": "Packing house",
+                  "public_id": "seed/packing-house-boxes.jpg"
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "key": "Origin",
+              "value": "Rajshahi"
+            },
+            {
+              "key": "Season",
+              "value": "Pre-booking 2027"
+            },
+            {
+              "key": "Harvest",
+              "value": "4 June"
+            },
+            {
+              "key": "Sweetness",
+              "value": "Very sweet"
+            }
+          ],
+          "variantOptions": [
+            {
+              "name": "Pack",
+              "values": [
+                "10 kg box",
+                "20 kg box"
+              ]
+            }
+          ],
+          "hasVariants": true,
+          "variants": [
+            {
+              "options": [
+                {
+                  "name": "Pack",
+                  "value": "10 kg box"
+                }
+              ],
+              "basePrice": 1500,
+              "discountType": "none",
+              "discountValue": 0,
+              "price": 1500,
+              "stock": 0,
+              "imageGroupName": "",
+              "sku": "AK-MG-KSP-1",
+              "order": 0,
+              "wholesalePrice": 1300,
+              "weight": 10.8,
+              "campaignPrice": null
+            },
+            {
+              "options": [
+                {
+                  "name": "Pack",
+                  "value": "20 kg box"
+                }
+              ],
+              "basePrice": 2900,
+              "discountType": "none",
+              "discountValue": 0,
+              "price": 2900,
+              "stock": 0,
+              "imageGroupName": "",
+              "sku": "AK-MG-KSP-2",
+              "order": 1,
+              "wholesalePrice": 2550,
+              "weight": 21.5,
+              "campaignPrice": null
+            }
+          ],
+          "averageRating": 0,
+          "numReviews": 0,
+          "weight": 0,
+          "unit": "box",
+          "priceVisibility": "show",
+          "wholesale": {
+            "enabled": true,
+            "minQty": 5,
+            "price": 1300
+          },
+          "minOrderQty": 1,
+          "availability": "pre_order",
+          "preOrder": {
+            "expectedDate": "2027-06-04T00:00:00.000Z",
+            "advancePercent": 25,
+            "maxQtyPerOrder": 200,
+            "note": "Ships from 4 June 2027"
+          },
+          "purchaseCount": 0,
+          "viewCount": 0,
+          "createdAt": "2026-11-01T00:00:00.000Z",
+          "updatedAt": "2026-11-01T00:00:00.000Z",
+          "finalPrice": 1500,
+          "isUnderValidCampaign": false,
+          "campaignInfo": null,
+          "discountAmount": 0,
+          "isOnSale": false
+        },
+        {
+          "_id": "35f7b3415229e22b8c586cc0",
+          "id": "35f7b3415229e22b8c586cc0",
+          "name": "Langra Mango",
+          "slug": "langra-mango",
+          "nameBn": "ল্যাংড়া",
+          "description": "Stays green when ripe, so judge it by smell, not colour. Juicy, slightly tangy near the skin, and the variety most people mean when they say Rajshahi mango.",
+          "bulletPoints": [
+            "Harvested 17 June",
+            "Green skin when ripe",
+            "Popular for wholesale and gifting"
+          ],
+          "brand": "Aamkahon",
+          "sku": "AK-MG-LNG",
+          "category": {
+            "_id": "8c76eb7d158342067d00b796",
+            "id": "8c76eb7d158342067d00b796",
+            "name": "Mango",
+            "slug": "mango",
+            "parentCategory": null
+          },
+          "subCategory": {
+            "_id": "949f20157f656513c069bd02",
+            "id": "949f20157f656513c069bd02",
+            "name": "Rajshahi Mango",
+            "slug": "rajshahi-mango",
+            "parentCategory": {
+              "_id": "8c76eb7d158342067d00b796",
+              "name": "Mango",
+              "slug": "mango",
+              "parentCategory": null
+            }
+          },
+          "basePrice": 1300,
+          "discountType": "none",
+          "discountValue": 0,
+          "price": 1300,
+          "currency": "BDT",
+          "isUnderCampaign": false,
+          "campaignDiscount": {
+            "isActive": false,
+            "discountType": "none",
+            "discountValue": 0
+          },
+          "stock": 0,
+          "lowStockAlert": 5,
+          "isFeatured": true,
+          "isActive": true,
+          "displayOrder": 3,
+          "publishDate": "2026-11-01T00:00:00.000Z",
+          "imageGroups": [
+            {
+              "name": "Main",
+              "images": [
+                {
+                  "url": "/images/sorting-green-mangoes.jpg",
+                  "alt": "Langra being sorted",
+                  "public_id": "seed/sorting-green-mangoes.jpg"
+                },
+                {
+                  "url": "/images/founder-orchard.jpg",
+                  "alt": "In the orchard",
+                  "public_id": "seed/founder-orchard.jpg"
+                },
+                {
+                  "url": "/images/aamkahon-box-10kg.jpg",
+                  "alt": "Aamkahon carton",
+                  "public_id": "seed/aamkahon-box-10kg.jpg"
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "key": "Origin",
+              "value": "Rajshahi"
+            },
+            {
+              "key": "Season",
+              "value": "Pre-booking 2027"
+            },
+            {
+              "key": "Harvest",
+              "value": "17 June"
+            },
+            {
+              "key": "Sweetness",
+              "value": "Sweet and tangy"
+            }
+          ],
+          "variantOptions": [
+            {
+              "name": "Pack",
+              "values": [
+                "10 kg box",
+                "20 kg box"
+              ]
+            }
+          ],
+          "hasVariants": true,
+          "variants": [
+            {
+              "options": [
+                {
+                  "name": "Pack",
+                  "value": "10 kg box"
+                }
+              ],
+              "basePrice": 1300,
+              "discountType": "none",
+              "discountValue": 0,
+              "price": 1300,
+              "stock": 0,
+              "imageGroupName": "",
+              "sku": "AK-MG-LNG-1",
+              "order": 0,
+              "wholesalePrice": 1100,
+              "weight": 10.8,
+              "campaignPrice": null
+            },
+            {
+              "options": [
+                {
+                  "name": "Pack",
+                  "value": "20 kg box"
+                }
+              ],
+              "basePrice": 2500,
+              "discountType": "none",
+              "discountValue": 0,
+              "price": 2500,
+              "stock": 0,
+              "imageGroupName": "",
+              "sku": "AK-MG-LNG-2",
+              "order": 1,
+              "wholesalePrice": 2150,
+              "weight": 21.5,
+              "campaignPrice": null
+            }
+          ],
+          "averageRating": 0,
+          "numReviews": 0,
+          "weight": 0,
+          "unit": "box",
+          "priceVisibility": "show",
+          "wholesale": {
+            "enabled": true,
+            "minQty": 5,
+            "price": 1100
+          },
+          "minOrderQty": 1,
+          "availability": "pre_order",
+          "preOrder": {
+            "expectedDate": "2027-06-17T00:00:00.000Z",
+            "advancePercent": 25,
+            "maxQtyPerOrder": 200,
+            "note": "Ships from 17 June 2027"
+          },
+          "purchaseCount": 0,
+          "viewCount": 0,
+          "createdAt": "2026-11-01T00:00:00.000Z",
+          "updatedAt": "2026-11-01T00:00:00.000Z",
+          "finalPrice": 1300,
+          "isUnderValidCampaign": false,
+          "campaignInfo": null,
+          "discountAmount": 0,
+          "isOnSale": false
+        },
+        {
+          "_id": "aff15646820f300f3a537398",
+          "id": "aff15646820f300f3a537398",
+          "name": "Amrapali Mango",
+          "slug": "amrapali-mango",
+          "nameBn": "আম্রপালি",
+          "description": "Small, deep orange and intensely sweet. The flesh is dense enough to slice cleanly, which makes it the favourite for children and for dessert.",
+          "bulletPoints": [
+            "Harvested 22 June",
+            "Highest sugar of the season",
+            "Small fruit, around 4 to 6 per kg"
+          ],
+          "brand": "Aamkahon",
+          "sku": "AK-MG-AMP",
+          "category": {
+            "_id": "8c76eb7d158342067d00b796",
+            "id": "8c76eb7d158342067d00b796",
+            "name": "Mango",
+            "slug": "mango",
+            "parentCategory": null
+          },
+          "subCategory": {
+            "_id": "250f40363d8cb40ce31a9a61",
+            "id": "250f40363d8cb40ce31a9a61",
+            "name": "Chapainawabganj Mango",
+            "slug": "chapainawabganj-mango",
+            "parentCategory": {
+              "_id": "8c76eb7d158342067d00b796",
+              "name": "Mango",
+              "slug": "mango",
+              "parentCategory": null
+            }
+          },
+          "basePrice": 1250,
+          "discountType": "none",
+          "discountValue": 0,
+          "price": 1250,
+          "currency": "BDT",
+          "isUnderCampaign": false,
+          "campaignDiscount": {
+            "isActive": false,
+            "discountType": "none",
+            "discountValue": 0
+          },
+          "stock": 0,
+          "lowStockAlert": 5,
+          "isFeatured": false,
+          "isActive": true,
+          "displayOrder": 4,
+          "publishDate": "2026-11-01T00:00:00.000Z",
+          "imageGroups": [
+            {
+              "name": "Main",
+              "images": [
+                {
+                  "url": "/images/mango-cut-halves.jpg",
+                  "alt": "Amrapali cut open",
+                  "public_id": "seed/mango-cut-halves.jpg"
+                },
+                {
+                  "url": "/images/mangoes-on-tree-bagged.jpg",
+                  "alt": "Amrapali on the tree",
+                  "public_id": "seed/mangoes-on-tree-bagged.jpg"
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "key": "Origin",
+              "value": "Chapainawabganj"
+            },
+            {
+              "key": "Season",
+              "value": "Pre-booking 2027"
+            },
+            {
+              "key": "Harvest",
+              "value": "22 June"
+            },
+            {
+              "key": "Sweetness",
+              "value": "Very sweet"
+            }
+          ],
+          "variantOptions": [
+            {
+              "name": "Pack",
+              "values": [
+                "10 kg box",
+                "20 kg box"
+              ]
+            }
+          ],
+          "hasVariants": true,
+          "variants": [
+            {
+              "options": [
+                {
+                  "name": "Pack",
+                  "value": "10 kg box"
+                }
+              ],
+              "basePrice": 1250,
+              "discountType": "none",
+              "discountValue": 0,
+              "price": 1250,
+              "stock": 0,
+              "imageGroupName": "",
+              "sku": "AK-MG-AMP-1",
+              "order": 0,
+              "wholesalePrice": 1050,
+              "weight": 10.8,
+              "campaignPrice": null
+            },
+            {
+              "options": [
+                {
+                  "name": "Pack",
+                  "value": "20 kg box"
+                }
+              ],
+              "basePrice": 2400,
+              "discountType": "none",
+              "discountValue": 0,
+              "price": 2400,
+              "stock": 0,
+              "imageGroupName": "",
+              "sku": "AK-MG-AMP-2",
+              "order": 1,
+              "wholesalePrice": 2050,
+              "weight": 21.5,
+              "campaignPrice": null
+            }
+          ],
+          "averageRating": 0,
+          "numReviews": 0,
+          "weight": 0,
+          "unit": "box",
+          "priceVisibility": "show",
+          "wholesale": {
+            "enabled": true,
+            "minQty": 5,
+            "price": 1050
+          },
+          "minOrderQty": 1,
+          "availability": "pre_order",
+          "preOrder": {
+            "expectedDate": "2027-06-22T00:00:00.000Z",
+            "advancePercent": 25,
+            "maxQtyPerOrder": 200,
+            "note": "Ships from 22 June 2027"
+          },
+          "purchaseCount": 0,
+          "viewCount": 0,
+          "createdAt": "2026-11-01T00:00:00.000Z",
+          "updatedAt": "2026-11-01T00:00:00.000Z",
+          "finalPrice": 1250,
+          "isUnderValidCampaign": false,
+          "campaignInfo": null,
+          "discountAmount": 0,
+          "isOnSale": false
+        },
+        {
+          "_id": "c58845bf5f9a13e41c0e5384",
+          "id": "c58845bf5f9a13e41c0e5384",
+          "name": "Surma Fazli Mango",
+          "slug": "surma-fazli-mango",
+          "nameBn": "সুরমা ফজলি",
+          "description": "Large and long, often over 700 g a fruit. Mild, fragrant and good value by the kilo, which is why restaurants and sweet shops order it by the crate.",
+          "bulletPoints": [
+            "Harvested 27 June",
+            "Big fruit, 1 to 2 per kg",
+            "Great for juice and amsotto"
+          ],
+          "brand": "Aamkahon",
+          "sku": "AK-MG-FZL",
+          "category": {
+            "_id": "8c76eb7d158342067d00b796",
+            "id": "8c76eb7d158342067d00b796",
+            "name": "Mango",
+            "slug": "mango",
+            "parentCategory": null
+          },
+          "subCategory": {
+            "_id": "250f40363d8cb40ce31a9a61",
+            "id": "250f40363d8cb40ce31a9a61",
+            "name": "Chapainawabganj Mango",
+            "slug": "chapainawabganj-mango",
+            "parentCategory": {
+              "_id": "8c76eb7d158342067d00b796",
+              "name": "Mango",
+              "slug": "mango",
+              "parentCategory": null
+            }
+          },
+          "basePrice": 1050,
+          "discountType": "none",
+          "discountValue": 0,
+          "price": 1050,
+          "currency": "BDT",
+          "isUnderCampaign": false,
+          "campaignDiscount": {
+            "isActive": false,
+            "discountType": "none",
+            "discountValue": 0
+          },
+          "stock": 0,
+          "lowStockAlert": 5,
+          "isFeatured": false,
+          "isActive": true,
+          "displayOrder": 5,
+          "publishDate": "2026-11-01T00:00:00.000Z",
+          "imageGroups": [
+            {
+              "name": "Main",
+              "images": [
+                {
+                  "url": "/images/mangoes-on-tree-bagged.jpg",
+                  "alt": "Surma Fazli on the tree",
+                  "public_id": "seed/mangoes-on-tree-bagged.jpg"
+                },
+                {
+                  "url": "/images/packing-house-boxes.jpg",
+                  "alt": "Cartons ready to ship",
+                  "public_id": "seed/packing-house-boxes.jpg"
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "key": "Origin",
+              "value": "Chapainawabganj"
+            },
+            {
+              "key": "Season",
+              "value": "Pre-booking 2027"
+            },
+            {
+              "key": "Harvest",
+              "value": "27 June"
+            },
+            {
+              "key": "Sweetness",
+              "value": "Mild"
+            }
+          ],
+          "variantOptions": [
+            {
+              "name": "Pack",
+              "values": [
+                "10 kg box",
+                "20 kg box"
+              ]
+            }
+          ],
+          "hasVariants": true,
+          "variants": [
+            {
+              "options": [
+                {
+                  "name": "Pack",
+                  "value": "10 kg box"
+                }
+              ],
+              "basePrice": 1050,
+              "discountType": "none",
+              "discountValue": 0,
+              "price": 1050,
+              "stock": 0,
+              "imageGroupName": "",
+              "sku": "AK-MG-FZL-1",
+              "order": 0,
+              "wholesalePrice": 900,
+              "weight": 10.8,
+              "campaignPrice": null
+            },
+            {
+              "options": [
+                {
+                  "name": "Pack",
+                  "value": "20 kg box"
+                }
+              ],
+              "basePrice": 2000,
+              "discountType": "none",
+              "discountValue": 0,
+              "price": 2000,
+              "stock": 0,
+              "imageGroupName": "",
+              "sku": "AK-MG-FZL-2",
+              "order": 1,
+              "wholesalePrice": 1700,
+              "weight": 21.5,
+              "campaignPrice": null
+            }
+          ],
+          "averageRating": 0,
+          "numReviews": 0,
+          "weight": 0,
+          "unit": "box",
+          "priceVisibility": "show",
+          "wholesale": {
+            "enabled": true,
+            "minQty": 5,
+            "price": 900
+          },
+          "minOrderQty": 1,
+          "availability": "pre_order",
+          "preOrder": {
+            "expectedDate": "2027-06-27T00:00:00.000Z",
+            "advancePercent": 20,
+            "maxQtyPerOrder": 300,
+            "note": "Ships from 27 June 2027"
+          },
+          "purchaseCount": 0,
+          "viewCount": 0,
+          "createdAt": "2026-11-01T00:00:00.000Z",
+          "updatedAt": "2026-11-01T00:00:00.000Z",
+          "finalPrice": 1050,
+          "isUnderValidCampaign": false,
+          "campaignInfo": null,
+          "discountAmount": 0,
+          "isOnSale": false
+        },
+        {
+          "_id": "65f8e4340b11a0bf92d5ddb0",
+          "id": "65f8e4340b11a0bf92d5ddb0",
+          "name": "BARI 4 Mango",
+          "slug": "bari-4-mango",
+          "nameBn": "বারি ৪",
+          "description": "A late hybrid from the Bangladesh Agricultural Research Institute. Firm, sweet and travels well, so it is the one we recommend for long courier routes.",
+          "bulletPoints": [
+            "Harvested 15 July",
+            "Travels well outside Dhaka",
+            "Firm, sliceable flesh"
+          ],
+          "brand": "Aamkahon",
+          "sku": "AK-MG-BR4",
+          "category": {
+            "_id": "8c76eb7d158342067d00b796",
+            "id": "8c76eb7d158342067d00b796",
+            "name": "Mango",
+            "slug": "mango",
+            "parentCategory": null
+          },
+          "subCategory": {
+            "_id": "250f40363d8cb40ce31a9a61",
+            "id": "250f40363d8cb40ce31a9a61",
+            "name": "Chapainawabganj Mango",
+            "slug": "chapainawabganj-mango",
+            "parentCategory": {
+              "_id": "8c76eb7d158342067d00b796",
+              "name": "Mango",
+              "slug": "mango",
+              "parentCategory": null
+            }
+          },
+          "basePrice": 1200,
+          "discountType": "none",
+          "discountValue": 0,
+          "price": 1200,
+          "currency": "BDT",
+          "isUnderCampaign": false,
+          "campaignDiscount": {
+            "isActive": false,
+            "discountType": "none",
+            "discountValue": 0
+          },
+          "stock": 0,
+          "lowStockAlert": 5,
+          "isFeatured": false,
+          "isActive": true,
+          "displayOrder": 6,
+          "publishDate": "2026-11-01T00:00:00.000Z",
+          "imageGroups": [
+            {
+              "name": "Main",
+              "images": [
+                {
+                  "url": "/images/sorting-green-mangoes.jpg",
+                  "alt": "BARI 4 being sorted",
+                  "public_id": "seed/sorting-green-mangoes.jpg"
+                },
+                {
+                  "url": "/images/aamkahon-box-10kg.jpg",
+                  "alt": "Aamkahon carton",
+                  "public_id": "seed/aamkahon-box-10kg.jpg"
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "key": "Origin",
+              "value": "Chapainawabganj"
+            },
+            {
+              "key": "Season",
+              "value": "Pre-booking 2027"
+            },
+            {
+              "key": "Harvest",
+              "value": "15 July"
+            },
+            {
+              "key": "Sweetness",
+              "value": "Sweet"
+            }
+          ],
+          "variantOptions": [
+            {
+              "name": "Pack",
+              "values": [
+                "10 kg box",
+                "20 kg box"
+              ]
+            }
+          ],
+          "hasVariants": true,
+          "variants": [
+            {
+              "options": [
+                {
+                  "name": "Pack",
+                  "value": "10 kg box"
+                }
+              ],
+              "basePrice": 1200,
+              "discountType": "none",
+              "discountValue": 0,
+              "price": 1200,
+              "stock": 0,
+              "imageGroupName": "",
+              "sku": "AK-MG-BR4-1",
+              "order": 0,
+              "wholesalePrice": 1000,
+              "weight": 10.8,
+              "campaignPrice": null
+            },
+            {
+              "options": [
+                {
+                  "name": "Pack",
+                  "value": "20 kg box"
+                }
+              ],
+              "basePrice": 2300,
+              "discountType": "none",
+              "discountValue": 0,
+              "price": 2300,
+              "stock": 0,
+              "imageGroupName": "",
+              "sku": "AK-MG-BR4-2",
+              "order": 1,
+              "wholesalePrice": 1950,
+              "weight": 21.5,
+              "campaignPrice": null
+            }
+          ],
+          "averageRating": 0,
+          "numReviews": 0,
+          "weight": 0,
+          "unit": "box",
+          "priceVisibility": "show",
+          "wholesale": {
+            "enabled": true,
+            "minQty": 5,
+            "price": 1000
+          },
+          "minOrderQty": 1,
+          "availability": "pre_order",
+          "preOrder": {
+            "expectedDate": "2027-07-15T00:00:00.000Z",
+            "advancePercent": 25,
+            "maxQtyPerOrder": 200,
+            "note": "Ships from 15 July 2027"
+          },
+          "purchaseCount": 0,
+          "viewCount": 0,
+          "createdAt": "2026-11-01T00:00:00.000Z",
+          "updatedAt": "2026-11-01T00:00:00.000Z",
+          "finalPrice": 1200,
+          "isUnderValidCampaign": false,
+          "campaignInfo": null,
+          "discountAmount": 0,
+          "isOnSale": false
+        },
+        {
+          "_id": "c91943694be1425ae0235ce6",
+          "id": "c91943694be1425ae0235ce6",
+          "name": "Gourmoti Mango",
+          "slug": "gourmoti-mango",
+          "nameBn": "গৌড়মতি",
+          "description": "The last mango of the year, harvested in August when everything else is gone. Yield changes a lot year to year, so we confirm the price once the crop is set.",
+          "bulletPoints": [
+            "Harvested 10 August",
+            "Price confirmed in July",
+            "Limited quantity"
+          ],
+          "brand": "Aamkahon",
+          "sku": "AK-MG-GRM",
+          "category": {
+            "_id": "8c76eb7d158342067d00b796",
+            "id": "8c76eb7d158342067d00b796",
+            "name": "Mango",
+            "slug": "mango",
+            "parentCategory": null
+          },
+          "subCategory": {
+            "_id": "250f40363d8cb40ce31a9a61",
+            "id": "250f40363d8cb40ce31a9a61",
+            "name": "Chapainawabganj Mango",
+            "slug": "chapainawabganj-mango",
+            "parentCategory": {
+              "_id": "8c76eb7d158342067d00b796",
+              "name": "Mango",
+              "slug": "mango",
+              "parentCategory": null
+            }
+          },
+          "basePrice": null,
+          "discountType": "none",
+          "discountValue": null,
+          "price": null,
+          "currency": "BDT",
+          "isUnderCampaign": false,
+          "campaignDiscount": null,
+          "stock": 0,
+          "lowStockAlert": 5,
+          "isFeatured": false,
+          "isActive": true,
+          "displayOrder": 7,
+          "publishDate": "2026-11-01T00:00:00.000Z",
+          "imageGroups": [
+            {
+              "name": "Main",
+              "images": [
+                {
+                  "url": "/images/ripe-mangoes-branch.jpg",
+                  "alt": "Late season mangoes",
+                  "public_id": "seed/ripe-mangoes-branch.jpg"
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "key": "Origin",
+              "value": "Chapainawabganj"
+            },
+            {
+              "key": "Season",
+              "value": "Pre-booking 2027"
+            },
+            {
+              "key": "Harvest",
+              "value": "10 August"
+            },
+            {
+              "key": "Sweetness",
+              "value": "Sweet"
+            }
+          ],
+          "variantOptions": [
+            {
+              "name": "Pack",
+              "values": [
+                "10 kg box",
+                "20 kg box"
+              ]
+            }
+          ],
+          "hasVariants": true,
+          "variants": [
+            {
+              "options": [
+                {
+                  "name": "Pack",
+                  "value": "10 kg box"
+                }
+              ],
+              "basePrice": null,
+              "discountType": "none",
+              "discountValue": null,
+              "price": null,
+              "stock": 0,
+              "imageGroupName": "",
+              "sku": "AK-MG-GRM-1",
+              "order": 0,
+              "wholesalePrice": null,
+              "weight": 10.8,
+              "campaignPrice": null
+            },
+            {
+              "options": [
+                {
+                  "name": "Pack",
+                  "value": "20 kg box"
+                }
+              ],
+              "basePrice": null,
+              "discountType": "none",
+              "discountValue": null,
+              "price": null,
+              "stock": 0,
+              "imageGroupName": "",
+              "sku": "AK-MG-GRM-2",
+              "order": 1,
+              "wholesalePrice": null,
+              "weight": 21.5,
+              "campaignPrice": null
+            }
+          ],
+          "averageRating": 0,
+          "numReviews": 0,
+          "weight": 0,
+          "unit": "box",
+          "priceVisibility": "tba",
+          "wholesale": {
+            "enabled": false,
+            "minQty": null,
+            "price": null
+          },
+          "minOrderQty": 1,
+          "availability": "pre_order",
+          "preOrder": {
+            "expectedDate": "2027-08-10T00:00:00.000Z",
+            "advancePercent": 25,
+            "maxQtyPerOrder": null,
+            "note": "Price announced July 2027"
+          },
+          "purchaseCount": 0,
+          "viewCount": 0,
+          "createdAt": "2026-11-01T00:00:00.000Z",
+          "updatedAt": "2026-11-01T00:00:00.000Z",
+          "finalPrice": null,
+          "isUnderValidCampaign": false,
+          "campaignInfo": null,
+          "discountAmount": null,
+          "isOnSale": false
+        },
+        {
+          "_id": "8019dd842418a7e97282a25e",
+          "id": "8019dd842418a7e97282a25e",
+          "name": "Export Grade Khirsapat",
+          "slug": "export-grade-khirsapat",
+          "nameBn": "রপ্তানিযোগ্য ক্ষীরসাপাত",
+          "description": "Hand graded, hot water treated and packed to importer specification. For exporters, supershops and corporate gifting. Minimum 500 kg. Tell us the destination and volume and we will send a quote.",
+          "bulletPoints": [
+            "Minimum order 500 kg",
+            "Hot water treatment on request",
+            "Phytosanitary paperwork support"
+          ],
+          "brand": "Aamkahon",
+          "sku": "AK-MG-EXP",
+          "category": {
+            "_id": "8c76eb7d158342067d00b796",
+            "id": "8c76eb7d158342067d00b796",
+            "name": "Mango",
+            "slug": "mango",
+            "parentCategory": null
+          },
+          "subCategory": {
+            "_id": "949f20157f656513c069bd02",
+            "id": "949f20157f656513c069bd02",
+            "name": "Rajshahi Mango",
+            "slug": "rajshahi-mango",
+            "parentCategory": {
+              "_id": "8c76eb7d158342067d00b796",
+              "name": "Mango",
+              "slug": "mango",
+              "parentCategory": null
+            }
+          },
+          "basePrice": null,
+          "discountType": "none",
+          "discountValue": null,
+          "price": null,
+          "currency": "BDT",
+          "isUnderCampaign": false,
+          "campaignDiscount": null,
+          "stock": 0,
+          "lowStockAlert": 5,
+          "isFeatured": false,
+          "isActive": true,
+          "displayOrder": 8,
+          "publishDate": "2026-11-01T00:00:00.000Z",
+          "imageGroups": [
+            {
+              "name": "Main",
+              "images": [
+                {
+                  "url": "/images/packing-house-boxes.jpg",
+                  "alt": "Export cartons in the packing house",
+                  "public_id": "seed/packing-house-boxes.jpg"
+                },
+                {
+                  "url": "/images/sorting-green-mangoes.jpg",
+                  "alt": "Hand grading",
+                  "public_id": "seed/sorting-green-mangoes.jpg"
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "key": "Origin",
+              "value": "Rajshahi"
+            },
+            {
+              "key": "Season",
+              "value": "Pre-booking 2027"
+            },
+            {
+              "key": "Grade",
+              "value": "Export"
+            }
+          ],
+          "variantOptions": [],
+          "hasVariants": false,
+          "variants": [],
+          "averageRating": 0,
+          "numReviews": 0,
+          "weight": 1.05,
+          "unit": "kg",
+          "priceVisibility": "inquiry",
+          "wholesale": {
+            "enabled": false,
+            "minQty": null,
+            "price": null
+          },
+          "minOrderQty": 500,
+          "availability": "pre_order",
+          "preOrder": {
+            "expectedDate": "2027-06-04T00:00:00.000Z",
+            "advancePercent": 30,
+            "maxQtyPerOrder": null,
+            "note": ""
+          },
+          "purchaseCount": 0,
+          "viewCount": 0,
+          "createdAt": "2026-11-01T00:00:00.000Z",
+          "updatedAt": "2026-11-01T00:00:00.000Z",
+          "finalPrice": null,
+          "isUnderValidCampaign": false,
+          "campaignInfo": null,
+          "discountAmount": null,
+          "isOnSale": false
+        }
+      ],
+      "totalProducts": 8
+    },
+    {
+      "_id": "7a687b0cfbc50da513c649ca",
+      "title": "Winter gur, fresh this week",
+      "description": "From the date palms of Rajshahi and Jashore.",
+      "attributeKey": "Season",
+      "attributeValue": "Winter 2026",
+      "productLimit": 8,
+      "sortBy": "createdAt",
+      "sortOrder": "asc",
+      "sectionType": "attribute-based",
+      "isActive": true,
+      "displayOrder": 2,
+      "showInHomepage": true,
+      "products": [
+        {
+          "_id": "efba1a937b7c6f7f92e7def6",
+          "id": "efba1a937b7c6f7f92e7def6",
+          "name": "Khejurer Patali Gur",
+          "slug": "khejurer-patali-gur",
+          "nameBn": "খেজুরের পাটালি গুড়",
+          "description": "Date palm sap boiled down over a wood fire and set in clay moulds. Crumbly, smoky and not too sweet. No sugar or hydros added, which is why it is slightly darker than market patali.",
+          "bulletPoints": [
+            "No added sugar, no hydros",
+            "From this winter's tap",
+            "Keeps three months in a cool dry place"
+          ],
+          "brand": "Aamkahon",
+          "sku": "AK-GR-PTL",
+          "category": {
+            "_id": "b460fd6b33ed24d8b4bdbea3",
+            "id": "b460fd6b33ed24d8b4bdbea3",
+            "name": "Khejurer Gur",
+            "slug": "khejurer-gur",
+            "parentCategory": null
+          },
+          "subCategory": {
+            "_id": "8fed302ee5682b1d16b7323f",
+            "id": "8fed302ee5682b1d16b7323f",
+            "name": "Patali Gur",
+            "slug": "patali-gur",
+            "parentCategory": {
+              "_id": "b460fd6b33ed24d8b4bdbea3",
+              "name": "Khejurer Gur",
+              "slug": "khejurer-gur",
+              "parentCategory": null
+            }
+          },
+          "basePrice": 650,
+          "discountType": "none",
+          "discountValue": 0,
+          "price": 650,
+          "currency": "BDT",
+          "isUnderCampaign": false,
+          "campaignDiscount": {
+            "isActive": false,
+            "discountType": "none",
+            "discountValue": 0
+          },
+          "stock": 240,
+          "lowStockAlert": 5,
+          "isFeatured": true,
+          "isActive": true,
+          "displayOrder": 9,
+          "publishDate": "2026-11-01T00:00:00.000Z",
+          "imageGroups": [
+            {
+              "name": "Main",
+              "images": [
+                {
+                  "url": "/images/date-palm-tree.jpg",
+                  "alt": "Date palm tapped for sap",
+                  "public_id": "seed/date-palm-tree.jpg"
+                },
+                {
+                  "url": "/images/gur-clay-pots.jpg",
+                  "alt": "Gur in clay pots",
+                  "public_id": "seed/gur-clay-pots.jpg"
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "key": "Origin",
+              "value": "Rajshahi"
+            },
+            {
+              "key": "Season",
+              "value": "Winter 2026"
+            },
+            {
+              "key": "Type",
+              "value": "Patali"
+            }
+          ],
+          "variantOptions": [
+            {
+              "name": "Pack",
+              "values": [
+                "1 kg",
+                "2 kg",
+                "5 kg"
+              ]
+            }
+          ],
+          "hasVariants": true,
+          "variants": [
+            {
+              "options": [
+                {
+                  "name": "Pack",
+                  "value": "1 kg"
+                }
+              ],
+              "basePrice": 650,
+              "discountType": "none",
+              "discountValue": 0,
+              "price": 650,
+              "stock": 120,
+              "imageGroupName": "",
+              "sku": "AK-GR-PTL-1",
+              "order": 0,
+              "wholesalePrice": 560,
+              "weight": 1.1,
+              "campaignPrice": null
+            },
+            {
+              "options": [
+                {
+                  "name": "Pack",
+                  "value": "2 kg"
+                }
+              ],
+              "basePrice": 1250,
+              "discountType": "none",
+              "discountValue": 0,
+              "price": 1250,
+              "stock": 80,
+              "imageGroupName": "",
+              "sku": "AK-GR-PTL-2",
+              "order": 1,
+              "wholesalePrice": 1080,
+              "weight": 2.15,
+              "campaignPrice": null
+            },
+            {
+              "options": [
+                {
+                  "name": "Pack",
+                  "value": "5 kg"
+                }
+              ],
+              "basePrice": 3000,
+              "discountType": "none",
+              "discountValue": 0,
+              "price": 3000,
+              "stock": 40,
+              "imageGroupName": "",
+              "sku": "AK-GR-PTL-3",
+              "order": 2,
+              "wholesalePrice": 2600,
+              "weight": 5.3,
+              "campaignPrice": null
+            }
+          ],
+          "averageRating": 0,
+          "numReviews": 0,
+          "weight": 0,
+          "unit": "pack",
+          "priceVisibility": "show",
+          "wholesale": {
+            "enabled": true,
+            "minQty": 10,
+            "price": 560
+          },
+          "minOrderQty": 1,
+          "availability": "in_stock",
+          "preOrder": {
+            "expectedDate": null,
+            "advancePercent": 25,
+            "maxQtyPerOrder": null,
+            "note": ""
+          },
+          "purchaseCount": 0,
+          "viewCount": 0,
+          "createdAt": "2026-11-01T00:00:00.000Z",
+          "updatedAt": "2026-11-01T00:00:00.000Z",
+          "finalPrice": 650,
+          "isUnderValidCampaign": false,
+          "campaignInfo": null,
+          "discountAmount": 0,
+          "isOnSale": false
+        },
+        {
+          "_id": "14b46cfe7d9dcd9fe86ef414",
+          "id": "14b46cfe7d9dcd9fe86ef414",
+          "name": "Khejurer Jhola Gur",
+          "slug": "khejurer-jhola-gur",
+          "nameBn": "খেজুরের ঝোলা গুড়",
+          "description": "Pourable gur for pitha, payesh and a spoon straight from the pot. Sold in a sealed jar or the traditional clay pot.",
+          "bulletPoints": [
+            "Pourable consistency",
+            "Clay pot or glass jar",
+            "Refrigerate after opening"
+          ],
+          "brand": "Aamkahon",
+          "sku": "AK-GR-JHL",
+          "category": {
+            "_id": "b460fd6b33ed24d8b4bdbea3",
+            "id": "b460fd6b33ed24d8b4bdbea3",
+            "name": "Khejurer Gur",
+            "slug": "khejurer-gur",
+            "parentCategory": null
+          },
+          "subCategory": {
+            "_id": "75217f88b02922927f1651bb",
+            "id": "75217f88b02922927f1651bb",
+            "name": "Jhola and Nolen Gur",
+            "slug": "jhola-and-nolen-gur",
+            "parentCategory": {
+              "_id": "b460fd6b33ed24d8b4bdbea3",
+              "name": "Khejurer Gur",
+              "slug": "khejurer-gur",
+              "parentCategory": null
+            }
+          },
+          "basePrice": 550,
+          "discountType": "none",
+          "discountValue": 0,
+          "price": 550,
+          "currency": "BDT",
+          "isUnderCampaign": false,
+          "campaignDiscount": {
+            "isActive": false,
+            "discountType": "none",
+            "discountValue": 0
+          },
+          "stock": 135,
+          "lowStockAlert": 5,
+          "isFeatured": true,
+          "isActive": true,
+          "displayOrder": 10,
+          "publishDate": "2026-11-01T00:00:00.000Z",
+          "imageGroups": [
+            {
+              "name": "Main",
+              "images": [
+                {
+                  "url": "/images/gur-clay-pots.jpg",
+                  "alt": "Jhola gur in clay pots",
+                  "public_id": "seed/gur-clay-pots.jpg"
+                },
+                {
+                  "url": "/images/founder-bottle-desk.jpg",
+                  "alt": "Bottled gur",
+                  "public_id": "seed/founder-bottle-desk.jpg"
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "key": "Origin",
+              "value": "Jashore"
+            },
+            {
+              "key": "Season",
+              "value": "Winter 2026"
+            },
+            {
+              "key": "Type",
+              "value": "Jhola"
+            }
+          ],
+          "variantOptions": [
+            {
+              "name": "Pack",
+              "values": [
+                "1 kg jar",
+                "2 kg clay pot"
+              ]
+            }
+          ],
+          "hasVariants": true,
+          "variants": [
+            {
+              "options": [
+                {
+                  "name": "Pack",
+                  "value": "1 kg jar"
+                }
+              ],
+              "basePrice": 550,
+              "discountType": "none",
+              "discountValue": 0,
+              "price": 550,
+              "stock": 90,
+              "imageGroupName": "",
+              "sku": "AK-GR-JHL-1",
+              "order": 0,
+              "wholesalePrice": 480,
+              "weight": 1.4,
+              "campaignPrice": null
+            },
+            {
+              "options": [
+                {
+                  "name": "Pack",
+                  "value": "2 kg clay pot"
+                }
+              ],
+              "basePrice": 1050,
+              "discountType": "none",
+              "discountValue": 0,
+              "price": 1050,
+              "stock": 45,
+              "imageGroupName": "",
+              "sku": "AK-GR-JHL-2",
+              "order": 1,
+              "wholesalePrice": 920,
+              "weight": 2.9,
+              "campaignPrice": null
+            }
+          ],
+          "averageRating": 0,
+          "numReviews": 0,
+          "weight": 0,
+          "unit": "pack",
+          "priceVisibility": "show",
+          "wholesale": {
+            "enabled": true,
+            "minQty": 10,
+            "price": 480
+          },
+          "minOrderQty": 1,
+          "availability": "in_stock",
+          "preOrder": {
+            "expectedDate": null,
+            "advancePercent": 25,
+            "maxQtyPerOrder": null,
+            "note": ""
+          },
+          "purchaseCount": 0,
+          "viewCount": 0,
+          "createdAt": "2026-11-01T00:00:00.000Z",
+          "updatedAt": "2026-11-01T00:00:00.000Z",
+          "finalPrice": 550,
+          "isUnderValidCampaign": false,
+          "campaignInfo": null,
+          "discountAmount": 0,
+          "isOnSale": false
+        },
+        {
+          "_id": "0e8aa463a9e0899bcc5fac72",
+          "id": "0e8aa463a9e0899bcc5fac72",
+          "name": "Nolen Gur Premium",
+          "slug": "nolen-gur-premium",
+          "nameBn": "নলেন গুড়",
+          "description": "Only the first sap of the first cold nights. Lighter in colour, floral, and gone by mid January. One kilogram glass jar.",
+          "bulletPoints": [
+            "First sap of the season",
+            "Available December to mid January",
+            "1 kg glass jar"
+          ],
+          "brand": "Aamkahon",
+          "sku": "AK-GR-NLN",
+          "category": {
+            "_id": "b460fd6b33ed24d8b4bdbea3",
+            "id": "b460fd6b33ed24d8b4bdbea3",
+            "name": "Khejurer Gur",
+            "slug": "khejurer-gur",
+            "parentCategory": null
+          },
+          "subCategory": {
+            "_id": "75217f88b02922927f1651bb",
+            "id": "75217f88b02922927f1651bb",
+            "name": "Jhola and Nolen Gur",
+            "slug": "jhola-and-nolen-gur",
+            "parentCategory": {
+              "_id": "b460fd6b33ed24d8b4bdbea3",
+              "name": "Khejurer Gur",
+              "slug": "khejurer-gur",
+              "parentCategory": null
+            }
+          },
+          "basePrice": 750,
+          "discountType": "none",
+          "discountValue": 0,
+          "price": 750,
+          "currency": "BDT",
+          "isUnderCampaign": false,
+          "campaignDiscount": {
+            "isActive": false,
+            "discountType": "none",
+            "discountValue": 0
+          },
+          "stock": 60,
+          "lowStockAlert": 5,
+          "isFeatured": false,
+          "isActive": true,
+          "displayOrder": 11,
+          "publishDate": "2026-11-01T00:00:00.000Z",
+          "imageGroups": [
+            {
+              "name": "Main",
+              "images": [
+                {
+                  "url": "/images/founder-jar-packing.jpg",
+                  "alt": "Packing nolen gur jars",
+                  "public_id": "seed/founder-jar-packing.jpg"
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "key": "Origin",
+              "value": "Jashore"
+            },
+            {
+              "key": "Season",
+              "value": "Winter 2026"
+            },
+            {
+              "key": "Type",
+              "value": "Nolen"
+            }
+          ],
+          "variantOptions": [],
+          "hasVariants": false,
+          "variants": [],
+          "averageRating": 0,
+          "numReviews": 0,
+          "weight": 1.4,
+          "unit": "jar",
+          "priceVisibility": "show",
+          "wholesale": {
+            "enabled": true,
+            "minQty": 12,
+            "price": 650
+          },
+          "minOrderQty": 1,
+          "availability": "in_stock",
+          "preOrder": {
+            "expectedDate": null,
+            "advancePercent": 25,
+            "maxQtyPerOrder": null,
+            "note": ""
+          },
+          "purchaseCount": 0,
+          "viewCount": 0,
+          "createdAt": "2026-11-01T00:00:00.000Z",
+          "updatedAt": "2026-11-01T00:00:00.000Z",
+          "finalPrice": 750,
+          "isUnderValidCampaign": false,
+          "campaignInfo": null,
+          "discountAmount": 0,
+          "isOnSale": false
+        }
+      ],
+      "totalProducts": 3
+    }
+  ]
+}

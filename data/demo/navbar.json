@@ -1,0 +1,75 @@
+{
+  "success": true,
+  "data": {
+    "_id": "9fbaf58f4b5888a25f9d495d",
+    "logo": {
+      "url": "/images/logo.jpg",
+      "public_id": "seed/logo"
+    },
+    "logoUrl": "/",
+    "cartIcon": true,
+    "searchIcon": true,
+    "userIcon": true,
+    "wishlistIcon": true,
+    "isActive": true,
+    "items": [
+      {
+        "_id": "item-0",
+        "name": "Mango",
+        "type": "category",
+        "category": {
+          "_id": "8c76eb7d158342067d00b796",
+          "name": "Mango",
+          "slug": "mango"
+        },
+        "path": "/category/mango",
+        "order": 0,
+        "isActive": true
+      },
+      {
+        "_id": "item-1",
+        "name": "Khejurer Gur",
+        "type": "category",
+        "category": {
+          "_id": "b460fd6b33ed24d8b4bdbea3",
+          "name": "Khejurer Gur",
+          "slug": "khejurer-gur"
+        },
+        "path": "/category/khejurer-gur",
+        "order": 1,
+        "isActive": true
+      },
+      {
+        "_id": "item-2",
+        "name": "Pantry",
+        "type": "category",
+        "category": {
+          "_id": "d6f25764f7ba3dde84e46b03",
+          "name": "Farm Pantry",
+          "slug": "farm-pantry"
+        },
+        "path": "/category/farm-pantry",
+        "order": 2,
+        "isActive": true
+      },
+      {
+        "_id": "item-3",
+        "name": "Wholesale",
+        "type": "link",
+        "path": "/wholesale",
+        "customUrl": "/wholesale",
+        "order": 3,
+        "isActive": true
+      },
+      {
+        "_id": "item-4",
+        "name": "Our Story",
+        "type": "link",
+        "path": "/story",
+        "customUrl": "/story",
+        "order": 4,
+        "isActive": true
+      }
+    ]
+  }
+}
