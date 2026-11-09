@@ -1,7 +1,9 @@
 {
   "desktopVideos": [],
   "desktopImages": [
-    "/images/mango-cut-halves.jpg"
+    "/images/mango-cut-halves.jpg",
+    "/images/gur-clay-pots.jpg",
+    "/images/gawa-ghee-jars.jpg"
   ],
   "mobileVideos": [
     "/videos/hero-loop.mp4"
@@ -11,20 +13,46 @@
     {
       "_id": "51bd3f29265e0b463a7bbb02",
       "title": "Mangoes picked late, on purpose",
-      "subtitle": "Rajshahi orchards to your door. Wholesale and retail, with 2027 pre-booking open now.",
+      "subtitle": "Rajshahi mangoes, winter khejurer gur and gawa ghee, straight from the people who make them. Wholesale and retail.",
       "buttonText": "Pre-book mangoes",
       "buttonLink": "/shop?availability=pre_order",
+      "label": "Rajshahi mango",
       "mediaType": "image",
       "mediaUrl": "/images/mango-cut-halves.jpg",
       "deviceType": "desktop",
       "order": 0
     },
     {
-      "_id": "dfe9c04f599bd975185d7395",
+      "_id": "2ae7f6609bb3f09088e60f57",
       "title": "Mangoes picked late, on purpose",
-      "subtitle": "Rajshahi orchards to your door. Wholesale and retail, with 2027 pre-booking open now.",
+      "subtitle": "Rajshahi mangoes, winter khejurer gur and gawa ghee, straight from the people who make them. Wholesale and retail.",
       "buttonText": "Pre-book mangoes",
       "buttonLink": "/shop?availability=pre_order",
+      "label": "Khejurer gur",
+      "mediaType": "image",
+      "mediaUrl": "/images/gur-clay-pots.jpg",
+      "deviceType": "desktop",
+      "order": 1
+    },
+    {
+      "_id": "9ffe4606204c8be85af74aab",
+      "title": "Mangoes picked late, on purpose",
+      "subtitle": "Rajshahi mangoes, winter khejurer gur and gawa ghee, straight from the people who make them. Wholesale and retail.",
+      "buttonText": "Pre-book mangoes",
+      "buttonLink": "/shop?availability=pre_order",
+      "label": "Gawa ghee",
+      "mediaType": "image",
+      "mediaUrl": "/images/gawa-ghee-jars.jpg",
+      "deviceType": "desktop",
+      "order": 2
+    },
+    {
+      "_id": "dfe9c04f599bd975185d7395",
+      "title": "Mangoes picked late, on purpose",
+      "subtitle": "Rajshahi mangoes, winter khejurer gur and gawa ghee, straight from the people who make them. Wholesale and retail.",
+      "buttonText": "Pre-book mangoes",
+      "buttonLink": "/shop?availability=pre_order",
+      "label": "Orchard",
       "mediaType": "video",
       "mediaUrl": "/videos/hero-loop.mp4",
       "deviceType": "mobile",

@@ -1,12 +1,13 @@
 // /admin/hero-content  ->  "Homepage hero" (Aamkahon)
 //
-// The storefront hero is ONE full screen block (no slider). Each device has
-// its own HeroContent record: desktop shows a landscape video or photo,
-// phones show a vertical video or photo. Copy (title, subtitle, button) is
-// shared and written to both records. The public GET /api/hero returns the
+// The storefront hero is ONE full screen block. Desktop: a background slider,
+// one HeroContent record per slide (deviceType "desktop", ordered by `order`,
+// with a short `label` shown on the slider). Phones: one record (deviceType
+// "mobile"), normally the vertical reel. Copy (title, subtitle, button) is
+// shared and written to every record; only the background changes. The public GET /api/hero returns the
 // full `items`, so everything edited here is live within a minute.
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Image as ImageIcon, Monitor, RefreshCw, Smartphone, Upload, Video } from "lucide-react";
+import { ArrowDown, ArrowUp, Image as ImageIcon, Monitor, Plus, RefreshCw, Smartphone, Trash2, Upload, Video } from "lucide-react";
 import toast from "react-hot-toast";
 import axiosInstance from "../../../api/axiosInstance";
 import { heroApi } from "../../../api/heroApi";
@@ -20,7 +21,7 @@ const DEVICES = [
         key: "desktop",
         label: "Desktop and tablet",
         icon: Monitor,
-        spec: "Landscape. Video: MP4 (H.264), 1920×1080, 10 to 20 s loop, under 15 MB. Photo: at least 2000 px wide.",
+        spec: "Landscape slides. Photo: at least 2000 px wide, subject on the right (the text sits on the left). Video slide: MP4 (H.264), 1920×1080, 10 to 20 s, under 15 MB; the slider moves on when it ends.",
     },
     {
         key: "mobile",
@@ -33,9 +34,10 @@ const DEVICES = [
 const isAbsolute = (u) => /^https?:\/\//.test(u || "");
 const preview = (u) => (isAbsolute(u) ? u : u || "");
 
-function MediaCard({ device, record, onSaved }) {
+function MediaCard({ device, record, onSaved, slide, onDelete, onMove, isFirst, isLast, nextOrder }) {
     const [mediaType, setMediaType] = useState(record?.mediaType || "image");
     const [mediaUrl, setMediaUrl] = useState(record?.mediaUrl || "");
+    const [label, setLabel] = useState(record?.label || "");
     const [busy, setBusy] = useState(false);
     const fileRef = useRef(null);
     const Icon = device.icon;
@@ -66,9 +68,9 @@ function MediaCard({ device, record, onSaved }) {
         if (!mediaUrl.trim()) return toast.error("Add a file or a URL first");
         setBusy(true);
         try {
-            const payload = { mediaType, mediaUrl: mediaUrl.trim(), deviceType: device.key, isActive: true };
+            const payload = { mediaType, mediaUrl: mediaUrl.trim(), deviceType: device.key, isActive: true, label: label.trim() };
             if (record?._id) await heroApi.updateContent(record._id, payload);
-            else await heroApi.createContent({ ...payload, title: "Mangoes picked late, on purpose", subtitle: "Rajshahi orchards to your door.", order: 0 });
+            else await heroApi.createContent({ ...payload, title: "Mangoes picked late, on purpose", subtitle: "Rajshahi orchards to your door.", order: nextOrder ?? 0 });
             toast.success(`${device.label} hero saved`);
             onSaved();
         } catch (err) {
@@ -80,11 +82,34 @@ function MediaCard({ device, record, onSaved }) {
 
     return (
         <div className="rounded-lg border border-gray-200 bg-white p-5">
-            <div className="flex items-center gap-2">
-                <Icon size={18} className="text-gray-500" />
-                <h2 className="font-semibold text-gray-900">{device.label}</h2>
-            </div>
-            <p className="mt-1 text-xs text-gray-500">{device.spec}</p>
+            {slide ? (
+                <div className="flex items-center gap-2">
+                    <span className="text-sm font-semibold text-gray-900">Slide {slide}</span>
+                    <div className="ml-auto flex gap-1">
+                        {record?._id && (
+                            <>
+                                <button type="button" disabled={isFirst || busy} onClick={() => onMove(-1)} className="rounded p-1.5 text-gray-500 hover:bg-gray-100 disabled:opacity-30" title="Move earlier">
+                                    <ArrowUp size={15} />
+                                </button>
+                                <button type="button" disabled={isLast || busy} onClick={() => onMove(1)} className="rounded p-1.5 text-gray-500 hover:bg-gray-100 disabled:opacity-30" title="Move later">
+                                    <ArrowDown size={15} />
+                                </button>
+                            </>
+                        )}
+                        <button type="button" disabled={busy} onClick={onDelete} className="rounded p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-600" title="Remove slide">
+                            <Trash2 size={15} />
+                        </button>
+                    </div>
+                </div>
+            ) : (
+                <>
+                    <div className="flex items-center gap-2">
+                        <Icon size={18} className="text-gray-500" />
+                        <h2 className="font-semibold text-gray-900">{device.label}</h2>
+                    </div>
+                    <p className="mt-1 text-xs text-gray-500">{device.spec}</p>
+                </>
+            )}
 
             <div className={`mt-4 overflow-hidden rounded-md bg-gray-900 ${device.key === "desktop" ? "aspect-video" : "mx-auto aspect-[9/16] max-h-80"}`}>
                 {mediaUrl ? (
@@ -98,6 +123,13 @@ function MediaCard({ device, record, onSaved }) {
                     <div className="flex size-full items-center justify-center text-sm text-gray-400">No media</div>
                 )}
             </div>
+
+            {slide && (
+                <label className="mt-4 block text-sm text-gray-700">
+                    Slide label <span className="text-gray-400">(shown on the slider, e.g. Khejurer gur)</span>
+                    <input value={label} onChange={(e) => setLabel(e.target.value)} maxLength={40} className={`${field} mt-1`} />
+                </label>
+            )}
 
             <div className="mt-4 flex gap-2">
                 {[
@@ -156,10 +188,39 @@ export default function HeroContentManagement() {
     }, [load]);
 
     const forDevice = (d) => records.find((r) => r.deviceType === d && r.isActive) || records.find((r) => r.deviceType === d);
+    const desktopSlides = records.filter((r) => r.deviceType === "desktop");
+    const [adding, setAdding] = useState(false);
+
+    // Swap order values with the neighbour; both writes go out together.
+    const move = async (i, dir) => {
+        const a = desktopSlides[i];
+        const b = desktopSlides[i + dir];
+        if (!a || !b) return;
+        const ao = a.order ?? i;
+        const bo = b.order ?? i + dir;
+        try {
+            await Promise.all([heroApi.updateContent(a._id, { order: bo === ao ? ao + dir : bo }), heroApi.updateContent(b._id, { order: ao })]);
+            load();
+        } catch (err) {
+            toast.error(err.response?.data?.message || "Could not reorder");
+        }
+    };
+
+    const remove = async (r) => {
+        if (desktopSlides.length <= 1) return toast.error("Keep at least one desktop slide");
+        if (!window.confirm("Remove this slide?")) return;
+        try {
+            await heroApi.deleteContent(r._id);
+            toast.success("Slide removed");
+            load();
+        } catch (err) {
+            toast.error(err.response?.data?.message || "Could not remove");
+        }
+    };
 
     const saveCopy = async () => {
         if (!copy.title.trim() || !copy.subtitle.trim()) return toast.error("Headline and text are required");
-        const targets = ["desktop", "mobile"].map(forDevice).filter(Boolean);
+        const targets = records;
         if (!targets.length) return toast.error("Save a desktop or phone media first");
         setSavingCopy(true);
         try {
@@ -212,11 +273,49 @@ export default function HeroContentManagement() {
                 </button>
             </div>
 
-            <div className="grid gap-6 lg:grid-cols-2">
-                {DEVICES.map((d) => {
-                    const record = forDevice(d.key);
-                    return <MediaCard key={`${d.key}-${record?._id || "new"}-${record?.updatedAt || ""}`} device={d} record={record} onSaved={load} />;
-                })}
+            <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+                <div className="rounded-lg border border-gray-200 bg-white p-5">
+                    <div className="flex items-center gap-2">
+                        <Monitor size={18} className="text-gray-500" />
+                        <h2 className="font-semibold text-gray-900">Desktop slides</h2>
+                        <button type="button" onClick={() => setAdding(true)} disabled={adding} className="ml-auto inline-flex items-center gap-1.5 rounded-md border border-gray-300 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-40">
+                            <Plus size={14} /> Add slide
+                        </button>
+                    </div>
+                    <p className="mt-1 text-xs text-gray-500">{DEVICES[0].spec} One slide = no slider.</p>
+                    <div className="mt-4 grid gap-4 md:grid-cols-2">
+                        {desktopSlides.map((r, i) => (
+                            <MediaCard
+                                key={`${r._id}-${r.updatedAt || ""}`}
+                                device={DEVICES[0]}
+                                record={r}
+                                slide={i + 1}
+                                isFirst={i === 0}
+                                isLast={i === desktopSlides.length - 1}
+                                onSaved={load}
+                                onMove={(dir) => move(i, dir)}
+                                onDelete={() => remove(r)}
+                            />
+                        ))}
+                        {adding && (
+                            <MediaCard
+                                key="new"
+                                device={DEVICES[0]}
+                                record={null}
+                                slide={desktopSlides.length + 1}
+                                isFirst
+                                isLast
+                                nextOrder={desktopSlides.length ? Math.max(...desktopSlides.map((d) => d.order ?? 0)) + 1 : 0}
+                                onSaved={() => {
+                                    setAdding(false);
+                                    load();
+                                }}
+                                onDelete={() => setAdding(false)}
+                            />
+                        )}
+                    </div>
+                </div>
+                <MediaCard key={`mobile-${forDevice("mobile")?._id || "new"}-${forDevice("mobile")?.updatedAt || ""}`} device={DEVICES[1]} record={forDevice("mobile")} onSaved={load} />
             </div>
         </div>
     );

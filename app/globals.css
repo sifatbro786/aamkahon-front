@@ -292,3 +292,21 @@ html[data-intro-seen] #ak-intro {
         transform: scaleX(1);
     }
 }
+
+/* Hero slider (components/home/HeroMedia.js) */
+@keyframes ak-kenburns {
+    from {
+        transform: scale(1.06);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+@keyframes ak-progress {
+    from {
+        transform: scaleX(0);
+    }
+    to {
+        transform: scaleX(1);
+    }
+}

@@ -166,6 +166,13 @@ clicked through (mixed bag notice works). Real payment untested: needs Sifat's S
 - Security: public product reviews populated reviewer email; now name only (BASE_CANDIDATES item 4).
 - To apply on Sifat's DB: `cd amkahon-back && npm run seed -- --reset` (updates hero records + adds demo reviews).
 
+- Hero update: desktop is now a background SLIDER (copy/buttons static, only background changes): one desktop
+  HeroContent record per slide, ordered by `order`, new `label` field (model + controller + /api/hero items) shown
+  on the slider indicators (lg+). Crossfade + slow zoom, 6 s, pauses on indicator hover / hidden tab / reduced
+  motion; a video slide plays to its end then advances. Phone keeps the reel video. Seed: mango, gur, ghee slides.
+  Admin Homepage Hero: Desktop slides (add, label, photo/video, upload, reorder, remove) + Phone card.
+  Apply with `npm run seed -- --reset`.
+
 ### Open items / next steps
 - Real SSLCommerz sandbox run end to end (needs credentials) and a live seed on Atlas.
 - Client to confirm real prices, harvest dates, refund terms, whether ghee stays.

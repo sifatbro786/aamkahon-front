@@ -5,11 +5,11 @@ import HeroMedia from "@/components/home/HeroMedia";
 import { fullDate } from "@/lib/format";
 
 /**
- * One full screen hero (no slider: a carousel hides every message but the
- * first and costs load time). Copy and media come from Admin > Homepage hero
- * (HeroContent, via GET /api/hero `items`); phones get their own media record,
- * so the vertical orchard reel fills a phone and a landscape video or photo
- * fills a desktop.
+ * One full screen hero. The copy and buttons never move; on desktop only the
+ * background changes, cycling through the product lines (mango, gur, ghee) so
+ * the hero is not mango only. Phones get their own media record: the vertical
+ * orchard reel. Everything comes from Admin > Homepage hero (HeroContent,
+ * GET /api/hero `items`).
  */
 export default function Hero({ hero, nextHarvest }) {
     const copy = hero.desktop || hero.mobile || {};
@@ -21,7 +21,7 @@ export default function Hero({ hero, nextHarvest }) {
             {/* No z-index on this layer on purpose: the sound button inside it
                 (z-20) must stack above the copy (z-10) to stay clickable. */}
             <div className="absolute inset-0">
-                <HeroMedia desktop={hero.desktop} mobile={hero.mobile} />
+                <HeroMedia slides={hero.desktopSlides} mobile={hero.mobile} />
                 {/* Legibility: strong at the bottom where the copy sits, light at the top. */}
                 <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/45 to-ink/10" />
                 <div className="absolute inset-0 hidden bg-gradient-to-r from-ink/70 via-ink/20 to-transparent md:block" />
