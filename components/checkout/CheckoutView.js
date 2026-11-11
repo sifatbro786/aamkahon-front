@@ -52,12 +52,18 @@ export default function CheckoutView() {
     const { data: location } = useLocation(address.district, address.upazila);
     const locationType = location?.locationType ?? null;
     const deliveryTypes = location?.availableDeliveryTypes ?? [];
-    const outside = locationType === "outside_dhaka";
-    const deliveryType = outside ? address.deliveryType : locationType ? "Home Delivery" : "";
+    // Options come from the server (active rates + the district's courier
+    // branches), Dhaka included. Ask only when there is a real choice.
+    const hasChoice = deliveryTypes.length > 1;
+    const deliveryType = hasChoice ? address.deliveryType : (deliveryTypes[0] ?? "");
     const isCourier = deliveryType === "Courier";
     const { data: branches = [] } = useCourierBranches(address.district, isCourier);
 
-    const paymentMethod = isPreOrderBag ? "SSLCommerz" : method;
+    // A product that must be paid online (e.g. mango by AJR) removes COD for
+    // the whole bag. The server decides (checkout/calculate codAvailable);
+    // the cart snapshot only lets us hide COD before an address exists.
+    const itemsOnlineOnly = !isPreOrderBag && items.some((i) => i.codAllowed === false);
+    const paymentMethod = isPreOrderBag || itemsOnlineOnly ? "SSLCommerz" : method;
     const payload = useMemo(
         () => ({
             isGuest: isGuestCart,
@@ -73,6 +79,7 @@ export default function CheckoutView() {
     );
     const { totals, isCalculating, needsAddress, error: calcError } = useCalculation(payload, items.length > 0);
     const placeOrder = usePlaceOrder();
+    const onlineOnly = !isPreOrderBag && (itemsOnlineOnly || totals?.codAvailable === false);
 
     const update = (patch) => {
         setDraft((d) => ({ ...d, ...patch }));
@@ -92,7 +99,8 @@ export default function CheckoutView() {
         else if (address.email && !/\S+@\S+\.\S+/.test(address.email)) e.email = "That email does not look right.";
         if (!address.district) e.district = "Choose a district.";
         if (!address.upazila) e.upazila = "Choose an area.";
-        if (outside && !address.deliveryType) e.deliveryType = "Choose a delivery option.";
+        if (locationType && !deliveryTypes.length) e.deliveryType = "We do not deliver to this area yet. Call us and we will arrange it.";
+        else if (hasChoice && !address.deliveryType) e.deliveryType = "Choose a delivery option.";
         if (isCourier && !address.courierBranch) e.courierBranch = "Choose a branch.";
         if (!isCourier && !address.addressLine1.trim()) e.addressLine1 = "We need a street address for home delivery.";
         setErrors(e);
@@ -214,7 +222,9 @@ export default function CheckoutView() {
                                 </select>
                             </Field>
 
-                            {outside && (
+                            {locationType && !deliveryTypes.length && <p className="text-[13px] text-danger sm:col-span-2">{errors.deliveryType || "We do not deliver to this area yet. Call us and we will arrange it."}</p>}
+
+                            {hasChoice && (
                                 <fieldset className="sm:col-span-2">
                                     <legend className="text-[14px]">Delivery option</legend>
                                     <div className="mt-2 grid gap-3 sm:grid-cols-2">
@@ -261,6 +271,13 @@ export default function CheckoutView() {
                                 <p className="font-medium">Pay the advance online</p>
                                 <p className="mt-1 text-[14px] text-muted">
                                     bKash, Nagad, cards or net banking through SSLCommerz. The balance and delivery are paid when the box arrives.
+                                </p>
+                            </div>
+                        ) : onlineOnly ? (
+                            <div className="mt-5 rounded-lg border border-ink bg-paper-2 p-4">
+                                <p className="font-medium">Pay in full online</p>
+                                <p className="mt-1 text-[14px] text-muted">
+                                    Something in your bag travels with a courier that does not collect cash, so the price and delivery are paid now through SSLCommerz (bKash, Nagad, cards, net banking).
                                 </p>
                             </div>
                         ) : (

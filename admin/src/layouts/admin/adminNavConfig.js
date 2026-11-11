@@ -19,6 +19,7 @@ import {
     TrendingUp,
     CalendarClock,
     Inbox,
+    Contact,
 } from "lucide-react";
 
 // Each `path` maps 1:1 to a backend admin route module (see server.js mounts):
@@ -73,6 +74,8 @@ export const adminNavGroups = [
     {
         label: "Customers",
         items: [
+            // Aamkahon: lead book (CSV import, manual, auto from orders/inquiries).
+            { label: "Customer List", path: "/admin/customers", icon: Contact, built: true },
             { label: "Users", path: "/admin/users", icon: Users, built: true },
             { label: "Reviews", path: "/admin/reviews", icon: Star, built: true },
         ],

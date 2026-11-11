@@ -73,6 +73,7 @@ const emptyForm = {
     unit: "kg",
     priceVisibility: "show",
     minOrderQty: 1,
+    codAllowed: true,
     wholesale: { enabled: false, minQty: "", price: "" },
     availability: "in_stock",
     preOrder: { expectedDate: "", advancePercent: 25, maxQtyPerOrder: "", note: "" },
@@ -185,6 +186,7 @@ const ProductForm = () => {
                         unit: p.unit || "kg",
                         priceVisibility: p.priceVisibility || "show",
                         minOrderQty: p.minOrderQty ?? 1,
+                        codAllowed: p.codAllowed !== false,
                         wholesale: {
                             enabled: !!p.wholesale?.enabled,
                             minQty: p.wholesale?.minQty ?? "",
@@ -277,6 +279,7 @@ const ProductForm = () => {
             unit: form.unit.trim() || "kg",
             priceVisibility: form.priceVisibility,
             minOrderQty: Math.max(1, parseInt(form.minOrderQty, 10) || 1),
+            codAllowed: form.codAllowed,
             wholesale: {
                 enabled: form.wholesale.enabled,
                 minQty: form.wholesale.minQty === "" ? null : Number(form.wholesale.minQty),
@@ -713,6 +716,16 @@ const ProductForm = () => {
                                             </button>
                                         ))}
                                     </div>
+                                </div>
+
+                                <div className="rounded-lg border border-gray-200 p-4">
+                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-900">
+                                        <input type="checkbox" checked={!form.codAllowed} onChange={(e) => set({ codAllowed: !e.target.checked })} />
+                                        Full payment online only (no cash on delivery)
+                                    </label>
+                                    <p className="mt-1 text-xs text-gray-500">
+                                        Tick for products sent by a courier that does not collect cash, e.g. mango by AJR. The customer pays item price and delivery online; a bag with this product hides COD.
+                                    </p>
                                 </div>
 
                                 <div className="rounded-lg border border-gray-200 p-4">

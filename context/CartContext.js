@@ -84,6 +84,8 @@ function fromServerItem(item) {
         variantLabel: options.map((o) => o.value).join(" / "),
         minQty: product.minOrderQty || 1,
         isPreOrder: isPre,
+        // false = item and delivery must be paid online (no COD courier).
+        codAllowed: product.codAllowed !== false,
         expectedDate: isPre ? product.preOrder?.expectedDate || null : null,
         stock: isPre ? product.preOrder?.maxQtyPerOrder || Infinity : Number(variant ? variant.stock : product.stock) || 0,
     };

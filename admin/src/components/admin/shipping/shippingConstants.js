@@ -42,15 +42,16 @@ export const LOCATION_LABEL = Object.fromEntries(LOCATION_TYPES.map((l) => [l.va
 
 export const DELIVERY_TYPES = ["Home Delivery", "Courier"];
 
-// Mirrors pricingService.isHomeDeliveryOnly — dhaka_inside & dhaka_sub can't use Courier.
-export const isHomeDeliveryOnly = (locationType) =>
-    locationType === "dhaka_inside" || locationType === "dhaka_sub";
-
 // The exact, legal (locationType × deliveryType) rate slots. Rendered as the
 // full set so admins can create missing ones, not just edit existing rows.
 export const RATE_SLOTS = [
+    // Aamkahon: every zone can have a courier rate. Checkout offers Courier
+    // only when the rate is active AND the district has courier branches
+    // (backend services/deliveryOptions.js).
     { locationType: "dhaka_inside", deliveryType: "Home Delivery" },
+    { locationType: "dhaka_inside", deliveryType: "Courier" },
     { locationType: "dhaka_sub", deliveryType: "Home Delivery" },
+    { locationType: "dhaka_sub", deliveryType: "Courier" },
     { locationType: "outside_dhaka", deliveryType: "Courier" },
     { locationType: "outside_dhaka", deliveryType: "Home Delivery" },
 ];

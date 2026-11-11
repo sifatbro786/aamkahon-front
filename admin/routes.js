@@ -18,6 +18,7 @@ export const ADMIN_ROUTES = [
     ["pre-bookings", p(() => import("./src/pages/admin/orders/PreBookings.jsx"))],
     ["orders/:id", p(() => import("./src/pages/admin/orders/OrderDetail.jsx"))],
     ["inquiries", p(() => import("./src/pages/admin/inquiries/InquiriesManagement.jsx"))],
+    ["customers", p(() => import("./src/pages/admin/customers/CustomersManagement.jsx"))],
     ["coupons", p(() => import("./src/pages/admin/coupons/CouponManagement.jsx"))],
     ["coupons/new", p(() => import("./src/pages/admin/coupons/CouponForm.jsx"))],
     ["coupons/:id/edit", p(() => import("./src/pages/admin/coupons/CouponForm.jsx"))],

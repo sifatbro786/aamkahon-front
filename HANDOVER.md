@@ -178,3 +178,60 @@ clicked through (mixed bag notice works). Real payment untested: needs Sifat's S
 - Client to confirm real prices, harvest dates, refund terms, whether ghee stays.
 - Footpath base: apply BASE_CANDIDATES.md items 1 to 3 (security) as soon as possible.
 - Admin uses the ported grey style; per-page polish only if the client asks.
+
+---
+
+## Client change requests (2026-11-11) — phases 6 to 8
+
+Source: client's handwritten list (invoice + stock, order mgmt, customer database, old customer
+import, promo info, customer location, online payment) + Sifat's 12 points. Promo SMS/ads and
+"location tracking" as marketing analytics belong to the digital marketing team; the site gives
+them the data (customer list export by tag/district).
+
+Decisions:
+- Wholesale is taken by phone, only in season. Low priority: keep backend fields, hide the
+  wholesale UI from the product form/storefront in Phase 7 (feature flag), do not delete code.
+- Mango ships by AJR (no COD, item + delivery prepaid). Sundarban and Steadfast are also used.
+- Delivery options are data driven: a type shows when its rate is active; Courier also needs
+  the district to have branches. Dhaka can now have courier pickup.
+
+### Phase 6 — operations core
+- [x] 6.1 Dhaka delivery fix: backend services/deliveryOptions.js (rates + branches decide),
+      courierBranch validated against the admin list, isHomeDeliveryOnly removed, Order
+      addressLine1 not required for courier pickup. Admin rate slots now include Dhaka Inside /
+      Dhaka Sub Courier. Checkout asks only when there is more than one option.
+      ACTION: in Admin > Shipping > Rates create "Dhaka Inside · Courier" (and Dhaka Sub if
+      needed), and keep Dhaka branches in Courier Branches.
+- [x] 6.2 Customer list (Admin > Customers > Customer List): models/Customer.js (phone =
+      normalized 01XXXXXXXXX, unique), /api/admin/customers list/create/patch/delete,
+      POST /import (browser parses CSV, column mapping + preview, chunks of 1000, skip|update),
+      GET /export (CSV, opted-out excluded, formula-injection safe). Orders and inquiries
+      add themselves (services/customerSync.js). Backfill: `npm run sync:customers`.
+- [x] 6.3 Online only products: Product.codAllowed (admin: "Full payment online only").
+      priceLines -> codAvailable; calculate/createOrder force SSLCommerz; checkout hides COD.
+- [ ] 6.4 Phone orders + invoice: admin creates an order for a phone customer (pick customer,
+      products, delivery, payment status), server prices it (pricingService), invoice page
+      /admin/orders/:id/invoice (print + Save as PDF, A4 + POS 80 mm), invoice number.
+- [ ] 6.5 Stock management: StockMovement ledger (in, adjust, damage, order, cancel/return),
+      stock page with per-variant levels, receive stock form, low-stock list, history.
+
+### Phase 7 — content and catalogue for food products
+- [ ] 7.1 Homepage CMS: season mode (mango / winter gur / all year) picks hero copy, sections
+      and blocks; editable block copy; FAQ model + admin + storefront FAQ (homepage + /faq).
+- [ ] 7.2 Story page: owner spotlight (photo, name, quote, signature line), editable in admin.
+- [ ] 7.3 Hero: desktop background video already supported (Admin > Homepage Hero, Desktop,
+      Video). Add poster image + verify on desktop.
+- [ ] 7.4 Product form presets for mango / ghee / gur / achar (unit, pack sizes, weight,
+      shelf life, storage, origin, attribute suggestions), hide wholesale tab behind a flag.
+- [ ] 7.5 Dashboard for food: season calendar, batch / best-before, top districts.
+
+### Phase 8 — courier integrations
+- [ ] 8.1 Courier fields on Order (provider, consignment id, tracking link, status) + manual
+      entry for AJR / Sundarban, tracking link on the customer's order page.
+- [ ] 8.2 Steadfast API (merchant API key + secret from Steadfast support): create
+      consignment from an order, status sync, webhook. Keys only in .env.
+- [ ] 8.3 Sundarban API if their merchant desk gives credentials; Pathao optional.
+
+### Commit messages so far
+- amkahon-back:  `feat: data-driven delivery options, customer list with CSV import, online-only products`
+- amkahon-front: `feat(admin): customer list + CSV import, Dhaka courier rates, online-only payment`

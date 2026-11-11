@@ -127,10 +127,10 @@ const ShippingRatesTab = () => {
             <div className="flex gap-3 rounded-lg border border-blue-100 bg-blue-50/60 p-4 text-sm text-blue-900">
                 <Info size={18} className="mt-0.5 shrink-0 text-blue-500" />
                 <p>
-                    <span className="font-semibold">3-Zone Dhaka Shipping.</span> Dhaka Inside (city
-                    thanas) and Dhaka Sub (Gazipur, Narayanganj, Savar etc.) support Home Delivery
-                    only. Outside Dhaka supports both Courier and Home Delivery. COD charge is added
-                    on top of base charge.
+                    <span className="font-semibold">How checkout picks options.</span> A delivery
+                    option shows for a zone when its rate below is active. Courier pickup also needs
+                    the district to have at least one branch in the Courier Branches tab. COD charge
+                    is added on top of the base charge.
                 </p>
             </div>
 
