@@ -1,8 +1,8 @@
 // src/pages/admin/orders/OrderDetail.jsx
 // Route (add to AppRoute.jsx): <Route path="orders/:id" element={<OrderDetail />} />
 import { useCallback, useEffect, useState } from "react";
-import { useNavigate, useParams } from "@/admin/router";
-import { ArrowLeft, Save, Trash2, RefreshCw } from "lucide-react";
+import { Link, useNavigate, useParams } from "@/admin/router";
+import { ArrowLeft, Save, Trash2, RefreshCw, Printer } from "lucide-react";
 import toast from "react-hot-toast";
 import { orderApi } from "../../../api/orderApi";
 import ConfirmDialog from "../../../components/admin/common/ConfirmDialog";
@@ -19,7 +19,7 @@ const ORDER_STATUSES = [
     "Cancelled",
     "Refunded",
 ];
-const PAYMENT_STATUSES = ["Pending", "Paid", "Failed", "Refunded"];
+const PAYMENT_STATUSES = ["Pending", "Partial", "Paid", "Failed", "Refunded"];
 
 // Quick actions map straight to updateOrderStatus — no separate backend endpoint per action
 const QUICK_ACTIONS = [
@@ -165,6 +165,8 @@ const OrderDetail = () => {
 
     const itemsSubtotal = order.orderItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
     const isCOD = order.paymentMethod === "COD";
+    // Aamkahon phone order: paid outside the site, amounts in manualPayment.
+    const isManual = order.paymentMethod === "Manual";
     // Aamkahon pre-booking: the advance sits in codOnlinePaymentAmount too.
     const isPreOrder = order.orderType === "pre_order";
 
@@ -210,6 +212,13 @@ const OrderDetail = () => {
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
+                    <Link
+                        to={`/admin/orders/${order._id}/invoice`}
+                        className="flex items-center gap-1.5 rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white hover:bg-gray-800"
+                    >
+                        <Printer size={14} />
+                        Invoice
+                    </Link>
                     <button
                         onClick={load}
                         className="flex items-center gap-1.5 rounded-md border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
@@ -418,9 +427,9 @@ const OrderDetail = () => {
                         </Row>
                         <Row label={`Shipping${order.totalWeightKg ? ` (${order.totalWeightKg} kg)` : ""}`}>{formatBDT(order.shippingPrice)}</Row>
                         <Row label="Tax">{formatBDT(order.taxPrice)}</Row>
-                        {(isCOD || isPreOrder) && order.codOnlinePaymentAmount > 0 && (
+                        {(isCOD || isPreOrder || isManual) && order.codOnlinePaymentAmount > 0 && order.remainingAmount > 0 && (
                             <>
-                                <Row label={isPreOrder ? "Pre-booking advance (online)" : "Paid Online (COD charge)"}>
+                                <Row label={isManual ? "Received" : isPreOrder ? "Pre-booking advance (online)" : "Paid Online (COD charge)"}>
                                     {formatBDT(order.codOnlinePaymentAmount)}
                                 </Row>
                                 <Row label="Due on Delivery">
@@ -440,7 +449,10 @@ const OrderDetail = () => {
                         <Row label="Status">
                             <PaymentStatusBadge status={order.paymentStatus} />
                         </Row>
-                        <Row label="Method">{order.paymentMethod}</Row>
+                        <Row label="Method">
+                            {isManual ? `Phone order, ${order.manualPayment?.method || "cash"}` : order.paymentMethod}
+                        </Row>
+                        {isManual && order.manualPayment?.reference && <Row label="Reference">{order.manualPayment.reference}</Row>}
                         <Row label="Paid At">{formatDT(order.paidAt)}</Row>
                     </Card>
 

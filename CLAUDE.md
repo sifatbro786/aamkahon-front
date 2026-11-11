@@ -81,6 +81,11 @@ the page never scrolls sideways (checked at 390 px and 1440 px).
 - Aamkahon additions: Pre-bookings (OrdersManagement with orderType="pre_order"),
   Inquiries inbox, product form "Wholesale & Season" tab + variant wholesale price
   and weight, shipping rate base kg + per kg, "Pre-booked" status everywhere.
+- Phase 6 additions: Customer List (`/admin/customers`, CSV import parsed in the browser by
+  `admin/src/utils/csv.js`), Stock (`/admin/stock`), New phone order (`/admin/orders/new`,
+  totals only from the preview endpoint), Invoice (`/admin/orders/:id/invoice`, printed through a
+  portal under <body> so the admin shell never clips it). Payment status "Partial" exists for
+  phone orders only.
 - Static demo: `lib/demo/adminDemo.js` (fictional orders, inquiries, users, stats
   built from the fixtures). Admin reads need the demo token; writes return 403.
 - ESLint: React Compiler rules are warnings for admin/src (ported code, see eslint.config.mjs).

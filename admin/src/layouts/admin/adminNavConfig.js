@@ -20,6 +20,7 @@ import {
     CalendarClock,
     Inbox,
     Contact,
+    Boxes,
 } from "lucide-react";
 
 // Each `path` maps 1:1 to a backend admin route module (see server.js mounts):
@@ -50,6 +51,8 @@ export const adminNavGroups = [
             { label: "Inquiries", path: "/admin/inquiries", icon: Inbox, built: true },
             { label: "Categories", path: "/admin/categories", icon: FolderTree, built: true },
             { label: "Products", path: "/admin/products", icon: Package, built: true },
+            // Aamkahon: levels, stock in/out/count, ledger history.
+            { label: "Stock", path: "/admin/stock", icon: Boxes, built: true },
             { label: "Shipping", path: "/admin/shipping", icon: Truck, built: true },
         ],
     },

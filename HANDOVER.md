@@ -209,11 +209,30 @@ Decisions:
       add themselves (services/customerSync.js). Backfill: `npm run sync:customers`.
 - [x] 6.3 Online only products: Product.codAllowed (admin: "Full payment online only").
       priceLines -> codAvailable; calculate/createOrder force SSLCommerz; checkout hides COD.
-- [ ] 6.4 Phone orders + invoice: admin creates an order for a phone customer (pick customer,
-      products, delivery, payment status), server prices it (pricingService), invoice page
-      /admin/orders/:id/invoice (print + Save as PDF, A4 + POS 80 mm), invoice number.
-- [ ] 6.5 Stock management: StockMovement ledger (in, adjust, damage, order, cancel/return),
-      stock page with per-variant levels, receive stock form, low-stock list, history.
+- [x] 6.4 Phone orders + invoice (2026-11-12): Admin > Orders > "New phone order"
+      (/admin/orders/new). Customer lookup from the customer list, district/upazila/delivery
+      from the same checkout endpoints, product search (GET /api/admin/stock), per line price
+      override (negotiated / wholesale by phone, flagged priceOverridden), discount, delivery
+      charge override, payment received (cash/bKash/Nagad/bank, amount, ref). Server prices it
+      (POST /api/admin/orders/manual/preview, then /manual). Order: paymentMethod "Manual",
+      orderSource "phone", paymentStatus Pending|Partial|Paid, manualPayment {method, reference,
+      paidAmount}. Save as Confirmed (takes stock), Pending or Pre-booked.
+      Invoice: /admin/orders/:id/invoice for ANY order, A4 or 80 mm, Print / Save as PDF
+      (browser print, portal + print CSS). "Invoice" button on order detail. Invoice no. = order no.
+- [x] 6.5 Stock (2026-11-12): models/StockMovement.js ledger (purchase, return, damage,
+      correction, order, order_cancel, other) with before/after from the atomic update.
+      updateProductStock(items, action, session, meta) writes ledger rows for every order
+      stock change; product form edits and opening stock are logged as corrections.
+      Admin > Catalog > Stock: levels per product/pack, low/out filters, Stock in / out /
+      Set to count, History tab (links to orders).
+      Known gap: the product form still writes stock as an absolute number, so an order
+      landing while the form is open can be overwritten (logged, but not prevented). Tell
+      the client to change stock from the Stock page; consider making the form field
+      read-only in Phase 7.
+
+### Commit messages (phase 6.4 + 6.5)
+- amkahon-back:  `feat: phone orders with server-side totals, stock ledger and admin stock API`
+- amkahon-front: `feat(admin): phone order form, printable invoice (A4/80mm), stock page with history`
 
 ### Phase 7 — content and catalogue for food products
 - [ ] 7.1 Homepage CMS: season mode (mango / winter gur / all year) picks hero copy, sections

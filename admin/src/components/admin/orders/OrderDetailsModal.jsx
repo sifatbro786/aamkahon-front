@@ -15,7 +15,7 @@ const ORDER_STATUSES = [
     "Cancelled",
     "Refunded",
 ];
-const PAYMENT_STATUSES = ["Pending", "Paid", "Failed", "Refunded"];
+const PAYMENT_STATUSES = ["Pending", "Partial", "Paid", "Failed", "Refunded"];
 
 const currency = (n) => `৳${Number(n || 0).toLocaleString("en-US")}`;
 const formatDate = (d) =>

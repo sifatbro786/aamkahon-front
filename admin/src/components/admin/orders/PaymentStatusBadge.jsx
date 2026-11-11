@@ -5,8 +5,11 @@
 // Fixed backend-side: paymentStatus now stays "Pending" until the full total is
 // collected; the advance amount is tracked separately via order.codOnlinePaymentAmount
 // / order.remainingAmount (shown in the Summary card), not via paymentStatus.
+// Aamkahon: "Partial" exists for PHONE orders only (advance taken in cash/bKash,
+// manualPayment.paidAmount). The online COD flow still stays "Pending".
 const PAYMENT_STYLES = {
     Pending: "bg-yellow-100 text-yellow-700",
+    Partial: "bg-blue-100 text-blue-700",
     Paid: "bg-green-100 text-green-700",
     Failed: "bg-red-100 text-red-700",
     Refunded: "bg-gray-200 text-gray-700",

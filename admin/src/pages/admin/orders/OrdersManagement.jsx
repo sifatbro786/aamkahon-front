@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 // src/pages/admin/orders/OrdersManagement.jsx
 import { useCallback, useEffect, useState } from "react";
-import { useNavigate } from "@/admin/router";
-import { Search, RefreshCw, Eye, Package, Clock, CheckCircle2, Wallet, Download } from "lucide-react";
+import { Link, useNavigate } from "@/admin/router";
+import { Search, RefreshCw, Eye, Package, Clock, CheckCircle2, Wallet, Download, PhoneCall } from "lucide-react";
 import toast from "react-hot-toast";
 import { orderApi } from "../../../api/orderApi";
 import { exportCsv } from "../../../lib/admin/exportCsv";
@@ -22,7 +22,7 @@ const ORDER_STATUSES = [
     "Refunded",
 ];
 // Order.js `paymentStatus` enum
-const PAYMENT_STATUSES = ["Pending", "Paid", "Failed", "Refunded"];
+const PAYMENT_STATUSES = ["Pending", "Partial", "Paid", "Failed", "Refunded"];
 
 const formatBDT = (n) =>
     `\u09F3${Number(n || 0).toLocaleString("en-BD", { minimumFractionDigits: 2 })}`;
@@ -155,9 +155,15 @@ const OrdersManagement = ({ orderType } = {}) => {
 
     return (
         <div className="space-y-5 pb-10">
-            <div>
-                <h1 className="text-xl font-bold text-gray-900">Order Management</h1>
-                <p className="text-sm text-gray-500">Manage and track all customer orders</p>
+            <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                    <h1 className="text-xl font-bold text-gray-900">Order Management</h1>
+                    <p className="text-sm text-gray-500">Manage and track all customer orders</p>
+                </div>
+                {/* Aamkahon: orders taken on the phone are entered here. */}
+                <Link to="/admin/orders/new" className="inline-flex items-center gap-1.5 rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white hover:bg-gray-800">
+                    <PhoneCall size={15} /> New phone order
+                </Link>
             </div>
 
             {/* Stats — from GET /admin/orders/stats */}
@@ -229,6 +235,7 @@ const OrdersManagement = ({ orderType } = {}) => {
                         <option value="all">All Methods</option>
                         <option value="COD">COD</option>
                         <option value="SSLCommerz">SSLCommerz</option>
+                        <option value="Manual">Phone order</option>
                     </select>
                 </div>
                 <div className="flex items-end gap-2">
