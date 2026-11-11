@@ -21,6 +21,9 @@ import {
     Inbox,
     Contact,
     Boxes,
+    SunSnow,
+    UserRound,
+    HelpCircle,
 } from "lucide-react";
 
 // Each `path` maps 1:1 to a backend admin route module (see server.js mounts):
@@ -68,9 +71,13 @@ export const adminNavGroups = [
     {
         label: "Storefront Content",
         items: [
+            // Aamkahon: season switch + per-season homepage copy and blocks.
+            { label: "Homepage & Season", path: "/admin/season", icon: SunSnow, built: true },
             { label: "Navbar", path: "/admin/navbar", icon: ListTree, built: true },
             { label: "Homepage Hero", path: "/admin/hero-content", icon: PanelTop, built: true },
             { label: "Product Sections", path: "/admin/sections", icon: LayoutGrid, built: true },
+            { label: "Our Story", path: "/admin/our-story", icon: UserRound, built: true },
+            { label: "FAQ", path: "/admin/faq", icon: HelpCircle, built: true },
             { label: "Page Meta / SEO", path: "/admin/page-meta", icon: ListTree, built: true },
         ],
     },

@@ -2,15 +2,67 @@
 import { Menu, Phone, Search, ShoppingBag, User, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
+import { activeHref } from "@/lib/activeLink";
 import { navHref } from "@/lib/nav";
 import { SITE } from "@/lib/site";
 
-export default function SiteHeader({ nav = [] }) {
+/**
+ * Nav links with the current one marked. Reading the query string needs
+ * useSearchParams, which must sit under <Suspense> with Cache Components;
+ * the fallback renders the same links unmarked (path-only match), so the
+ * header never jumps.
+ */
+function NavLinks({ links, variant }) {
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    return <LinkList links={links} variant={variant} active={activeHref(links, pathname, searchParams)} />;
+}
+
+function LinkList({ links, variant, active }) {
+    return links.map((l) => {
+        const on = l.href === active;
+        return variant === "mobile" ? (
+            <Link
+                key={l.href + l.name}
+                href={l.href}
+                aria-current={on ? "page" : undefined}
+                className={`flex items-center justify-between border-b border-line-dark py-4 text-2xl font-medium tracking-tight ${on ? "text-mango" : ""}`}
+            >
+                {l.name}
+                {on && <span className="size-2 rounded-full bg-mango" aria-hidden />}
+            </Link>
+        ) : (
+            <Link
+                key={l.href + l.name}
+                href={l.href}
+                aria-current={on ? "page" : undefined}
+                // Active: full white text and a short mango rule under the word,
+                // drawn with a pseudo element so the row height never changes.
+                className={`relative py-1 text-[15px] transition-colors after:absolute after:-bottom-0.5 after:left-0 after:h-0.5 after:rounded-full after:bg-mango after:transition-all ${on ? "text-paper after:w-full" : "text-paper/75 after:w-0 hover:text-paper"}`}
+            >
+                {l.name}
+            </Link>
+        );
+    });
+}
+
+function Links({ links, variant }) {
+    const pathname = usePathname();
+    // Fallback while search params resolve: match on path only.
+    const pathOnly = activeHref(links.filter((l) => !l.href.includes("?")), pathname, null);
+    return (
+        <Suspense fallback={<LinkList links={links} variant={variant} active={pathOnly} />}>
+            <NavLinks links={links} variant={variant} />
+        </Suspense>
+    );
+}
+
+export default function SiteHeader({ nav = [], announcement }) {
     const pathname = usePathname();
     const { itemCount, openCart } = useCart();
     const { isAuthenticated, isAdmin } = useAuth();
@@ -35,9 +87,8 @@ export default function SiteHeader({ nav = [] }) {
         <header className="sticky top-0 z-40 bg-ink text-paper">
             <div className="hidden border-b border-line-dark md:block">
                 <div className="wrap flex h-9 items-center justify-between text-[13px] text-paper/70">
-                    <p>
-                        <span className="text-mango">2027 mango pre-booking is open.</span> Khejurer gur is in stock now.
-                    </p>
+                    {/* Admin > Homepage & season (per season). Empty = the default line. */}
+                    <p className="min-w-0 truncate text-mango">{announcement || "Rajshahi mangoes, khejurer gur and gawa ghee."}</p>
                     <a href={SITE.phoneHref} className="inline-flex items-center gap-1.5 hover:text-paper">
                         <Phone size={13} aria-hidden /> Call or WhatsApp <span className="num">{SITE.phone}</span>
                     </a>
@@ -59,11 +110,7 @@ export default function SiteHeader({ nav = [] }) {
                 </Link>
 
                 <nav className="ml-6 hidden flex-1 items-center gap-7 lg:flex" aria-label="Main">
-                    {links.map((l) => (
-                        <Link key={l.href + l.name} href={l.href} className="text-[15px] text-paper/80 transition-colors hover:text-paper">
-                            {l.name}
-                        </Link>
-                    ))}
+                    <Links links={links} variant="desktop" />
                 </nav>
 
                 <div className="ml-auto flex items-center gap-1">
@@ -93,11 +140,7 @@ export default function SiteHeader({ nav = [] }) {
                         </button>
                     </div>
                     <nav className="wrap mt-6 flex flex-col" aria-label="Mobile">
-                        {links.map((l) => (
-                            <Link key={l.href + l.name} href={l.href} className="border-b border-line-dark py-4 text-2xl font-medium tracking-tight">
-                                {l.name}
-                            </Link>
-                        ))}
+                        <Links links={links} variant="mobile" />
                     </nav>
                     <div className="wrap mt-auto pb-8 text-paper/70">
                         <p className="label text-paper/50">Order by phone</p>

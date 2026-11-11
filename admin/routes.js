@@ -32,6 +32,9 @@ export const ADMIN_ROUTES = [
     ["offers", p(() => import("./src/pages/admin/offers/OfferManagement.jsx"))],
     ["page-meta", p(() => import("./src/pages/admin/pageMeta/PageMetaManagement.jsx"))],
     ["navbar", p(() => import("./src/pages/admin/navbar/NavbarConfiguration.jsx"))],
+    ["season", p(() => import("./src/pages/admin/storefront/SeasonSettings.jsx"))],
+    ["our-story", p(() => import("./src/pages/admin/storefront/StorySettings.jsx"))],
+    ["faq", p(() => import("./src/pages/admin/storefront/FaqManagement.jsx"))],
     ["hero-content", p(() => import("./src/pages/admin/hero/HeroContentManagement.jsx"))],
 ];
 

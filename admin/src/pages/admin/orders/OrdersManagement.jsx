@@ -39,8 +39,14 @@ const StatCard = ({ icon: Icon, label, value, tint }) => (
     </div>
 );
 
-// Aamkahon: rendered with orderType="pre_order" as the Pre-bookings screen.
-const OrdersManagement = ({ orderType } = {}) => {
+// Aamkahon: two screens share this list.
+//   Orders       = ?view=orders: everything that ships now (web, phone, and
+//                  pre-bookings once Confirmed)
+//   Pre-bookings = ?view=prebookings: pre-orders still Pending / Pre-booked
+// They are split so a pre-booking never sits in the daily packing list, and
+// each screen shows the numbers that matter for it.
+const OrdersManagement = ({ orderType = "regular" } = {}) => {
+    const isPre = orderType === "pre_order";
     const navigate = useNavigate();
 
     const [orders, setOrders] = useState([]);
@@ -64,10 +70,10 @@ const OrdersManagement = ({ orderType } = {}) => {
 
     useEffect(() => {
         orderApi
-            .getStats()
+            .getStats({ view: isPre ? "prebookings" : "orders" })
             .then(({ data }) => setStats(data.stats))
             .catch(() => {});
-    }, []);
+    }, [isPre]);
 
     const load = useCallback(async () => {
         setLoading(true);
@@ -79,7 +85,9 @@ const OrdersManagement = ({ orderType } = {}) => {
                 paymentMethod: paymentMethod !== "all" ? paymentMethod : undefined,
                 paymentStatus: paymentStatus !== "all" ? paymentStatus : undefined,
                 search: debouncedSearch || undefined,
-                orderType,
+                view: isPre ? "prebookings" : "orders",
+                // Pre-bookings: nearest harvest first, that is the work order.
+                ...(isPre ? { sortBy: "preOrder.expectedDate", sortOrder: "asc" } : {}),
             });
             setOrders(data.orders || []);
             setTotal(data.total || 0);
@@ -89,7 +97,7 @@ const OrdersManagement = ({ orderType } = {}) => {
         } finally {
             setLoading(false);
         }
-    }, [page, status, paymentMethod, paymentStatus, debouncedSearch, orderType]);
+    }, [page, status, paymentMethod, paymentStatus, debouncedSearch, isPre]);
 
     useEffect(() => {
         load();
@@ -103,7 +111,7 @@ const OrdersManagement = ({ orderType } = {}) => {
     const refresh = () => {
         load();
         orderApi
-            .getStats()
+            .getStats({ view: isPre ? "prebookings" : "orders" })
             .then(({ data }) => setStats(data.stats))
             .catch(() => {});
     };
@@ -153,109 +161,93 @@ const OrdersManagement = ({ orderType } = {}) => {
         toast.success(`Exported ${orders.length} orders`);
     };
 
+    const harvest = (o) => (o.preOrder?.expectedDate ? new Date(o.preOrder.expectedDate).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "Not set");
+    const source = (o) => (o.orderSource === "phone" ? "Phone order" : o.isGuest ? "Web, guest" : "Web, registered");
+    const cols = 7;
+    const selectCls = "w-full rounded-md border border-gray-300 py-2 px-3 text-sm focus:border-gray-500 focus:outline-none";
+
     return (
         <div className="space-y-5 pb-10">
             <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
-                    <h1 className="text-xl font-bold text-gray-900">Order Management</h1>
-                    <p className="text-sm text-gray-500">Manage and track all customer orders</p>
+                    <h1 className="text-xl font-bold text-gray-900">{isPre ? "Pre-bookings" : "Orders"}</h1>
+                    <p className="text-sm text-gray-500">
+                        {isPre
+                            ? "Advance paid, waiting for the harvest. Nearest harvest date first."
+                            : "Orders to pack and ship: website and phone. Pre-bookings have their own page."}
+                    </p>
                 </div>
-                {/* Aamkahon: orders taken on the phone are entered here. */}
-                <Link to="/admin/orders/new" className="inline-flex items-center gap-1.5 rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white hover:bg-gray-800">
-                    <PhoneCall size={15} /> New phone order
-                </Link>
+                {!isPre && (
+                    // Aamkahon: orders taken on the phone are entered here.
+                    <Link to="/admin/orders/new" className="inline-flex items-center gap-1.5 rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white hover:bg-gray-800">
+                        <PhoneCall size={15} /> New phone order
+                    </Link>
+                )}
             </div>
 
-            {/* Stats — from GET /admin/orders/stats */}
+            {/* Stats — GET /admin/orders/stats?view= */}
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                <StatCard
-                    icon={Package}
-                    label="Total Orders"
-                    value={stats?.totalOrders ?? "—"}
-                    tint="bg-emerald-100 text-emerald-600"
-                />
-                <StatCard
-                    icon={Clock}
-                    label="Pending"
-                    value={stats?.pendingOrders ?? "—"}
-                    tint="bg-yellow-100 text-yellow-600"
-                />
-                <StatCard
-                    icon={CheckCircle2}
-                    label="Delivered"
-                    value={stats?.deliveredOrders ?? "—"}
-                    tint="bg-green-100 text-green-600"
-                />
-                <StatCard
-                    icon={Wallet}
-                    label="Revenue (Delivered)"
-                    value={formatBDT(stats?.totalRevenue)}
-                    tint="bg-purple-100 text-purple-600"
-                />
+                {isPre ? (
+                    <>
+                        <StatCard icon={Package} label="Waiting for harvest" value={stats?.preBookedOrders ?? "—"} tint="bg-orange-100 text-orange-600" />
+                        <StatCard icon={Clock} label="Advance not paid yet" value={stats?.pendingOrders ?? "—"} tint="bg-yellow-100 text-yellow-600" />
+                        <StatCard icon={Wallet} label="Advance received" value={formatBDT(stats?.preOrderAdvance)} tint="bg-green-100 text-green-600" />
+                        <StatCard icon={CheckCircle2} label="Balance to collect" value={formatBDT(stats?.preOrderBalance)} tint="bg-purple-100 text-purple-600" />
+                    </>
+                ) : (
+                    <>
+                        <StatCard icon={Package} label="Total orders" value={stats?.totalOrders ?? "—"} tint="bg-emerald-100 text-emerald-600" />
+                        <StatCard icon={Clock} label="Pending" value={stats?.pendingOrders ?? "—"} tint="bg-yellow-100 text-yellow-600" />
+                        <StatCard icon={CheckCircle2} label="Delivered" value={stats?.deliveredOrders ?? "—"} tint="bg-green-100 text-green-600" />
+                        <StatCard icon={Wallet} label="Revenue (delivered)" value={formatBDT(stats?.totalRevenue)} tint="bg-purple-100 text-purple-600" />
+                    </>
+                )}
             </div>
 
-            {/* Filters */}
-            <div className="grid grid-cols-1 gap-3 rounded-lg border border-gray-200 bg-white p-4 sm:grid-cols-2 lg:grid-cols-5">
-                <div className="lg:col-span-2">
+            {/* Filters: wrap instead of a fixed grid, so no field gets squeezed at mid widths. */}
+            <div className="flex flex-wrap items-end gap-3 rounded-lg border border-gray-200 bg-white p-4">
+                <div className="min-w-[220px] flex-1">
                     <label className="mb-1 block text-xs font-medium text-gray-500">Search</label>
                     <div className="relative">
                         <Search size={16} className="absolute left-2.5 top-2.5 text-gray-400" />
                         <input
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            placeholder="Order #, Name, Phone…"
+                            placeholder="Order #, name, phone"
                             className="w-full rounded-md border border-gray-300 py-2 pl-8 pr-3 text-sm focus:border-gray-500 focus:outline-none"
                         />
                     </div>
                 </div>
-                <div>
+                <div className="w-full sm:w-40">
                     <label className="mb-1 block text-xs font-medium text-gray-500">Status</label>
-                    <select
-                        value={status}
-                        onChange={(e) => setStatus(e.target.value)}
-                        className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm focus:border-gray-500 focus:outline-none"
-                    >
-                        <option value="all">All Status</option>
-                        {ORDER_STATUSES.map((s) => (
-                            <option key={s} value={s}>
-                                {s}
-                            </option>
+                    <select value={status} onChange={(e) => setStatus(e.target.value)} className={selectCls}>
+                        <option value="all">All status</option>
+                        {(isPre ? ["Pending", "Pre-booked"] : ORDER_STATUSES.filter((s) => s !== "Pre-booked")).map((s) => (
+                            <option key={s} value={s}>{s}</option>
                         ))}
                     </select>
                 </div>
-                <div>
-                    <label className="mb-1 block text-xs font-medium text-gray-500">
-                        Payment Method
-                    </label>
-                    <select
-                        value={paymentMethod}
-                        onChange={(e) => setPaymentMethod(e.target.value)}
-                        className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm focus:border-gray-500 focus:outline-none"
-                    >
-                        <option value="all">All Methods</option>
-                        <option value="COD">COD</option>
-                        <option value="SSLCommerz">SSLCommerz</option>
-                        <option value="Manual">Phone order</option>
-                    </select>
-                </div>
-                <div className="flex items-end gap-2">
-                    <div className="flex-1">
-                        <label className="mb-1 block text-xs font-medium text-gray-500">
-                            Payment Status
-                        </label>
-                        <select
-                            value={paymentStatus}
-                            onChange={(e) => setPaymentStatus(e.target.value)}
-                            className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm focus:border-gray-500 focus:outline-none"
-                        >
-                            <option value="all">All Status</option>
-                            {PAYMENT_STATUSES.map((s) => (
-                                <option key={s} value={s}>
-                                    {s}
-                                </option>
-                            ))}
+                {!isPre && (
+                    <div className="w-full sm:w-40">
+                        <label className="mb-1 block text-xs font-medium text-gray-500">Payment method</label>
+                        <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)} className={selectCls}>
+                            <option value="all">All methods</option>
+                            <option value="COD">COD</option>
+                            <option value="SSLCommerz">Paid online</option>
+                            <option value="Manual">Phone order</option>
                         </select>
                     </div>
+                )}
+                <div className="w-full sm:w-40">
+                    <label className="mb-1 block text-xs font-medium text-gray-500">Payment status</label>
+                    <select value={paymentStatus} onChange={(e) => setPaymentStatus(e.target.value)} className={selectCls}>
+                        <option value="all">All</option>
+                        {PAYMENT_STATUSES.map((s) => (
+                            <option key={s} value={s}>{s}</option>
+                        ))}
+                    </select>
+                </div>
+                <div className="flex gap-2">
                     <button
                         onClick={handleExport}
                         title="Export the orders currently listed"
@@ -282,84 +274,78 @@ const OrdersManagement = ({ orderType } = {}) => {
                             <tr>
                                 <th className="px-4 py-3">Order</th>
                                 <th className="px-4 py-3">Customer</th>
-                                <th className="px-4 py-3">Amount</th>
+                                {isPre ? (
+                                    <>
+                                        <th className="px-4 py-3">Harvest</th>
+                                        <th className="px-4 py-3">Advance / balance</th>
+                                    </>
+                                ) : (
+                                    <>
+                                        <th className="px-4 py-3">Amount</th>
+                                        <th className="px-4 py-3">Payment</th>
+                                    </>
+                                )}
                                 <th className="px-4 py-3">Status</th>
-                                <th className="px-4 py-3">Payment</th>
-                                <th className="px-4 py-3">Date</th>
-                                <th className="px-4 py-3">Actions</th>
+                                <th className="px-4 py-3">Placed</th>
+                                <th className="px-4 py-3" />
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
                             {loading ? (
                                 <tr>
-                                    <td
-                                        colSpan={7}
-                                        className="px-4 py-10 text-center text-gray-400"
-                                    >
-                                        Loading…
-                                    </td>
+                                    <td colSpan={cols} className="px-4 py-10 text-center text-gray-400">Loading…</td>
                                 </tr>
                             ) : orders.length === 0 ? (
                                 <tr>
-                                    <td
-                                        colSpan={7}
-                                        className="px-4 py-10 text-center text-gray-400"
-                                    >
-                                        No orders found
+                                    <td colSpan={cols} className="px-4 py-10 text-center text-gray-400">
+                                        {isPre ? "No pre-bookings" : "No orders found"}
                                     </td>
                                 </tr>
                             ) : (
                                 orders.map((o) => (
-                                    <tr key={o._id} className="hover:bg-gray-50">
+                                    <tr key={o._id} className="cursor-pointer hover:bg-gray-50" onClick={() => navigate(`/admin/orders/${o._id}`)}>
                                         <td className="px-4 py-3">
-                                            <p className="font-medium text-gray-900">
-                                                {o.orderNumber}
-                                            </p>
-                                            <p className="text-xs text-gray-400">
-                                                {o.isGuest ? "Guest" : "Registered"}
-                                            </p>
+                                            <p className="font-medium text-gray-900">{o.orderNumber}</p>
+                                            <p className="text-xs text-gray-400">{source(o)}</p>
                                         </td>
                                         <td className="px-4 py-3">
-                                            <p className="text-gray-900">
-                                                {o.shippingAddress?.name || "—"}
-                                            </p>
+                                            <p className="text-gray-900">{o.shippingAddress?.name || "—"}</p>
                                             <p className="text-xs text-gray-400">
                                                 {o.shippingAddress?.phone}
-                                            </p>
-                                            {o.isGuest && o.guestEmail && (
-                                                <p className="text-xs text-gray-400">
-                                                    {o.guestEmail}
-                                                </p>
-                                            )}
-                                        </td>
-                                        <td className="px-4 py-3">
-                                            <p className="font-medium text-gray-900">
-                                                {formatBDT(o.totalPrice)}
-                                            </p>
-                                            <p className="text-xs text-gray-400">
-                                                {o.orderItems?.length || 0} items
+                                                {o.shippingAddress?.district ? ` · ${o.shippingAddress.district}` : ""}
                                             </p>
                                         </td>
+                                        {isPre ? (
+                                            <>
+                                                <td className="px-4 py-3">
+                                                    <p className="text-gray-900">{harvest(o)}</p>
+                                                    <p className="text-xs text-gray-400">{o.orderItems?.map((i) => i.name).join(", ")}</p>
+                                                </td>
+                                                <td className="px-4 py-3">
+                                                    <p className="font-medium text-gray-900">{formatBDT(o.codOnlinePaymentAmount)}</p>
+                                                    <p className="text-xs text-gray-400">{formatBDT(o.remainingAmount)} due · total {formatBDT(o.totalPrice)}</p>
+                                                </td>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <td className="px-4 py-3">
+                                                    <p className="font-medium text-gray-900">{formatBDT(o.totalPrice)}</p>
+                                                    <p className="text-xs text-gray-400">{o.orderItems?.length || 0} items</p>
+                                                </td>
+                                                <td className="px-4 py-3">
+                                                    <PaymentStatusBadge status={o.paymentStatus} />
+                                                    <p className="mt-1 text-xs text-gray-400">{o.paymentMethod === "Manual" ? "Phone" : o.paymentMethod}</p>
+                                                </td>
+                                            </>
+                                        )}
                                         <td className="px-4 py-3">
                                             <OrderStatusBadge status={o.orderStatus} />
                                         </td>
-                                        <td className="px-4 py-3">
-                                            <PaymentStatusBadge status={o.paymentStatus} />
-                                            <p className="mt-1 text-xs text-gray-400">
-                                                {o.paymentMethod}
-                                            </p>
-                                        </td>
-                                        <td className="px-4 py-3 text-gray-500">
-                                            {new Date(o.createdAt).toLocaleDateString("en-GB")}
-                                        </td>
-                                        <td className="px-4 py-3">
-                                            <button
-                                                onClick={() => navigate(`/admin/orders/${o._id}`)}
-                                                className="flex items-center gap-1 text-blue-600 hover:underline"
-                                            >
-                                                <Eye size={14} />
-                                                View
-                                            </button>
+                                        <td className="px-4 py-3 text-gray-500">{new Date(o.createdAt).toLocaleDateString("en-GB")}</td>
+                                        <td className="px-4 py-3 text-right">
+                                            <span className="inline-flex items-center gap-1 text-blue-600">
+                                                <Eye size={14} /> View
+                                            </span>
                                         </td>
                                     </tr>
                                 ))
@@ -369,7 +355,7 @@ const OrdersManagement = ({ orderType } = {}) => {
                 </div>
                 <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
             </div>
-            <p className="text-xs text-gray-400">{total} total orders</p>
+            <p className="text-xs text-gray-400">{total} {isPre ? "pre-bookings" : "orders"}</p>
         </div>
     );
 };

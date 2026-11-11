@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import OwnerSpotlight from "@/components/story/OwnerSpotlight";
+import { getStorefront } from "@/lib/data/catalog";
 import { SITE } from "@/lib/site";
 
 export const metadata = {
@@ -36,7 +38,8 @@ const CHAPTERS = [
     },
 ];
 
-export default function StoryPage() {
+export default async function StoryPage() {
+    const { story } = await getStorefront();
     return (
         <>
             <section className="relative overflow-hidden bg-forest text-paper">
@@ -53,6 +56,8 @@ export default function StoryPage() {
                     <Image src="/images/team-orchard-banner.jpg" alt="The Aamkahon team in the orchard" fill priority sizes="100vw" className="object-cover md:rounded-t-card" />
                 </div>
             </section>
+
+            <OwnerSpotlight story={story} />
 
             <div className="wrap py-16 md:py-24">
                 {CHAPTERS.map((c, i) => (

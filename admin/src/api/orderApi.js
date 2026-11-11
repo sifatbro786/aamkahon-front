@@ -3,7 +3,7 @@ import axiosInstance from "./axiosInstance";
 // routes/admin/adminOrderRoutes.js (mounted at /api/admin/orders, protect+admin)
 export const orderApi = {
     getAll: (params) => axiosInstance.get("/admin/orders", { params }),
-    getStats: () => axiosInstance.get("/admin/orders/stats"),
+    getStats: (params) => axiosInstance.get("/admin/orders/stats", { params }),
     getOne: (id) => axiosInstance.get(`/admin/orders/${id}`),
     updateStatus: (id, payload) => axiosInstance.put(`/admin/orders/${id}/status`, payload),
     updatePaymentStatus: (id, paymentStatus) =>

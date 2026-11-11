@@ -17,6 +17,7 @@ const EMPTY = {
     displayOrder: 0,
     isActive: true,
     showInHomepage: true,
+    seasons: [], // Aamkahon: empty = every season
 };
 
 // Pull only the editable fields off a full section record (edit mode).
@@ -31,6 +32,7 @@ const fromSection = (s) => ({
     displayOrder: s.displayOrder ?? 0,
     isActive: s.isActive ?? true,
     showInHomepage: s.showInHomepage ?? true,
+    seasons: s.seasons ?? [],
 });
 
 const SectionFormModal = ({ open, section, onClose, onSaved }) => {
@@ -380,6 +382,31 @@ const SectionFormModal = ({ open, section, onClose, onSaved }) => {
                             Show on homepage
                         </label>
                     </div>
+
+                    {/* Aamkahon: season tags (Admin > Homepage & season decides which is active). */}
+                    <fieldset>
+                        <legend className="mb-1 text-sm font-medium text-gray-700">Show in season</legend>
+                        <p className="mb-2 text-xs text-gray-500">Leave all unticked to show in every season.</p>
+                        <div className="flex flex-wrap gap-3">
+                            {[
+                                ["mango", "Mango season"],
+                                ["winter", "Winter (gur)"],
+                                ["all", "All year mode"],
+                            ].map(([v, l]) => (
+                                <label key={v} className="flex items-center gap-2 text-sm text-gray-800">
+                                    <input
+                                        type="checkbox"
+                                        className="h-4 w-4 rounded border-gray-300"
+                                        checked={form.seasons.includes(v)}
+                                        onChange={(e) =>
+                                            setForm((f) => ({ ...f, seasons: e.target.checked ? [...f.seasons, v] : f.seasons.filter((x) => x !== v) }))
+                                        }
+                                    />
+                                    {l}
+                                </label>
+                            ))}
+                        </div>
+                    </fieldset>
 
                     <div className="flex justify-end gap-2 pt-2">
                         <button

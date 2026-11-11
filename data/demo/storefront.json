@@ -1,0 +1,89 @@
+{
+  "success": true,
+  "activeSeason": "winter",
+  "seasons": {
+    "winter": {
+      "announcement": "Khejurer gur is in stock now. 2027 mango pre-booking is open.",
+      "heroEyebrow": "Rajshahi · winter",
+      "heroTitle": "Gur from the winter tap",
+      "heroSubtitle": "Patali, jhola and nolen gur boiled over a wood fire, no sugar added. 2027 mango pre-booking is open too.",
+      "heroButtonText": "Shop winter gur",
+      "heroButtonLink": "/shop?category=khejurer-gur",
+      "heroSecondaryText": "Pre-book 2027 mangoes",
+      "heroSecondaryLink": "/shop?availability=pre_order",
+      "blocks": {
+        "seasonBoard": true,
+        "harvestCalendar": true,
+        "wholesaleBand": false,
+        "testimonials": true,
+        "orchardReels": true,
+        "delivery": true,
+        "story": true,
+        "faq": true
+      }
+    },
+    "mango": {
+      "announcement": "Mango season is on. Picked late, packed the same day.",
+      "heroEyebrow": "Rajshahi · mango season",
+      "heroTitle": "Mangoes picked late, on purpose",
+      "heroSubtitle": "Gopalbhog, Khirsapat, Langra and more, ripened on the tree and packed the day they are picked.",
+      "heroButtonText": "Shop mangoes",
+      "heroButtonLink": "/shop?category=mango",
+      "heroSecondaryText": "Wholesale by phone",
+      "heroSecondaryLink": "/wholesale",
+      "blocks": {
+        "seasonBoard": false,
+        "harvestCalendar": true,
+        "wholesaleBand": true,
+        "testimonials": true,
+        "orchardReels": true,
+        "delivery": true,
+        "story": true,
+        "faq": true
+      }
+    },
+    "all": {
+      "announcement": "Gawa ghee all year. Ask us about the next mango and gur season.",
+      "heroEyebrow": "Rajshahi · since 2021",
+      "heroTitle": "The story of mangoes",
+      "heroSubtitle": "Rajshahi mangoes, winter khejurer gur and gawa ghee, straight from the people who make them. Wholesale and retail.",
+      "heroButtonText": "Shop now",
+      "heroButtonLink": "/shop",
+      "heroSecondaryText": "Our story",
+      "heroSecondaryLink": "/story",
+      "blocks": {
+        "seasonBoard": true,
+        "harvestCalendar": true,
+        "wholesaleBand": true,
+        "testimonials": true,
+        "orchardReels": true,
+        "delivery": true,
+        "story": true,
+        "faq": true
+      }
+    }
+  },
+  "story": {
+    "ownerName": "",
+    "ownerRole": "Founder, Aamkahon",
+    "ownerPhoto": "/images/founder-jar-display.jpg",
+    "ownerPhotoAlt": "The founder of Aamkahon with jars of gur and ghee",
+    "quote": "আম কেবল একটি ফলের নাম নয় বরং আম জড়িয়ে থাকে আমাদের স্বপ্ন এবং সম্ভবনায় তাই এর শুদ্ধতা আমাদের অঙ্গীকার।",
+    "quoteLang": "bn",
+    "note": "A mango is not just a fruit. Our dreams and our livelihood grow with it, so keeping it pure is our promise.",
+    "facts": [
+      {
+        "label": "Started",
+        "value": "2021"
+      },
+      {
+        "label": "Orchards",
+        "value": "Rajshahi"
+      },
+      {
+        "label": "Delivered to",
+        "value": "64 districts"
+      }
+    ]
+  }
+}

@@ -7,6 +7,10 @@
       "description": "Lock today's price with a 25% advance. Pay the rest on delivery.",
       "attributeKey": "Season",
       "attributeValue": "Pre-booking 2027",
+      "seasons": [
+        "winter",
+        "all"
+      ],
       "productLimit": 8,
       "sortBy": "createdAt",
       "sortOrder": "asc",
@@ -1279,6 +1283,10 @@
       "description": "From the date palms of Rajshahi and Jashore.",
       "attributeKey": "Season",
       "attributeValue": "Winter 2026",
+      "seasons": [
+        "winter",
+        "all"
+      ],
       "productLimit": 8,
       "sortBy": "createdAt",
       "sortOrder": "asc",

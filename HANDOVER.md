@@ -234,15 +234,42 @@ Decisions:
 - amkahon-back:  `feat: phone orders with server-side totals, stock ledger and admin stock API`
 - amkahon-front: `feat(admin): phone order form, printable invoice (A4/80mm), stock page with history`
 
+### Fixes after 6.5 review (2026-11-12)
+- Product form stock is view only when editing (opening stock only on create). Backend
+  updateProduct ignores stock from the body and carries each variant's stock over by its
+  options, so a form save can no longer undo an order. Changes go through Admin > Stock.
+- Orders page filter bar re-laid out (flex wrap, nothing squeezed).
+- Orders vs Pre-bookings are now different screens: GET /api/admin/orders?view=orders|prebookings
+  (backend viewScope). Pre-bookings = pre-orders still Pending/Pre-booked, sorted by harvest
+  date, with advance/balance columns and their own stats; once Confirmed they move to Orders.
+  Stats take the same ?view and add preOrderAdvance / preOrderBalance. sortBy is whitelisted.
+- Storefront header marks the active link (lib/activeLink.js: path + query match, most
+  specific wins; useSearchParams under Suspense). Admin sidebar already had it.
+
 ### Phase 7 — content and catalogue for food products
-- [ ] 7.1 Homepage CMS: season mode (mango / winter gur / all year) picks hero copy, sections
-      and blocks; editable block copy; FAQ model + admin + storefront FAQ (homepage + /faq).
-- [ ] 7.2 Story page: owner spotlight (photo, name, quote, signature line), editable in admin.
-- [ ] 7.3 Hero: desktop background video already supported (Admin > Homepage Hero, Desktop,
-      Video). Add poster image + verify on desktop.
+- [x] 7.1 Season CMS + FAQ (2026-11-12). Backend: models/StorefrontSettings.js (singleton:
+      activeSeason mango|winter|all, per season announcement + hero copy + homepage block
+      switches, owner story), models/Faq.js, services/storefront.js (season filters),
+      GET /api/storefront, GET /api/storefront/faqs, admin /api/admin/storefront (GET/PUT),
+      /api/admin/faqs (CRUD + reorder). HeroContent.season and DynamicSection.seasons tag media
+      and sections; /api/hero and homepage-sections filter by the active season (hero falls
+      back per device if a season has no media). Seed: STOREFRONT (winter active), FAQS,
+      season tags; `npm run seed` adds them (settings only if missing, --reset overwrites).
+      Front: header announcement, Hero copy per season, homepage blocks on/off, FaqBlock
+      (homepage, up to 6) + /faq page with FAQPage JSON-LD, footer + sitemap links.
+      Admin: Storefront Content > Homepage & Season (switch + per season copy/blocks),
+      FAQ, season select on Homepage hero media, season ticks on Product sections.
+- [x] 7.2 Owner spotlight (2026-11-12): components/story/OwnerSpotlight.js on /story (portrait,
+      name, role, quote, note, facts) and the homepage StoryBlock leads with the owner.
+      Admin > Our Story (photo upload). ACTION: client gives owner name + best portrait.
+- [ ] 7.3 Hero: desktop video already supported; add a poster image field + check on desktop.
 - [ ] 7.4 Product form presets for mango / ghee / gur / achar (unit, pack sizes, weight,
       shelf life, storage, origin, attribute suggestions), hide wholesale tab behind a flag.
 - [ ] 7.5 Dashboard for food: season calendar, batch / best-before, top districts.
+
+### Commit messages (fixes + 7.1 + 7.2)
+- amkahon-back:  `feat: season-driven storefront settings, FAQ API, order views and stock-safe product edits`
+- amkahon-front: `feat: season CMS, FAQ, owner spotlight, active nav link; split orders/pre-bookings`
 
 ### Phase 8 — courier integrations
 - [ ] 8.1 Courier fields on Order (provider, consignment id, tracking link, status) + manual

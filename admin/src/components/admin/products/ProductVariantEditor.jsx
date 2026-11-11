@@ -46,6 +46,9 @@ const ProductVariantEditor = ({
     currency = "BDT",
     onOptionsChange,
     onVariantsChange,
+    // Aamkahon: editing an existing product shows stock read-only; it changes
+    // on the Stock page (atomic + history), never from this form.
+    stockReadOnly = false,
 }) => {
     const [preserve, setPreserve] = useState(true);
     const [addMissing, setAddMissing] = useState(true);
@@ -535,10 +538,12 @@ const ProductVariantEditor = ({
                                             type="number"
                                             min="0"
                                             value={variant.stock}
+                                            readOnly={stockReadOnly}
+                                            title={stockReadOnly ? "Change stock from the Stock page" : undefined}
                                             onChange={(e) =>
                                                 setVariantField(vi, "stock", e.target.value)
                                             }
-                                            className="w-full rounded-md border border-gray-300 px-2.5 py-1.5 text-sm focus:border-gray-900 focus:outline-none"
+                                            className={`w-full rounded-md border px-2.5 py-1.5 text-sm focus:outline-none ${stockReadOnly ? "cursor-not-allowed border-gray-200 bg-gray-50 text-gray-600" : "border-gray-300 focus:border-gray-900"}`}
                                         />
                                     </div>
                                 </div>

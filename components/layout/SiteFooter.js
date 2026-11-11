@@ -20,6 +20,7 @@ const COLUMNS = [
             { label: "Wholesale and export", href: "/wholesale" },
             { label: "Delivery and shipping", href: "/delivery" },
             { label: "Track an order", href: "/track-order" },
+            { label: "Questions and answers", href: "/faq" },
             { label: "Our story", href: "/story" },
         ],
     },

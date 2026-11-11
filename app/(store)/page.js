@@ -1,4 +1,5 @@
 import DeliveryBlock from "@/components/home/DeliveryBlock";
+import FaqBlock from "@/components/home/FaqBlock";
 import IntroLoader from "@/components/home/IntroLoader";
 import HarvestCalendar from "@/components/home/HarvestCalendar";
 import Hero from "@/components/home/Hero";
@@ -8,7 +9,7 @@ import SeasonBoard from "@/components/home/SeasonBoard";
 import StoryBlock from "@/components/home/StoryBlock";
 import Testimonials from "@/components/home/Testimonials";
 import WholesaleBand from "@/components/home/WholesaleBand";
-import { getFeaturedReviews, getHero, getHomepageSections, getProducts, getShippingRates } from "@/lib/data/catalog";
+import { getFaqs, getFeaturedReviews, getHero, getHomepageSections, getProducts, getShippingRates, getStorefront } from "@/lib/data/catalog";
 import { dayMonth } from "@/lib/format";
 import { wholesaleTier } from "@/lib/store/productView";
 
@@ -21,13 +22,19 @@ const sectionHref = (s) =>
           : "/shop";
 
 export default async function HomePage() {
-    const [hero, sections, preOrder, rates, quotes] = await Promise.all([
+    const [hero, sections, preOrder, rates, quotes, storefront, faqs] = await Promise.all([
         getHero(),
         getHomepageSections(),
         getProducts({ availability: "pre_order", limit: 50, sortBy: "displayOrder", sortOrder: "asc" }),
         getShippingRates(),
         getFeaturedReviews(6),
+        getStorefront(),
+        getFaqs({ homepage: true }),
     ]);
+    // Block switches for the active season (Admin > Homepage & season).
+    // Missing = shown, so an empty settings document keeps today's homepage.
+    const content = storefront.content;
+    const show = (key) => content.blocks?.[key] !== false;
 
     const calendar = preOrder.products;
     const byDate = calendar
@@ -45,18 +52,19 @@ export default async function HomePage() {
     return (
         <>
             <IntroLoader />
-            <Hero hero={hero} nextHarvest={nextHarvest} />
-            <SeasonBoard advancePercent={advance} firstHarvest={nextHarvest ? dayMonth(nextHarvest.preOrder.expectedDate) : null} />
+            <Hero hero={hero} copy={content} nextHarvest={nextHarvest} />
+            {show("seasonBoard") && <SeasonBoard advancePercent={advance} firstHarvest={nextHarvest ? dayMonth(nextHarvest.preOrder.expectedDate) : null} />}
             {first && <ProductShelf section={first} href={sectionHref(first)} />}
-            <HarvestCalendar products={calendar} />
+            {show("harvestCalendar") && <HarvestCalendar products={calendar} />}
             {rest.map((s) => (
                 <ProductShelf key={s._id} section={s} href={sectionHref(s)} />
             ))}
-            <WholesaleBand example={example} />
-            <Testimonials reviews={quotes} />
-            <OrchardReels />
-            <DeliveryBlock rates={rates} />
-            <StoryBlock />
+            {show("wholesaleBand") && <WholesaleBand example={example} />}
+            {show("testimonials") && <Testimonials reviews={quotes} />}
+            {show("orchardReels") && <OrchardReels />}
+            {show("delivery") && <DeliveryBlock rates={rates} />}
+            {show("faq") && <FaqBlock faqs={faqs.slice(0, 6)} />}
+            {show("story") && <StoryBlock story={storefront.story} />}
         </>
     );
 }

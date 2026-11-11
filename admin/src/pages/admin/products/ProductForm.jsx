@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
-import { useNavigate, useParams } from "@/admin/router";
+import { Link, useNavigate, useParams } from "@/admin/router";
 import categoryApi from "../../../api/categoryApi";
 import { productApi } from "../../../api/productApi";
 import ProductFaq from "../../../components/admin/products/ProductFaq";
@@ -794,18 +794,26 @@ const ProductForm = () => {
                                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                     <div>
                                         {labelRow(
-                                            "Stock",
-                                            "The number of units available for sale.",
-                                            true,
+                                            isEdit ? "Stock (view only)" : "Opening stock",
+                                            isEdit
+                                                ? "Change it on the Stock page, so every change is recorded and an order is never overwritten."
+                                                : "How many units you have now. Later changes are made on the Stock page.",
+                                            !isEdit,
                                         )}
                                         <input
                                             type="number"
                                             min="0"
                                             value={form.stock}
+                                            readOnly={isEdit}
                                             onChange={(e) => set({ stock: e.target.value })}
                                             placeholder="0"
-                                            className={inputCls}
+                                            className={isEdit ? "w-full cursor-not-allowed rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-600" : inputCls}
                                         />
+                                        {isEdit && (
+                                            <Link to="/admin/stock" className="mt-1 inline-block text-xs text-blue-600 hover:underline">
+                                                Update stock on the Stock page
+                                            </Link>
+                                        )}
                                     </div>
                                     <div>
                                         {labelRow(
@@ -821,10 +829,7 @@ const ProductForm = () => {
                                         />
                                     </div>
                                 </div>
-                                <p className="text-xs text-gray-400">
-                                    Tip: after launch, use “Adjust Stock” on the product list — it
-                                    applies a signed +/- change atomically.
-                                </p>
+
                             </div>
                         )}
 
@@ -870,6 +875,7 @@ const ProductForm = () => {
                                             set({ variantOptions })
                                         }
                                         onVariantsChange={(variants) => set({ variants })}
+                                        stockReadOnly={isEdit}
                                     />
                                 ) : (
                                     <p className="rounded-md border border-dashed border-gray-300 px-4 py-6 text-center text-sm text-gray-400">

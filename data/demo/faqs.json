@@ -1,0 +1,77 @@
+{
+  "success": true,
+  "faqs": [
+    {
+      "_id": "a0831ca8f2275edc47659e9d",
+      "question": "How does mango pre-booking work?",
+      "answer": "You pay an advance online (the percentage is shown on each product) and we hold your box for the harvest. The expected date is on the product page. The rest is paid when the mangoes reach you.",
+      "seasons": [
+        "winter",
+        "all"
+      ],
+      "order": 0,
+      "isActive": true,
+      "showOnHomepage": true
+    },
+    {
+      "_id": "3dba6898d80158fbdca8d7e1",
+      "question": "Can I pay cash on delivery?",
+      "answer": "For most orders, yes: you pay the delivery charge and a small COD fee online, and the rest to the courier. Some products travel with couriers that do not collect cash, so those are paid in full online. Checkout shows which applies to your bag.",
+      "seasons": [],
+      "order": 1,
+      "isActive": true,
+      "showOnHomepage": true
+    },
+    {
+      "_id": "7986e8f89bac7bbc85adcc24",
+      "question": "How is the delivery charge worked out?",
+      "answer": "By your area and the weight of the parcel. The exact amount is shown at checkout before you pay.",
+      "seasons": [],
+      "order": 2,
+      "isActive": true,
+      "showOnHomepage": true
+    },
+    {
+      "_id": "34585da99c1fa2aedc3955cf",
+      "question": "Where do you deliver?",
+      "answer": "Anywhere in Bangladesh. Choose home delivery, or pick up from a courier branch in your district where available.",
+      "seasons": [],
+      "order": 3,
+      "isActive": true,
+      "showOnHomepage": true
+    },
+    {
+      "_id": "e5c4a4605bbbf588712042d3",
+      "question": "Do you sell wholesale?",
+      "answer": "Yes, in season. Call or WhatsApp us with the variety and quantity and we will quote you.",
+      "seasons": [],
+      "order": 4,
+      "isActive": true,
+      "showOnHomepage": true
+    },
+    {
+      "_id": "6975a067f0ad2ba9c4a10661",
+      "question": "Are your mangoes ripened with chemicals?",
+      "answer": "No. No formalin, no carbide, no ripening spray. We wait for the fruit to ripen on the tree before picking.",
+      "seasons": [
+        "mango",
+        "all"
+      ],
+      "order": 5,
+      "isActive": true,
+      "showOnHomepage": true
+    },
+    {
+      "_id": "d7c59500843f1a5c41b834bd",
+      "question": "Is your gur made with sugar?",
+      "answer": "No. The sap is boiled down over a wood fire with no sugar and no hydros, which is why it is a little darker than market gur.",
+      "seasons": [
+        "winter",
+        "all"
+      ],
+      "order": 6,
+      "isActive": true,
+      "showOnHomepage": true
+    }
+  ]
+}

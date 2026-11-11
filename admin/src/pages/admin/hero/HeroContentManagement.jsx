@@ -38,6 +38,8 @@ function MediaCard({ device, record, onSaved, slide, onDelete, onMove, isFirst, 
     const [mediaType, setMediaType] = useState(record?.mediaType || "image");
     const [mediaUrl, setMediaUrl] = useState(record?.mediaUrl || "");
     const [label, setLabel] = useState(record?.label || "");
+    // Aamkahon: media can belong to one season (Admin > Homepage & season).
+    const [season, setSeason] = useState(record?.season || "all");
     const [busy, setBusy] = useState(false);
     const fileRef = useRef(null);
     const Icon = device.icon;
@@ -68,7 +70,7 @@ function MediaCard({ device, record, onSaved, slide, onDelete, onMove, isFirst, 
         if (!mediaUrl.trim()) return toast.error("Add a file or a URL first");
         setBusy(true);
         try {
-            const payload = { mediaType, mediaUrl: mediaUrl.trim(), deviceType: device.key, isActive: true, label: label.trim() };
+            const payload = { mediaType, mediaUrl: mediaUrl.trim(), deviceType: device.key, isActive: true, label: label.trim(), season };
             if (record?._id) await heroApi.updateContent(record._id, payload);
             else await heroApi.createContent({ ...payload, title: "Mangoes picked late, on purpose", subtitle: "Rajshahi orchards to your door.", order: nextOrder ?? 0 });
             toast.success(`${device.label} hero saved`);
@@ -130,6 +132,15 @@ function MediaCard({ device, record, onSaved, slide, onDelete, onMove, isFirst, 
                     <input value={label} onChange={(e) => setLabel(e.target.value)} maxLength={40} className={`${field} mt-1`} />
                 </label>
             )}
+
+            <label className="mt-4 block text-sm text-gray-700">
+                Show in
+                <select value={season} onChange={(e) => setSeason(e.target.value)} className={`${field} mt-1`}>
+                    <option value="all">Every season</option>
+                    <option value="mango">Mango season only</option>
+                    <option value="winter">Winter (gur) season only</option>
+                </select>
+            </label>
 
             <div className="mt-4 flex gap-2">
                 {[
@@ -250,6 +261,9 @@ export default function HeroContentManagement() {
 
             <div className="rounded-lg border border-gray-200 bg-white p-5">
                 <h2 className="font-semibold text-gray-900">Text and button</h2>
+                <p className="mt-1 text-xs text-gray-500">
+                    Fallback text. When the active season has its own headline (Homepage &amp; Season), that is shown instead.
+                </p>
                 <div className="mt-4 grid gap-4 sm:grid-cols-2">
                     <label className="block text-sm text-gray-700 sm:col-span-2">
                         Headline

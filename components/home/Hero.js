@@ -11,10 +11,22 @@ import { fullDate } from "@/lib/format";
  * orchard reel. Everything comes from Admin > Homepage hero (HeroContent,
  * GET /api/hero `items`).
  */
-export default function Hero({ hero, nextHarvest }) {
-    const copy = hero.desktop || hero.mobile || {};
-    const title = copy.title || "Mangoes picked late, on purpose";
-    const subtitle = copy.subtitle || "Rajshahi orchards to your door. Wholesale and retail, with 2027 pre-booking open now.";
+export default function Hero({ hero, copy: season = {}, nextHarvest }) {
+    // Copy priority: the active season's text (Admin > Homepage & season),
+    // then the hero media record's text, then built in defaults.
+    const record = hero.desktop || hero.mobile || {};
+    const eyebrow = season.heroEyebrow || "Rajshahi · since 2021";
+    const title = season.heroTitle || record.title || "Mangoes picked late, on purpose";
+    const subtitle = season.heroSubtitle || record.subtitle || "Rajshahi orchards to your door. Wholesale and retail, with 2027 pre-booking open now.";
+    const primary = {
+        text: season.heroButtonText || record.buttonText || "Pre-book mangoes",
+        href: season.heroButtonLink || record.buttonLink || "/shop?availability=pre_order",
+    };
+    const secondary = season.heroSecondaryText
+        ? { text: season.heroSecondaryText, href: season.heroSecondaryLink || "/shop" }
+        : season.heroTitle
+          ? null
+          : { text: "Buy winter gur", href: "/shop?category=khejurer-gur" };
 
     return (
         <section className="relative isolate flex min-h-[calc(100svh-64px)] overflow-hidden bg-ink text-paper md:min-h-[calc(100svh-108px)]">
@@ -28,17 +40,19 @@ export default function Hero({ hero, nextHarvest }) {
             </div>
 
             <div className="wrap relative z-10 flex flex-col justify-end pb-24 pt-28 md:pb-20">
-                <p className="label text-leaf">Rajshahi · since 2021</p>
+                <p className="label text-leaf">{eyebrow}</p>
                 <h1 className="mt-5 max-w-[13ch] text-display font-medium">{title}</h1>
                 <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-paper/80 md:text-xl">{subtitle}</p>
 
                 <div className="mt-8 flex flex-wrap gap-3">
-                    <Link href={copy.buttonLink || "/shop?availability=pre_order"} className="btn btn-mango">
-                        {copy.buttonText || "Pre-book mangoes"} <ArrowRight size={17} aria-hidden />
+                    <Link href={primary.href} className="btn btn-mango">
+                        {primary.text} <ArrowRight size={17} aria-hidden />
                     </Link>
-                    <Link href="/shop?category=khejurer-gur" className="btn btn-ghost-light bg-ink/20">
-                        Buy winter gur
-                    </Link>
+                    {secondary && (
+                        <Link href={secondary.href} className="btn btn-ghost-light bg-ink/20">
+                            {secondary.text}
+                        </Link>
+                    )}
                 </div>
 
                 {nextHarvest && (

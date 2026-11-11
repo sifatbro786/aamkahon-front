@@ -10,6 +10,7 @@ export default async function sitemap() {
         page("/wholesale", 0.8),
         page("/story", 0.6),
         page("/delivery", 0.5),
+        page("/faq", 0.5),
         page("/contact", 0.5),
         page("/track-order", 0.3),
         page("/privacy", 0.2),

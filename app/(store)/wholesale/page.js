@@ -24,7 +24,7 @@ export default async function WholesalePage() {
     // One row per pack size that has a wholesale price.
     const rows = products.flatMap((p) =>
         p.hasVariants
-            ? p.variants.filter((v) => v.wholesalePrice && v.price).map((v) => ({ p, pack: v.options.map((o) => o.value).join(" / "), retail: v.price, wholesale: v.wholesalePrice }))
+            ? (p.variants || []).filter((v) => v.wholesalePrice && v.price).map((v) => ({ p, pack: v.options.map((o) => o.value).join(" / "), retail: v.price, wholesale: v.wholesalePrice }))
             : p.wholesale?.price ? [{ p, pack: unitOf(p), retail: p.price, wholesale: p.wholesale.price }] : [],
     );
 
