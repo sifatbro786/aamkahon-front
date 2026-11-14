@@ -6,6 +6,8 @@ export const analyticsApi = {
     axiosInstance.get("/admin/analytics/dashboard", { params: { period } }),
   getSalesReport: (params) =>
     axiosInstance.get("/admin/analytics/sales-report", { params }),
+  // -> { success, data: { activeSeason, calendar, bestBefore, warnDays, topDistricts, districtWindowDays, noDistrictOrders } }
+  getFood: (params) => axiosInstance.get("/admin/analytics/food", { params }),
 };
 
 // Maps to routes/admin/adminRoutes.js (mounted at /api/admin) — user management

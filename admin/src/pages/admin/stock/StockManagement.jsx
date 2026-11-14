@@ -262,6 +262,13 @@ function Movements({ product, onClear }) {
                                         <td className="px-4 py-2.5 text-xs text-gray-500">
                                             {m.by?.name || "System"}
                                             {m.note ? ` · ${m.note}` : ""}
+                                            {(m.batch || m.bestBefore) && (
+                                                <span className="block text-gray-600">
+                                                    {m.batch ? `Batch ${m.batch}` : ""}
+                                                    {m.batch && m.bestBefore ? " · " : ""}
+                                                    {m.bestBefore ? `Best before ${new Date(m.bestBefore).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}` : ""}
+                                                </span>
+                                            )}
                                         </td>
                                     </tr>
                                 ))}

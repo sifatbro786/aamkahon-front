@@ -90,6 +90,9 @@ the page never scrolls sideways (checked at 390 px and 1440 px).
   (`/admin/faq`). Storefront reads them through `getStorefront()` / `getFaqs()` in
   lib/data/catalog.js; missing values fall back to built in copy in each component.
   Orders and Pre-bookings call the list/stats with `?view=orders|prebookings`.
+- Phase 7.4/7.5: product presets bar (`admin/src/config/productPresets.js`, client data),
+  Food details in the product form, Batch/Best before on Stock in, dashboard
+  `components/admin/dashboard/FoodDashboard.jsx` (GET /admin/analytics/food).
 - Static demo: `lib/demo/adminDemo.js` (fictional orders, inquiries, users, stats
   built from the fixtures). Admin reads need the demo token; writes return 403.
 - ESLint: React Compiler rules are warnings for admin/src (ported code, see eslint.config.mjs).

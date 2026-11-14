@@ -41,6 +41,7 @@ import {
 import toast from "react-hot-toast";
 import { analyticsApi } from "../../../api/adminApi";
 import LowStockWidget from "../../../components/admin/dashboard/LowStockWidget";
+import FoodDashboard from "../../../components/admin/dashboard/FoodDashboard";
 
 /* --------------------------------- helpers -------------------------------- */
 
@@ -536,6 +537,9 @@ const AdminDashboardPage = () => {
                     )}
                 </Panel>
             </div>
+
+            {/* Aamkahon 7.5: season calendar, best-before, top districts. */}
+            <FoodDashboard />
 
             {/* Phase 9: surfaces restock work that otherwise only shows up when
                 something sells out. Hides itself if the query fails. */}

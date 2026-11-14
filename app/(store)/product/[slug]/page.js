@@ -13,7 +13,7 @@ import { SITE_URL } from "@/lib/config";
 import { getProductBySlug, getProductReviews, getProducts, getRelated } from "@/lib/data/catalog";
 import { fullDate } from "@/lib/format";
 import { allImages, mediaUrl } from "@/lib/media";
-import { availabilityBadge, displayPrice, harvestDate, isPriceHidden, unitOf } from "@/lib/store/productView";
+import { availabilityBadge, displayPrice, foodFacts, harvestDate, isPriceHidden, unitOf } from "@/lib/store/productView";
 
 const PLACEHOLDER = "__placeholder__";
 
@@ -51,7 +51,8 @@ export default async function ProductPage({ params }) {
     const hidden = isPriceHidden(product);
     const harvest = harvestDate(product);
     const cat = product.subCategory || product.category;
-    const facts = (product.attributes || []).filter((a) => a.key !== "Season");
+    const attrs = (product.attributes || []).filter((a) => a.key !== "Season");
+    const facts = [...attrs, ...foodFacts(product, attrs)];
 
     const price = displayPrice(product);
     const jsonLd = {

@@ -288,9 +288,32 @@ Decisions:
       posterUrl. Fixtures regenerated.
       NOT browser tested here (no browser in Claude's shell, next build needs Windows swc):
       Sifat runs `npm run build` and checks desktop with a real landscape video + poster.
-- [ ] 7.4 Product form presets for mango / ghee / gur / achar (unit, pack sizes, weight,
-      shelf life, storage, origin, attribute suggestions). (Wholesale tier flag done 2026-11-14.)
-- [ ] 7.5 Dashboard for food: season calendar, batch / best-before, top districts.
+- [x] 7.4 Product presets (2026-11-14). Product.food {shelfLifeDays, seasonMonths[1-12]}
+      (origin/storage stay Attributes rows, only displayed). Admin product form: "Start from
+      a preset" bar (Mango, Khejurer gur, Ghee, Achar) from admin/src/config/productPresets.js
+      (CLIENT DATA; empty array hides the bar). New product: preset sets unit, payment rule,
+      availability, packs with weight, shelf life, season months, Origin/Storage attributes;
+      prices stay empty. Editing: only blank shelf life / season months + missing attributes,
+      never packs or stock. Selling & Season tab: "Food details" (shelf life days, month
+      toggles). Product page facts add "In season" (e.g. Dec to Feb) and "Shelf life" unless an
+      attribute with that name exists. Seed has estimated food values (client to confirm).
+- [x] 7.5 Food dashboard (2026-11-14). GET /api/admin/analytics/food?days=&warnDays=.
+      Dashboard: Season calendar (12 months per product, current month, pre-booking ship
+      dot, active season), Best-before watch (stock-in lots whose best-before is within 30
+      days or up to 7 days past, product/pack still in stock; sales are NOT allocated to
+      lots, UI says check the shelf), Top districts (live statuses incl. Pre-booked, 30/90/365
+      days, orders, customers, revenue, share; courier pickup without district counted apart).
+      Stock page: Stock in takes Batch + Best before (blank on a purchase = today + shelf
+      life); history shows them. StockMovement.batch/bestBefore.
+      Fix found on the way: product list quick +/- (PATCH /api/admin/products/:id/stock) did a
+      raw $inc with no ledger row and moved the parent stock of variant products. It now goes
+      through stockLedger.adjustStock and refuses variant products.
+      Static demo: /admin/analytics/food answered by lib/demo/adminDemo.js (fictional lots).
+      NOT run against a DB or in a browser here (no DB/browser from Claude's shell; next build
+      needs Windows swc). Logic checks pass (lot defaults, schema month range, presets, month
+      ranges, demo handler). ACTION: `npm run seed -- --reset` to put food values on the
+      seeded products, then `npm run build` and look at /admin and a product page.
+- [ ] Later (asked, not built): automatic season switch by date and "in season first" shop sort.
 
 ### Commit messages (fixes + 7.1 + 7.2)
 - amkahon-back:  `feat: season-driven storefront settings, FAQ API, order views and stock-safe product edits`
@@ -300,7 +323,11 @@ Decisions:
 - amkahon-back:  `feat: hero video poster field with validated admin hero routes`
 - amkahon-front: `feat: hero video poster, fade-in and stall-safe desktop slider`
 
-### Phase 8 — courier integrations
+### Commit messages (7.4 + 7.5)
+- amkahon-back:  `feat: food fields, stock lots with best-before, food dashboard API, ledgered quick stock`
+- amkahon-front: `feat: product presets, food details, lot entry on stock in, season/best-before/district dashboard`
+
+### Phase 8 — courier integrations (after the client gives courier details)
 - [ ] 8.1 Courier fields on Order (provider, consignment id, tracking link, status) + manual
       entry for AJR / Sundarban, tracking link on the customer's order page.
 - [ ] 8.2 Steadfast API (merchant API key + secret from Steadfast support): create

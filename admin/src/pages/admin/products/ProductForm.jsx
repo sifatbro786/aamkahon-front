@@ -28,6 +28,9 @@ import InfoTip from "../../../components/admin/products/InfoTip";
 import productFaqData from "../../../components/admin/products/productFaqData";
 import { productFinalPrice, formatPrice } from "../../../components/admin/products/productPricing";
 import { WHOLESALE_TIER } from "@/lib/config";
+import { PRODUCT_PRESETS, applyPreset } from "../../../config/productPresets";
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 const SECTIONS = [
     { id: "basic", label: "Basic Information", icon: Info },
@@ -78,6 +81,7 @@ const emptyForm = {
     wholesale: { enabled: false, minQty: "", price: "" },
     availability: "in_stock",
     preOrder: { expectedDate: "", advancePercent: 25, maxQtyPerOrder: "", note: "" },
+    food: { shelfLifeDays: "", seasonMonths: [] },
 };
 
 /* --------------------------- category tree helpers ------------------------ */
@@ -112,6 +116,26 @@ const ProductForm = () => {
     const [attrVocab, setAttrVocab] = useState({});
 
     const set = (patch) => setForm((f) => ({ ...f, ...patch }));
+    const [presetId, setPresetId] = useState("");
+
+    // New product: preset replaces the defaults (packs included). Editing:
+    // fills blank fields only (see config/productPresets.js).
+    const applyChosenPreset = () => {
+        const preset = PRODUCT_PRESETS.find((x) => x.id === presetId);
+        if (!preset) return;
+        setForm((f) => applyPreset(f, preset, { fillAll: !isEdit, emptyForm }));
+        toast.success(
+            isEdit
+                ? `${preset.label} preset added the missing details`
+                : `${preset.label} preset applied. Set the prices per pack in Variants.`,
+        );
+    };
+    const toggleMonth = (m) =>
+        setForm((f) => {
+            const has = f.food.seasonMonths.includes(m);
+            const seasonMonths = has ? f.food.seasonMonths.filter((x) => x !== m) : [...f.food.seasonMonths, m].sort((a, b) => a - b);
+            return { ...f, food: { ...f.food, seasonMonths } };
+        });
 
     // Attribute vocabulary for datalist autocomplete
     useEffect(() => {
@@ -199,6 +223,10 @@ const ProductForm = () => {
                             advancePercent: p.preOrder?.advancePercent ?? 25,
                             maxQtyPerOrder: p.preOrder?.maxQtyPerOrder ?? "",
                             note: p.preOrder?.note || "",
+                        },
+                        food: {
+                            shelfLifeDays: p.food?.shelfLifeDays ?? "",
+                            seasonMonths: p.food?.seasonMonths || [],
                         },
                     });
                 }
@@ -292,6 +320,10 @@ const ProductForm = () => {
                 advancePercent: Number(form.preOrder.advancePercent) || 0,
                 maxQtyPerOrder: form.preOrder.maxQtyPerOrder === "" ? null : Number(form.preOrder.maxQtyPerOrder),
                 note: form.preOrder.note,
+            },
+            food: {
+                shelfLifeDays: form.food.shelfLifeDays === "" ? null : Number(form.food.shelfLifeDays),
+                seasonMonths: form.food.seasonMonths,
             },
         };
 
@@ -417,6 +449,33 @@ const ProductForm = () => {
                     </button>
                 </div>
             </div>
+
+            {PRODUCT_PRESETS.length > 0 && (
+                <div className="mb-5 flex flex-wrap items-center gap-3 rounded-lg border border-gray-200 bg-white px-4 py-3">
+                    <span className="text-sm font-medium text-gray-800">Start from a preset</span>
+                    <select value={presetId} onChange={(e) => setPresetId(e.target.value)} className="rounded-md border border-gray-300 px-3 py-1.5 text-sm">
+                        <option value="">Choose a product type</option>
+                        {PRODUCT_PRESETS.map((x) => (
+                            <option key={x.id} value={x.id}>
+                                {x.label}
+                            </option>
+                        ))}
+                    </select>
+                    <button
+                        type="button"
+                        onClick={applyChosenPreset}
+                        disabled={!presetId}
+                        className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-40"
+                    >
+                        Apply
+                    </button>
+                    <span className="text-xs text-gray-500">
+                        {isEdit
+                            ? "Adds shelf life, season months and missing attributes only. Nothing already set is changed."
+                            : "Unit, packs with weight, shelf life, season months, payment rule, origin and storage. Prices stay yours."}
+                    </span>
+                </div>
+            )}
 
             <div className="grid grid-cols-1 gap-5 lg:grid-cols-[220px_1fr]">
                 {/* Left nav */}
@@ -791,6 +850,45 @@ const ProductForm = () => {
                                             </div>
                                         </div>
                                     )}
+                                </div>
+
+                                <div className="rounded-lg border border-gray-200 p-4">
+                                    <h3 className="text-sm font-semibold text-gray-900">Food details</h3>
+                                    <p className="mt-0.5 text-xs text-gray-500">
+                                        Origin and storage go in Attributes. Shelf life and season months are shown on the product page and used by the dashboard.
+                                    </p>
+                                    <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-[180px_1fr]">
+                                        <div>
+                                            {labelRow("Shelf life (days)", "From packing. Fills best-before when you receive stock on the Stock page.")}
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                max="3650"
+                                                value={form.food.shelfLifeDays}
+                                                onChange={(e) => set({ food: { ...form.food, shelfLifeDays: e.target.value } })}
+                                                className={inputCls}
+                                            />
+                                        </div>
+                                        <div>
+                                            {labelRow("In season", "Months it is sold fresh. None ticked = all year.")}
+                                            <div className="flex flex-wrap gap-1.5">
+                                                {MONTHS.map((m, i) => {
+                                                    const on = form.food.seasonMonths.includes(i + 1);
+                                                    return (
+                                                        <button
+                                                            key={m}
+                                                            type="button"
+                                                            onClick={() => toggleMonth(i + 1)}
+                                                            aria-pressed={on}
+                                                            className={`w-12 rounded-md border py-1.5 text-xs ${on ? "border-gray-900 bg-gray-900 text-white" : "border-gray-200 text-gray-600 hover:bg-gray-50"}`}
+                                                        >
+                                                            {m}
+                                                        </button>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         )}

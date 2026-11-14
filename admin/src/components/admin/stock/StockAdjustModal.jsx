@@ -17,6 +17,9 @@ export default function StockAdjustModal({ item, variant, onClose, onSaved }) {
     const [type, setType] = useState("purchase");
     const [quantity, setQuantity] = useState("");
     const [note, setNote] = useState("");
+    // Lot info, stock in only. Blank best-before on a purchase = today + shelf life (server side).
+    const [batch, setBatch] = useState("");
+    const [bestBefore, setBestBefore] = useState("");
     const [saving, setSaving] = useState(false);
     const current = variant ? variant.stock : item.stock;
     const q = parseInt(quantity, 10);
@@ -33,7 +36,8 @@ export default function StockAdjustModal({ item, variant, onClose, onSaved }) {
         if (after < 0) return toast.error(`Only ${current} in stock`);
         setSaving(true);
         try {
-            const { data } = await stockApi.adjust({ productId: item._id, options: variant?.options, mode, quantity: q, type, note: note.trim() || undefined });
+            const lot = mode === "in" ? { batch: batch.trim() || undefined, bestBefore: bestBefore || undefined } : {};
+            const { data } = await stockApi.adjust({ productId: item._id, options: variant?.options, mode, quantity: q, type, note: note.trim() || undefined, ...lot });
             toast.success(`Stock is now ${data.after} ${item.unit}`);
             onSaved();
         } catch (err) {
@@ -82,6 +86,23 @@ export default function StockAdjustModal({ item, variant, onClose, onSaved }) {
                             </select>
                         </label>
                     </div>
+                    {mode === "in" && (
+                        <div className="grid grid-cols-2 gap-3">
+                            <label className="text-sm text-gray-700">
+                                Batch (optional)
+                                <input className={`${field} mt-1`} value={batch} onChange={(e) => setBatch(e.target.value)} maxLength={60} placeholder="e.g. GUR-1126" />
+                            </label>
+                            <label className="text-sm text-gray-700">
+                                Best before
+                                <input type="date" className={`${field} mt-1`} value={bestBefore} onChange={(e) => setBestBefore(e.target.value)} />
+                            </label>
+                            <p className="col-span-2 -mt-1 text-xs text-gray-500">
+                                {type === "purchase" && item.shelfLifeDays > 0
+                                    ? `Leave the date blank to use the shelf life: ${item.shelfLifeDays} days from today.`
+                                    : "Lots near their best-before show on the dashboard."}
+                            </p>
+                        </div>
+                    )}
                     <label className="block text-sm text-gray-700">
                         Note (optional)
                         <input className={`${field} mt-1`} value={note} onChange={(e) => setNote(e.target.value)} maxLength={500} placeholder="e.g. Batch from Bagha orchard, 12 crates" />

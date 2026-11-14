@@ -177,6 +177,13 @@
             "maxQtyPerOrder": 200,
             "note": "Ships from 30 May 2027"
           },
+          "food": {
+            "shelfLifeDays": 5,
+            "seasonMonths": [
+              5,
+              6
+            ]
+          },
           "purchaseCount": 0,
           "viewCount": 0,
           "createdAt": "2026-11-01T00:00:00.000Z",
@@ -344,6 +351,12 @@
             "advancePercent": 25,
             "maxQtyPerOrder": 200,
             "note": "Ships from 4 June 2027"
+          },
+          "food": {
+            "shelfLifeDays": 5,
+            "seasonMonths": [
+              6
+            ]
           },
           "purchaseCount": 0,
           "viewCount": 0,
@@ -513,6 +526,13 @@
             "maxQtyPerOrder": 200,
             "note": "Ships from 17 June 2027"
           },
+          "food": {
+            "shelfLifeDays": 5,
+            "seasonMonths": [
+              6,
+              7
+            ]
+          },
           "purchaseCount": 0,
           "viewCount": 0,
           "createdAt": "2026-11-01T00:00:00.000Z",
@@ -675,6 +695,13 @@
             "advancePercent": 25,
             "maxQtyPerOrder": 200,
             "note": "Ships from 22 June 2027"
+          },
+          "food": {
+            "shelfLifeDays": 5,
+            "seasonMonths": [
+              6,
+              7
+            ]
           },
           "purchaseCount": 0,
           "viewCount": 0,
@@ -839,6 +866,13 @@
             "maxQtyPerOrder": 300,
             "note": "Ships from 27 June 2027"
           },
+          "food": {
+            "shelfLifeDays": 5,
+            "seasonMonths": [
+              6,
+              7
+            ]
+          },
           "purchaseCount": 0,
           "viewCount": 0,
           "createdAt": "2026-11-01T00:00:00.000Z",
@@ -1002,6 +1036,13 @@
             "maxQtyPerOrder": 200,
             "note": "Ships from 15 July 2027"
           },
+          "food": {
+            "shelfLifeDays": 5,
+            "seasonMonths": [
+              7,
+              8
+            ]
+          },
           "purchaseCount": 0,
           "viewCount": 0,
           "createdAt": "2026-11-01T00:00:00.000Z",
@@ -1156,6 +1197,13 @@
             "maxQtyPerOrder": null,
             "note": "Price announced July 2027"
           },
+          "food": {
+            "shelfLifeDays": 5,
+            "seasonMonths": [
+              8,
+              9
+            ]
+          },
           "purchaseCount": 0,
           "viewCount": 0,
           "createdAt": "2026-11-01T00:00:00.000Z",
@@ -1263,6 +1311,12 @@
             "advancePercent": 30,
             "maxQtyPerOrder": null,
             "note": ""
+          },
+          "food": {
+            "shelfLifeDays": 5,
+            "seasonMonths": [
+              6
+            ]
           },
           "purchaseCount": 0,
           "viewCount": 0,
@@ -1464,6 +1518,14 @@
             "maxQtyPerOrder": null,
             "note": ""
           },
+          "food": {
+            "shelfLifeDays": 180,
+            "seasonMonths": [
+              12,
+              1,
+              2
+            ]
+          },
           "purchaseCount": 0,
           "viewCount": 0,
           "createdAt": "2026-11-01T00:00:00.000Z",
@@ -1623,6 +1685,14 @@
             "maxQtyPerOrder": null,
             "note": ""
           },
+          "food": {
+            "shelfLifeDays": 90,
+            "seasonMonths": [
+              12,
+              1,
+              2
+            ]
+          },
           "purchaseCount": 0,
           "viewCount": 0,
           "createdAt": "2026-11-01T00:00:00.000Z",
@@ -1729,6 +1799,13 @@
             "advancePercent": 25,
             "maxQtyPerOrder": null,
             "note": ""
+          },
+          "food": {
+            "shelfLifeDays": 60,
+            "seasonMonths": [
+              12,
+              1
+            ]
           },
           "purchaseCount": 0,
           "viewCount": 0,
