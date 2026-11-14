@@ -16,6 +16,8 @@ import {
     validateItem,
 } from "../../../components/admin/navbar/navbarConstants";
 
+const SHOW_LOGO_PANEL = false;
+
 const Panel = ({ title, subtitle, children, className = "" }) => (
     <div className={`rounded-lg border border-gray-200 bg-white ${className}`}>
         <div className="border-b border-gray-100 px-5 py-3.5">
@@ -265,7 +267,10 @@ const NavbarConfiguration = () => {
                 </div>
             </div>
 
-            {/* Logo */}
+            {/* Logo panel hidden (Aamkahon): the storefront header uses the designed
+                transparent lockup (public/images/logo-lockup.png), not an upload.
+                Set SHOW_LOGO_PANEL to true for a store whose header reads it. */}
+            {SHOW_LOGO_PANEL && (
             <Panel title="Logo" subtitle="The image and where clicking it takes visitors">
                 <div className="flex flex-wrap items-start gap-5">
                     <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-md border border-gray-200 bg-gray-50">
@@ -331,6 +336,7 @@ const NavbarConfiguration = () => {
                     </div>
                 </div>
             </Panel>
+            )}
 
             {/* Navigation items */}
             <Panel

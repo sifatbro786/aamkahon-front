@@ -28,6 +28,7 @@ const PAGE_SIZE = 10;
 const fmtDate = (d) =>
     d
         ? new Date(d).toLocaleDateString("en-GB", {
+              timeZone: "Asia/Dhaka",
               day: "numeric",
               month: "short",
               year: "numeric",

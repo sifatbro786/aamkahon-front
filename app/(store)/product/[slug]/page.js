@@ -30,12 +30,14 @@ export async function generateMetadata({ params }) {
     const product = slug === PLACEHOLDER ? null : await getProductBySlug(slug);
     if (!product) return { title: "Product not found" };
     const img = allImages(product)[0];
-    const description = (product.description || "").slice(0, 155);
+    // Admin SEO tab values win; otherwise built from the product.
+    const description = (product.metaDescription || product.description || "").slice(0, 160);
+    const title = product.metaTitle || (product.nameBn ? `${product.name} (${product.nameBn})` : product.name);
     return {
-        title: product.nameBn ? `${product.name} (${product.nameBn})` : product.name,
+        title,
         description,
         alternates: { canonical: `/product/${product.slug}` },
-        openGraph: { title: product.name, description, images: img ? [{ url: img.src }] : undefined },
+        openGraph: { title, description, images: img ? [{ url: img.src }] : undefined },
     };
 }
 

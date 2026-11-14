@@ -6,7 +6,6 @@ import {
     ShoppingCart,
     Ticket,
     Megaphone,
-    FileText,
     ListTree,
     Users,
     ShoppingBag,
@@ -32,9 +31,11 @@ import {
 // heroContentAdminRoutes, offerPopupAdminRoutes, aplusContentAdminRoutes,
 // pageMetaAdminRoutes, navbarAdminRoutes, adminRoutes (users), adminCartRoutes,
 // reviewAdminRoutes, adminShippingRoutes.
-// Aamkahon: A+ Content, product Campaigns, Cart Campaigns and Hero Slides are
-// hidden (nav AND routes in admin/routes.js). The pages are kept in admin/src,
+// Aamkahon: A+ Content, product Campaigns, Cart Campaigns, Hero Slides and
+// Page Meta are hidden (nav AND routes in admin/routes.js). The pages are kept in admin/src,
 // so re-enabling one for a client is a two line change.
+// `staff: true` = visible to staff accounts (see STAFF_ROUTES in admin/routes.js).
+// Everything else is admin (owner) only.
 export const adminNavGroups = [
     {
         label: "Overview",
@@ -48,14 +49,14 @@ export const adminNavGroups = [
     {
         label: "Catalog",
         items: [
-            { label: "Orders", path: "/admin/orders", icon: ShoppingCart, built: true },
+            { label: "Orders", path: "/admin/orders", staff: true, icon: ShoppingCart, built: true },
             // Aamkahon
-            { label: "Pre-bookings", path: "/admin/pre-bookings", icon: CalendarClock, built: true },
-            { label: "Inquiries", path: "/admin/inquiries", icon: Inbox, built: true },
+            { label: "Pre-bookings", path: "/admin/pre-bookings", staff: true, icon: CalendarClock, built: true },
+            { label: "Inquiries", path: "/admin/inquiries", staff: true, icon: Inbox, built: true },
             { label: "Categories", path: "/admin/categories", icon: FolderTree, built: true },
             { label: "Products", path: "/admin/products", icon: Package, built: true },
             // Aamkahon: levels, stock in/out/count, ledger history.
-            { label: "Stock", path: "/admin/stock", icon: Boxes, built: true },
+            { label: "Stock", path: "/admin/stock", staff: true, icon: Boxes, built: true },
             { label: "Shipping", path: "/admin/shipping", icon: Truck, built: true },
         ],
     },
@@ -63,9 +64,9 @@ export const adminNavGroups = [
         label: "Marketing",
         items: [
             { label: "Coupons", path: "/admin/coupons", icon: Ticket, built: true },
-            // Controls the storefront popup: copy, image, button, date window,
-            // priority, and how often it reappears (once / daily / always).
-            { label: "Offer Popups", path: "/admin/offers", icon: FileText, built: true },
+            // Storefront popup (components/layout/OfferPopup.js): copy, image,
+            // button, date window, season, priority, frequency (once/daily/always).
+            { label: "Offer Popups", path: "/admin/offers", icon: Megaphone, built: true },
         ],
     },
     {
@@ -78,15 +79,14 @@ export const adminNavGroups = [
             { label: "Product Sections", path: "/admin/sections", icon: LayoutGrid, built: true },
             { label: "Our Story", path: "/admin/our-story", icon: UserRound, built: true },
             { label: "FAQ", path: "/admin/faq", icon: HelpCircle, built: true },
-            { label: "Page Meta / SEO", path: "/admin/page-meta", icon: ListTree, built: true },
         ],
     },
     {
         label: "Customers",
         items: [
             // Aamkahon: lead book (CSV import, manual, auto from orders/inquiries).
-            { label: "Customer List", path: "/admin/customers", icon: Contact, built: true },
-            { label: "Users", path: "/admin/users", icon: Users, built: true },
+            { label: "Customer List", path: "/admin/customers", staff: true, icon: Contact, built: true },
+            { label: "Team", path: "/admin/users", icon: Users, built: true },
             { label: "Reviews", path: "/admin/reviews", icon: Star, built: true },
         ],
     },
@@ -95,3 +95,7 @@ export const adminNavGroups = [
 // Flat list — used by AppRoute.jsx to generate placeholder routes and by
 // AdminLayout to resolve the current page title for the topbar.
 export const adminNavFlat = adminNavGroups.flatMap((g) => g.items);
+
+/** Menu for the signed-in role: staff get only their items, empty groups drop. */
+export const navGroupsFor = (isAdmin) =>
+    isAdmin ? adminNavGroups : adminNavGroups.map((g) => ({ ...g, items: g.items.filter((i) => i.staff) })).filter((g) => g.items.length);

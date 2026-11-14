@@ -35,8 +35,8 @@ const ReviewDetailsModal = ({ open, review, onClose, onDecide, onDelete, busy })
     const sMeta = statusMeta(review.status);
     // Bulk demo reviews are seeded against a random, non-existent user id —
     // populate() legitimately returns null for those.
-    const userName = review.user?.name || "Demo Customer";
-    const userEmail = review.user?.email || "—";
+    const userName = review.user?.name || review.reviewerName || "Customer";
+    const userEmail = review.user?.email || [review.source, review.reviewerDistrict].filter(Boolean).join(" · ") || "—";
 
     const close = () => {
         if (busy) return;

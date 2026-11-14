@@ -1,6 +1,9 @@
 "use client";
 // Port of footpath-frontend/src/context/AuthContext.jsx. Token in
 // localStorage, validated against /auth/me on load.
+// Aamkahon: only the store team signs in (no customer accounts).
+//   isAdmin  owner, full power        isStaff  limited team member
+//   isTeam   either: may open /admin
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 import { authApi } from "@/lib/api/authApi";
@@ -47,15 +50,6 @@ export function AuthProvider({ children }) {
         return data;
     }, []);
 
-    // register returns no token: OTP verification comes first.
-    const register = useCallback(async (payload) => (await authApi.register(payload)).data, []);
-
-    const verifyEmail = useCallback(async ({ email, otp }) => {
-        const { data } = await authApi.verifyEmail({ email, otp });
-        persist(data.token, data.user);
-        return data;
-    }, []);
-
     const logout = useCallback(async () => {
         try {
             await authApi.logout();
@@ -72,15 +66,15 @@ export function AuthProvider({ children }) {
             user,
             loading,
             isAuthenticated: Boolean(user),
-            isAdmin: user?.role === "admin" || user?.role === "executive",
+            isAdmin: user?.role === "admin",
+            isStaff: user?.role === "staff",
+            isTeam: user?.role === "admin" || user?.role === "staff",
             login,
-            register,
-            verifyEmail,
             logout,
             updateUser: setUser,
             refreshUser: loadUser,
         }),
-        [user, loading, login, register, verifyEmail, logout, loadUser],
+        [user, loading, login, logout, loadUser],
     );
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

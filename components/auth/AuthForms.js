@@ -33,13 +33,12 @@ export function LoginForm() {
         setBusy(true);
         setError(null);
         try {
-            const data = await login({ ...form, rememberMe: true });
-            const isAdmin = ["admin", "executive"].includes(data.user?.role);
-            router.replace(safeNext(sp.get("next")) || (isAdmin ? "/admin" : "/account"));
+            await login({ ...form, rememberMe: true });
+            // Team only (the API refuses anyone else). Stay on admin paths.
+            const next = safeNext(sp.get("next"));
+            router.replace(next && next.startsWith("/admin") ? next : "/admin");
         } catch (err) {
-            const msg = errorMessage(err, "Could not sign in.");
-            if (/verify/i.test(msg)) router.push(`/verify-email?email=${encodeURIComponent(form.email)}`);
-            else setError(msg);
+            setError(errorMessage(err, "Could not sign in."));
         } finally {
             setBusy(false);
         }
@@ -62,126 +61,6 @@ export function LoginForm() {
             </div>
             <button className="btn btn-ink h-12 w-full" disabled={busy}>
                 {busy ? "Signing in" : "Sign in"}
-            </button>
-            {!IS_STATIC && (
-                <p className="pt-2 text-center text-[15px] text-muted">
-                    New here?{" "}
-                    <Link href="/register" className="text-ink underline underline-offset-4">
-                        Create an account
-                    </Link>
-                </p>
-            )}
-        </form>
-    );
-}
-
-export function RegisterForm() {
-    const { register } = useAuth();
-    const router = useRouter();
-    const [form, setForm] = useState({ name: "", email: "", password: "", acceptTerms: false });
-    const [error, setError] = useState(null);
-    const [busy, setBusy] = useState(false);
-
-    const submit = async (e) => {
-        e.preventDefault();
-        if (form.password.length < 8) return setError("Use at least 8 characters for your password.");
-        if (!form.acceptTerms) return setError("Please accept the terms to continue.");
-        setBusy(true);
-        setError(null);
-        try {
-            const data = await register(form);
-            router.push(`/verify-email?email=${encodeURIComponent(data.email || form.email)}`);
-        } catch (err) {
-            setError(errorMessage(err, "Could not create the account."));
-        } finally {
-            setBusy(false);
-        }
-    };
-
-    return (
-        <form onSubmit={submit} className="space-y-4">
-            {error && <Alert>{error}</Alert>}
-            <Field label="Full name">
-                <input className={inputCls} autoComplete="name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
-            </Field>
-            <Field label="Email">
-                <input className={inputCls} type="email" autoComplete="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required />
-            </Field>
-            <Field label="Password" hint="At least 8 characters">
-                <input className={inputCls} type="password" autoComplete="new-password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required />
-            </Field>
-            <label className="flex items-start gap-3 text-[14px] text-muted">
-                <input type="checkbox" className="mt-0.5 size-4 accent-[var(--color-ink)]" checked={form.acceptTerms} onChange={(e) => setForm({ ...form, acceptTerms: e.target.checked })} />
-                <span>
-                    I agree to the{" "}
-                    <Link href="/terms" className="text-ink underline underline-offset-4">
-                        terms
-                    </Link>{" "}
-                    and{" "}
-                    <Link href="/privacy" className="text-ink underline underline-offset-4">
-                        privacy policy
-                    </Link>
-                    .
-                </span>
-            </label>
-            <button className="btn btn-ink h-12 w-full" disabled={busy || IS_STATIC}>
-                {busy ? "Creating account" : "Create account"}
-            </button>
-            <p className="pt-2 text-center text-[15px] text-muted">
-                Already have one?{" "}
-                <Link href="/login" className="text-ink underline underline-offset-4">
-                    Sign in
-                </Link>
-            </p>
-        </form>
-    );
-}
-
-export function VerifyEmailForm() {
-    const { verifyEmail } = useAuth();
-    const router = useRouter();
-    const sp = useSearchParams();
-    const email = sp.get("email") || "";
-    const [otp, setOtp] = useState("");
-    const [msg, setMsg] = useState(null);
-    const [busy, setBusy] = useState(false);
-
-    const submit = async (e) => {
-        e.preventDefault();
-        setBusy(true);
-        setMsg(null);
-        try {
-            await verifyEmail({ email, otp: otp.trim() });
-            router.replace("/account");
-        } catch (err) {
-            setMsg({ tone: "danger", text: errorMessage(err, "That code did not work.") });
-        } finally {
-            setBusy(false);
-        }
-    };
-    const resend = async () => {
-        try {
-            await authApi.resendVerification({ email });
-            setMsg({ tone: "ok", text: "A new code is on its way." });
-        } catch (err) {
-            setMsg({ tone: "danger", text: errorMessage(err, "Could not resend the code.") });
-        }
-    };
-
-    return (
-        <form onSubmit={submit} className="space-y-4">
-            <p className="text-[15px] text-muted">
-                We sent a 6 digit code to <span className="text-ink">{email || "your email"}</span>.
-            </p>
-            {msg && <Alert tone={msg.tone}>{msg.text}</Alert>}
-            <Field label="Verification code">
-                <input className={`${inputCls} num text-center text-xl tracking-[0.4em]`} inputMode="numeric" maxLength={6} value={otp} onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))} autoComplete="one-time-code" required />
-            </Field>
-            <button className="btn btn-ink h-12 w-full" disabled={busy || otp.length < 6}>
-                {busy ? "Checking" : "Verify and continue"}
-            </button>
-            <button type="button" onClick={resend} className="w-full py-2 text-[14px] text-muted hover:text-ink">
-                Send a new code
             </button>
         </form>
     );

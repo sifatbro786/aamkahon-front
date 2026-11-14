@@ -1,17 +1,17 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import Field, { inputCls } from "@/components/checkout/Field";
 import OrderSummary from "@/components/checkout/OrderSummary";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
-import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { errorMessage } from "@/lib/api/client";
 import { IS_STATIC } from "@/lib/config";
 import { taka } from "@/lib/format";
 import { useCalculation, useCourierBranches, useDistricts, useGuestItems, useLocation, usePlaceOrder, useUpazilas } from "@/lib/hooks/useCheckout";
+import { forgetCheckoutDetails, loadCheckoutDetails, saveCheckoutDetails } from "@/lib/store/checkoutMemory";
 import { rememberGuestOrderToken } from "@/lib/store/orderAccess";
 import { SITE } from "@/lib/site";
 
@@ -20,7 +20,9 @@ const EMPTY = { name: "", phone: "", email: "", district: "", upazila: "", addre
 /**
  * Single page checkout (port of the Footpath flow):
  *  - locationType comes from the server (district + upazila), never picked here
- *  - guests send guestItems; signed in users send none (server cart is used)
+ *  - every order is a guest order (Aamkahon has no customer accounts); the
+ *    last details are remembered on the device (lib/store/checkoutMemory.js)
+ *  - email is optional: phone is the contact
  *  - nothing price related is sent; every figure is from /checkout/calculate
  *  - both COD and online return a gateway redirectUrl
  *  - the guest capability token is stored BEFORE redirecting
@@ -29,22 +31,27 @@ const EMPTY = { name: "", phone: "", email: "", district: "", upazila: "", addre
 export default function CheckoutView() {
     const router = useRouter();
     const { items, isGuestCart, isPreOrderBag, resetAfterOrder } = useCart();
-    const { user, isAuthenticated } = useAuth();
-
     const [draft, setDraft] = useState(EMPTY);
+    const [remember, setRemember] = useState(true);
     const [method, setMethod] = useState("COD");
     const [coupon, setCoupon] = useState("");
     const [couponInput, setCouponInput] = useState("");
     const [errors, setErrors] = useState({});
     const [submitError, setSubmitError] = useState(null);
 
-    // Signed in details fill blanks without an effect (derived, not copied).
-    const address = {
-        ...draft,
-        name: draft.name || (user?.name ?? ""),
-        email: draft.email || (user?.email ?? ""),
-        phone: draft.phone || (user?.phoneNumber ?? ""),
-    };
+    // Fill from the last order on this device, after mount (storage is not
+    // available during the server render). Only blanks are filled.
+    useEffect(() => {
+        let alive = true;
+        Promise.resolve().then(() => {
+            const saved = alive && loadCheckoutDetails();
+            if (saved) setDraft((d) => Object.fromEntries(Object.entries(d).map(([k, v]) => [k, v || saved[k] || ""])));
+        });
+        return () => {
+            alive = false;
+        };
+    }, []);
+    const address = draft;
 
     const guestItems = useGuestItems(items);
     const { data: districts = [] } = useDistricts();
@@ -95,8 +102,7 @@ export default function CheckoutView() {
         if (!address.name.trim()) e.name = "We need a name for the delivery.";
         const phone = address.phone.replace(/[\s-]/g, "");
         if (!/^01[3-9]\d{8}$/.test(phone)) e.phone = "Enter an 11 digit mobile number starting 01.";
-        if (isGuestCart && !address.email.trim()) e.email = "We send your confirmation here.";
-        else if (address.email && !/\S+@\S+\.\S+/.test(address.email)) e.email = "That email does not look right.";
+        if (address.email && !/\S+@\S+\.\S+/.test(address.email)) e.email = "That email does not look right.";
         if (!address.district) e.district = "Choose a district.";
         if (!address.upazila) e.upazila = "Choose an area.";
         if (locationType && !deliveryTypes.length) e.deliveryType = "We do not deliver to this area yet. Call us and we will arrange it.";
@@ -132,10 +138,12 @@ export default function CheckoutView() {
                 locationType,
                 deliveryType,
                 courierBranch: isCourier ? address.courierBranch : undefined,
-                isGuest: isGuestCart,
-                guestEmail: isGuestCart ? address.email.trim() : undefined,
-                guestItems: isGuestCart ? guestItems : undefined,
+                isGuest: true,
+                guestEmail: address.email.trim() || undefined,
+                guestItems,
             });
+            if (remember) saveCheckoutDetails(address);
+            else forgetCheckoutDetails();
             // Returned exactly once; store before leaving for the gateway.
             if (data?.guestAccessToken && data?.order?.orderNumber) rememberGuestOrderToken(data.order.orderNumber, data.guestAccessToken);
             resetAfterOrder();
@@ -175,15 +183,6 @@ export default function CheckoutView() {
                     This is the demo site, so orders are switched off. On the live store this page calculates delivery by weight and takes you to SSLCommerz.
                 </p>
             )}
-            {!isAuthenticated && !IS_STATIC && (
-                <p className="mt-5 text-[15px] text-muted">
-                    Checking out as a guest.{" "}
-                    <Link href="/login?next=/checkout" className="text-ink underline underline-offset-4">
-                        Sign in
-                    </Link>{" "}
-                    to keep this order in your account.
-                </p>
-            )}
             {submitError && (
                 <div role="alert" className="mt-5 rounded-lg border-l-4 border-danger bg-danger/5 px-4 py-3 text-[15px]">
                     <p className="font-medium text-danger">Order not placed</p>
@@ -202,7 +201,7 @@ export default function CheckoutView() {
                             <Field label="Mobile number" error={errors.phone} hint="The courier will call this number">
                                 <input className={inputCls} value={address.phone} onChange={(e) => update({ phone: e.target.value })} inputMode="tel" autoComplete="tel" placeholder="01XXXXXXXXX" aria-invalid={Boolean(errors.phone)} />
                             </Field>
-                            <Field label={isGuestCart ? "Email" : "Email (optional)"} error={errors.email} className="sm:col-span-2">
+                            <Field label="Email (optional)" error={errors.email} className="sm:col-span-2">
                                 <input className={inputCls} type="email" value={address.email} onChange={(e) => update({ email: e.target.value })} autoComplete="email" aria-invalid={Boolean(errors.email)} />
                             </Field>
                             <Field label="District" error={errors.district}>
@@ -262,6 +261,10 @@ export default function CheckoutView() {
                                 </>
                             )}
                         </div>
+                        <label className="mt-5 flex items-start gap-3 text-[14px] text-muted">
+                            <input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} className="mt-0.5 size-4 accent-[var(--color-ink)]" />
+                            <span>Remember these details on this device for next time. Untick on a shared phone or computer.</span>
+                        </label>
                     </section>
 
                     <section className="border-t border-line pt-10">

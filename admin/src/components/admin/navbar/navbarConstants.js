@@ -27,8 +27,11 @@ export const typeLabel = (value) => ITEM_TYPES.find((t) => t.value === value)?.l
 export const ICON_SETTINGS = [
     { key: "cartIcon", label: "Shopping cart" },
     { key: "searchIcon", label: "Search" },
-    { key: "userIcon", label: "User account" },
-    { key: "wishlistIcon", label: "Wishlist" },
+    // User account hidden (Aamkahon): no customer accounts.
+    // { key: "userIcon", label: "User account" },
+    // Wishlist hidden (Aamkahon): the storefront has no wishlist. The field
+    // stays in the model; add this row back for a store that has one.
+    // { key: "wishlistIcon", label: "Wishlist" },
 ];
 
 // Client-side stable key — decoupled from the server _id, which churns on every

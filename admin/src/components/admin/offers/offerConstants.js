@@ -63,4 +63,12 @@ export const EMPTY_OFFER = {
     startDate: "", // yyyy-mm-dd (date input); backend defaults to Date.now if blank on create
     endDate: "",
     isActive: true,
+    season: "all",
 };
+
+// Mirrors OfferPopup.season; the popup shows only while that season is active.
+export const OFFER_SEASONS = [
+    ["all", "Every season"],
+    ["mango", "Mango season only"],
+    ["winter", "Winter (gur) season only"],
+];

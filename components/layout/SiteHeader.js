@@ -1,11 +1,10 @@
 "use client";
-import { Menu, Phone, Search, ShoppingBag, User, X } from "lucide-react";
+import { Menu, Phone, Search, ShoppingBag, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
-import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { activeHref } from "@/lib/activeLink";
 import { navHref } from "@/lib/nav";
@@ -62,10 +61,13 @@ function Links({ links, variant }) {
     );
 }
 
-export default function SiteHeader({ nav = [], announcement }) {
+// icons: Admin > Navbar > Header icons. Default all on (fallback header while loading).
+// No account icon: Aamkahon has no customer accounts (team signs in at /login).
+const ALL_ICONS = { cart: true, search: true };
+
+export default function SiteHeader({ nav = [], announcement, icons = ALL_ICONS }) {
     const pathname = usePathname();
     const { itemCount, openCart } = useCart();
-    const { isAuthenticated, isAdmin } = useAuth();
     // The menu remembers which page it was opened on, so navigating closes it
     // without an effect: a new pathname simply no longer matches.
     const [menuPath, setMenuPath] = useState(null);
@@ -81,7 +83,6 @@ export default function SiteHeader({ nav = [], announcement }) {
     }, [open]);
 
     const links = [{ name: "Shop all", href: "/shop" }, ...nav.map((i) => ({ name: i.name, href: navHref(i) }))];
-    const accountHref = isAuthenticated ? (isAdmin ? "/admin" : "/account") : "/login";
 
     return (
         <header className="sticky top-0 z-40 bg-ink text-paper">
@@ -114,12 +115,12 @@ export default function SiteHeader({ nav = [], announcement }) {
                 </nav>
 
                 <div className="ml-auto flex items-center gap-1">
-                    <Link href="/shop" className="grid size-10 place-items-center rounded-full hover:bg-ink-soft" aria-label="Search the shop">
-                        <Search size={20} />
-                    </Link>
-                    <Link href={accountHref} className="grid size-10 place-items-center rounded-full hover:bg-ink-soft" aria-label={isAuthenticated ? "Your account" : "Sign in"}>
-                        <User size={20} />
-                    </Link>
+                    {icons.search && (
+                        <Link href="/shop" className="grid size-10 place-items-center rounded-full hover:bg-ink-soft" aria-label="Search the shop">
+                            <Search size={20} />
+                        </Link>
+                    )}
+                    {icons.cart && (
                     <button type="button" onClick={openCart} className="relative grid size-10 place-items-center rounded-full hover:bg-ink-soft" aria-label={`Bag, ${itemCount} items`}>
                         <ShoppingBag size={20} />
                         {itemCount > 0 && (
@@ -128,6 +129,7 @@ export default function SiteHeader({ nav = [], announcement }) {
                             </span>
                         )}
                     </button>
+                    )}
                 </div>
             </div>
 

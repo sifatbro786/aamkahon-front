@@ -5,7 +5,7 @@ export default function robots() {
     // never competes with the live store.
     if (IS_STATIC) return { rules: [{ userAgent: "*", disallow: "/" }] };
     return {
-        rules: [{ userAgent: "*", allow: "/", disallow: ["/admin", "/account", "/checkout", "/cart", "/order/"] }],
+        rules: [{ userAgent: "*", allow: "/", disallow: ["/admin", "/login", "/checkout", "/cart", "/order/"] }],
         sitemap: `${SITE_URL}/sitemap.xml`,
     };
 }

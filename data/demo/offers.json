@@ -1,0 +1,22 @@
+{
+  "success": true,
+  "count": 1,
+  "data": [
+    {
+      "_id": "de31b1f01e993604f5714064",
+      "title": "Book your 2027 mangoes now",
+      "description": "Pay 25% today and the rest when your box arrives. Rajshahi orchards, picked ripe and packed the same day. Pre-booked boxes ship first when the harvest opens.",
+      "thumbnailImage": "/images/mangoes-on-tree-bagged.jpg",
+      "buttonText": "Pre-book mangoes",
+      "buttonLink": "/shop?availability=pre_order",
+      "displayFrequency": "daily",
+      "priority": 10,
+      "season": "winter",
+      "isActive": true,
+      "startDate": "2026-11-01T00:00:00.000Z",
+      "endDate": null,
+      "createdAt": "2026-11-01T00:00:00.000Z",
+      "updatedAt": "2026-11-01T00:00:00.000Z"
+    }
+  ]
+}

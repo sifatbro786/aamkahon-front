@@ -8,6 +8,7 @@ import {
     EMPTY_OFFER,
     IMAGE_ACCEPT,
     MAX_IMAGE_MB,
+    OFFER_SEASONS,
     frequencyMeta,
 } from "./offerConstants";
 
@@ -16,7 +17,8 @@ const toDateInput = (val) => {
     if (!val) return "";
     const d = new Date(val);
     if (Number.isNaN(d.getTime())) return "";
-    return d.toISOString().slice(0, 10);
+    // Bangladesh day, matching the server (utils/bdDate.js).
+    return d.toLocaleDateString("en-CA", { timeZone: "Asia/Dhaka" });
 };
 
 // Seed the form from an existing offer row. The admin getAll endpoint returns
@@ -35,6 +37,7 @@ const seedFrom = (offer) => {
         startDate: toDateInput(offer.startDate),
         endDate: toDateInput(offer.endDate),
         isActive: offer.isActive ?? true,
+        season: offer.season || "all",
     };
 };
 
@@ -113,6 +116,8 @@ const OfferFormModal = ({ open, offer, onClose, onSaved }) => {
         if (!form.description.trim()) return "Description is required.";
         if (!form.thumbnailImage.trim()) return "An offer image (upload or URL) is required.";
         if (!form.buttonLink.trim()) return "Button link is required.";
+        // Same rule as the server (utils/safeUrl.js).
+        if (!/^(\/(?!\/)|#|https?:\/\/)/i.test(form.buttonLink.trim())) return "Button link must start with / or http(s)://";
         if (form.priority < 0 || form.priority > 100) return "Priority must be between 0 and 100.";
         if (form.startDate && form.endDate && new Date(form.endDate) < new Date(form.startDate)) {
             return "End date cannot be earlier than start date.";
@@ -140,6 +145,7 @@ const OfferFormModal = ({ open, offer, onClose, onSaved }) => {
             displayFrequency: form.displayFrequency,
             priority: Number(form.priority) || 0,
             isActive: form.isActive,
+            season: form.season,
         };
         if (form.startDate) payload.startDate = form.startDate;
         if (form.endDate) payload.endDate = form.endDate;
@@ -372,6 +378,19 @@ const OfferFormModal = ({ open, offer, onClose, onSaved }) => {
                                     className={inputCls}
                                 />
                             </div>
+                        </div>
+
+                        {/* Season */}
+                        <div>
+                            <label className="mb-1 block text-sm font-medium text-gray-800">Show in</label>
+                            <select value={form.season} onChange={setField("season")} className={`${inputCls} bg-white sm:max-w-xs`}>
+                                {OFFER_SEASONS.map(([v, l]) => (
+                                    <option key={v} value={v}>
+                                        {l}
+                                    </option>
+                                ))}
+                            </select>
+                            <p className="mt-1 text-xs text-gray-400">Follows the season switch in Homepage &amp; Season.</p>
                         </div>
 
                         {/* Frequency / priority */}

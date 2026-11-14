@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "@/admin/router";
 import { ArrowLeft, Minus, Plus, Search, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
+import { useAuth } from "@/context/AuthContext";
 import axiosInstance from "../../../api/axiosInstance";
 import { customerAdminApi } from "../../../api/customerAdminApi";
 import { manualOrderApi } from "../../../api/manualOrderApi";
@@ -91,6 +92,9 @@ const searchCustomers = async (term) => (await customerAdminApi.list({ search: t
 const searchProducts = async (term) => (await stockApi.list({ search: term, limit: 8 })).data.items || [];
 
 export default function PhoneOrderForm() {
+    // Staff sell at catalogue prices: price, discount and delivery charge
+    // overrides are admin only (manualOrderController refuses them too).
+    const { isAdmin } = useAuth();
     const navigate = useNavigate();
     const [customer, setCustomer] = useState({ name: "", phone: "", email: "" });
     const [address, setAddress] = useState({ district: "", upazila: "", addressLine1: "", addressLine2: "" });
@@ -326,7 +330,11 @@ export default function PhoneOrderForm() {
                                                 <button type="button" onClick={() => patchLine(l.key, { quantity: Number(l.quantity) + 1 })} className="rounded border border-gray-200 p-1.5 text-gray-600 hover:bg-gray-50" aria-label="More"><Plus size={14} /></button>
                                             </div>
                                             <div className="sm:col-span-2">
-                                                <input type="number" min="0" className={field} placeholder={priced ? String(priced.retailPrice) : "Price"} value={l.unitPrice} onChange={(e) => patchLine(l.key, { unitPrice: e.target.value })} title="Leave empty to use the catalogue price" />
+                                                {isAdmin ? (
+                                                    <input type="number" min="0" className={field} placeholder={priced ? String(priced.retailPrice) : "Price"} value={l.unitPrice} onChange={(e) => patchLine(l.key, { unitPrice: e.target.value })} title="Leave empty to use the catalogue price" />
+                                                ) : (
+                                                    <p className="py-2 text-right text-sm text-gray-800">{priced ? bdt(priced.price) : "Catalogue price"}</p>
+                                                )}
                                                 {priced && <p className="mt-0.5 text-right text-xs text-gray-500">{bdt(priced.lineTotal)}{priced.priceOverridden ? " · custom" : priced.wholesaleApplied ? " · wholesale" : ""}</p>}
                                             </div>
                                             <div className="text-right sm:col-span-1">
@@ -364,6 +372,7 @@ export default function PhoneOrderForm() {
                             <button type="button" onClick={() => setPayment({ ...payment, paidAmount: String(t.totalPrice) })} className="mt-2 text-xs text-blue-600 hover:underline">Mark fully paid ({bdt(t.totalPrice)})</button>
                         )}
                         <input className={`${field} mt-3`} placeholder="Transaction ID / reference (optional)" value={payment.reference} onChange={(e) => setPayment({ ...payment, reference: e.target.value })} />
+                        {isAdmin && (
                         <div className="mt-3 grid grid-cols-2 gap-3">
                             <label className="text-xs text-gray-600">
                                 Discount (৳)
@@ -374,6 +383,7 @@ export default function PhoneOrderForm() {
                                 <input type="number" min="0" className={`${field} mt-1`} value={shippingCharge} onChange={(e) => setShippingCharge(e.target.value)} placeholder={t ? `${t.shippingPrice} (auto)` : "auto"} />
                             </label>
                         </div>
+                        )}
                     </section>
 
                     <section className={card}>

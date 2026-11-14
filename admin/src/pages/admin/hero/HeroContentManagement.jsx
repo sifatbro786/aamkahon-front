@@ -145,7 +145,7 @@ function MediaCard({ device, record, onSaved, slide, onDelete, onMove, isFirst, 
                     mediaType === "video" ? (
                         <video key={mediaUrl} src={preview(mediaUrl)} poster={posterUrl ? preview(posterUrl) : undefined} muted loop autoPlay playsInline className="size-full object-cover" />
                     ) : (
-                        // eslint-disable-next-line @next/next/no-img-element
+                         
                         <img src={preview(mediaUrl)} alt="" className="size-full object-cover" />
                     )
                 ) : (
@@ -201,7 +201,7 @@ function MediaCard({ device, record, onSaved, slide, onDelete, onMove, isFirst, 
                     <div className="mt-1 flex items-center gap-3">
                         <div className={`shrink-0 overflow-hidden rounded bg-gray-100 ${device.key === "desktop" ? "aspect-video w-24" : "aspect-[9/16] w-12"}`}>
                             {posterUrl ? (
-                                // eslint-disable-next-line @next/next/no-img-element
+                                 
                                 <img src={preview(posterUrl)} alt="" className="size-full object-cover" />
                             ) : null}
                         </div>

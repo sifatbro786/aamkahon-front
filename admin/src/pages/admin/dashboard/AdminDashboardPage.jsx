@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+ 
 // src/pages/admin/dashboard/AdminDashboardPage.jsx
 //
 // Wired 1:1 to GET /api/admin/analytics/dashboard (analyticsController.getDashboardAnalytics).

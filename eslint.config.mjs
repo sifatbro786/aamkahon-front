@@ -4,12 +4,17 @@ import nextVitals from "eslint-config-next/core-web-vitals";
 const eslintConfig = defineConfig([
     ...nextVitals,
     // The admin is ported as-is from the Footpath Vite app, which predates the
-    // React Compiler lint rules. Its fetch-in-effect pattern is intentional
-    // there; keep these visible as warnings instead of rewriting 15k lines.
+    // React Compiler lint rules.
+    //  - set-state-in-effect: its `useEffect(() => { load() }, [load])` fetch
+    //    pattern is intentional (client-only SPA, no SSR), so the rule is off
+    //    here instead of rewriting every page. Storefront code keeps it on.
+    //  - no-img-element: admin thumbnails are backend uploads shown at small
+    //    sizes; next/image adds nothing there.
     {
         files: ["admin/src/**"],
         rules: {
-            "react-hooks/set-state-in-effect": "warn",
+            "react-hooks/set-state-in-effect": "off",
+            "@next/next/no-img-element": "off",
             "react-hooks/static-components": "warn",
             "react/no-unescaped-entities": "warn",
         },

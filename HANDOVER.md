@@ -314,6 +314,60 @@ Decisions:
       ranges, demo handler). ACTION: `npm run seed -- --reset` to put food values on the
       seeded products, then `npm run build` and look at /admin and a product page.
 - [ ] Later (asked, not built): automatic season switch by date and "in season first" shop sort.
+- [x] Unused generic fields hidden (2026-11-15). admin/src/config/productFields.js (client
+      data): Brand, Dimensions, Shipping class, Meta keywords, Featured hidden in the product
+      form + view (schema/API unchanged, saved values kept). Nav + routes: Offer Popups and
+      Page Meta hidden (storefront never read them). Product page metadata now uses the
+      SEO tab's Meta title / description when set (they were ignored before).
+      Commit (front): `chore(admin): hide fields this store does not use; product SEO meta wired`
+- [x] Offer popup (2026-11-15). Admin > Offer Popups back on (nav + route), with a "Show in"
+      season select. Backend: OfferPopup.season (all|mango|winter), /api/offers/active filters
+      by the active season, buttonLink/thumbnailImage checked by utils/safeUrl.js. Storefront:
+      components/layout/OfferPopup.js in the (store) layout: highest priority due offer,
+      after 6 s and after the intro loader, never on checkout/cart/order/account/auth pages;
+      frequency once/daily (localStorage) / always (once per session); key includes updatedAt
+      so an edited offer shows again; Esc/backdrop/Maybe later close; text only, no HTML.
+      Seed: OFFERS (winter only, pre-book 2027 mangoes, daily). Fixture offers.json + emulator.
+      ACTION: `npm run seed` (adds the popup), then `npm run fixtures` is already done.
+- [x] Header icons (2026-11-15). Admin > Navbar > Header icons now drive the storefront header
+      (search, account, bag; getHeaderIcons in lib/data/catalog.js, cached 1 min). Wishlist
+      toggle and Logo panel hidden in admin (no wishlist on this storefront; header uses the
+      designed logo-lockup.png).
+      Commits: back `feat: season-aware offer popups with safe links, seeded pre-booking popup`;
+      front `feat: storefront offer popup, header icons from admin navbar settings`
+- [x] No customer accounts + admin/staff roles (2026-11-15). Client decision: guest checkout
+      only; "the info given at checkout is enough".
+      Backend: roles admin (owner, all) | staff (limited); "executive" gone, "user" kept in the
+      enum only for old records. `admin` middleware is now OWNER ONLY (fail closed); staff
+      routes opt in with `team`: admin orders (not edit items / delete), phone orders (no price,
+      discount or delivery overrides: manualOrderController), inquiries (not delete), customers
+      (not import/export/delete), stock. Analytics, settings, products, users, coupons, shipping,
+      reviews, uploads: admin only. protect() refuses non-active accounts. Login: team only.
+      Unmounted: /api/cart, /api/wishlist, /api/admin/cart-campaigns, auth register/verify/
+      addresses, GET /api/orders (my orders), customer review writes. createOrder is guest only
+      (no auth: a signed-in admin browsing the shop no longer hits the server-cart path); email
+      optional (phone is the contact). Tracking compares normalised BD phone numbers.
+      Reviews: admin enters them (POST/PUT /api/admin/reviews: reviewerName, district, source
+      facebook|phone|whatsapp|website|other, reviewedAt); Review.user optional, unique index now
+      partial. Seed demo reviews use reviewerName (no reviewer accounts).
+      ACTION on every existing DB: `npm run migrate:roles` (executive -> admin, old customer
+      accounts inactive, rebuilds the review index). Then `npm run seed -- --reset` if you want
+      the demo reviews re-created without accounts.
+      Frontend: removed /account, /register, /verify-email; header has no account icon; /login is
+      "Team sign in" (not linked, noindex) and always goes to /admin; cart is guest only; checkout
+      email optional + "Remember these details on this device" (lib/store/checkoutMemory.js).
+      Admin: staff see Orders, Pre-bookings, Inquiries, Customer List, Stock only (navGroupsFor,
+      STAFF_ROUTES in admin/routes.js; dashboard redirects staff to Orders); delete/import/export
+      and phone order price fields hidden for staff; Users page is "Team" (Admin/Staff);
+      Reviews: "Add review" + edit. Navbar admin: User account toggle hidden.
+      Commits: back `feat: team-only auth (admin/staff), guest-only orders, admin-entered reviews`;
+      front `feat: remove customer accounts, staff-limited admin, admin review entry, remembered checkout`
+- [x] Coupon/offer dates fixed (2026-11-15). Date pickers sent "YYYY-MM-DD" = UTC midnight =
+      06:00 in Bangladesh, so a coupon starting today was "not yet active" until 6 AM and died
+      at 6 AM on its last day. amkahon-back/utils/bdDate.js: day-only values become 00:00 and
+      23:59:59.999 Asia/Dhaka (coupons create/update, offer popups create/update). Admin forms
+      read dates back in Asia/Dhaka; one-day coupons allowed. Base candidate (Footpath has it too).
+      Existing coupons/offers: open Edit and press Update once to re-save the dates.
 
 ### Commit messages (fixes + 7.1 + 7.2)
 - amkahon-back:  `feat: season-driven storefront settings, FAQ API, order views and stock-safe product edits`

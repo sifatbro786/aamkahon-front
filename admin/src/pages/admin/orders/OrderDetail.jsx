@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "@/admin/router";
 import { ArrowLeft, Save, Trash2, RefreshCw, Printer } from "lucide-react";
 import toast from "react-hot-toast";
+import { useAuth } from "@/context/AuthContext";
 import { orderApi } from "../../../api/orderApi";
 import ConfirmDialog from "../../../components/admin/common/ConfirmDialog";
 import OrderStatusBadge from "../../../components/admin/orders/OrderStatusBadge";
@@ -52,6 +53,8 @@ const Row = ({ label, children }) => (
 );
 
 const OrderDetail = () => {
+    // Staff cannot delete (the API refuses it too).
+    const { isAdmin } = useAuth();
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -226,6 +229,7 @@ const OrderDetail = () => {
                         <RefreshCw size={14} />
                         Refresh
                     </button>
+                    {isAdmin && (
                     <button
                         onClick={() => setConfirmDelete(true)}
                         className="flex items-center gap-1.5 rounded-md border border-red-200 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50"
@@ -233,6 +237,7 @@ const OrderDetail = () => {
                         <Trash2 size={14} />
                         Delete
                     </button>
+                    )}
                 </div>
             </div>
 

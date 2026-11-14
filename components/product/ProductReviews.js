@@ -4,9 +4,9 @@ import { fullDate } from "@/lib/format";
 const isBangla = (t) => /[ঀ-৿]/.test(t);
 
 /**
- * Approved reviews from GET /api/reviews/product/:id. Writing a review needs an
- * account and a delivered order (backend rule), so the form lives in the
- * account area, not here.
+ * Approved reviews from GET /api/reviews/product/:id. There are no customer
+ * accounts: the admin enters reviews (Facebook, phone, WhatsApp) in
+ * Admin > Reviews, so there is no write form on the storefront.
  */
 export default function ProductReviews({ data }) {
     const { reviews, averageRating, totalReviews, ratingStats } = data;
@@ -54,7 +54,9 @@ export default function ProductReviews({ data }) {
                             <p lang={isBangla(r.comment) ? "bn" : undefined} className={`mt-3 leading-relaxed text-ink/85 ${isBangla(r.comment) ? "font-bangla text-[18px]" : "text-[16px]"}`}>
                                 {r.comment}
                             </p>
-                            <p className="mt-3 text-[14px] font-medium">{r.user?.name || "Customer"}</p>
+                            <p className="mt-3 text-[14px] font-medium">{r.user?.name || "Customer"}
+                                {r.reviewerDistrict ? <span className="font-normal text-muted"> · {r.reviewerDistrict}</span> : null}
+                            </p>
                         </li>
                     ))}
                 </ul>

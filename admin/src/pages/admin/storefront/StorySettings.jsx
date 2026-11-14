@@ -61,7 +61,7 @@ export default function StorySettings() {
                 <section className="rounded-lg border border-gray-200 bg-white p-5">
                     <h2 className="font-semibold text-gray-900">Portrait</h2>
                     <div className="mt-3 aspect-[4/5] overflow-hidden rounded-md bg-gray-100">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        { }
                         {story.ownerPhoto ? <img src={story.ownerPhoto} alt="" className="size-full object-cover" /> : <div className="flex size-full items-center justify-center text-sm text-gray-400">No photo</div>}
                     </div>
                     <input ref={fileRef} type="file" hidden accept="image/jpeg,image/png,image/webp" onChange={(e) => upload(e.target.files?.[0])} />

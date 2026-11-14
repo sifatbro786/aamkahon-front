@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { MessageCircle, Phone, RefreshCw, Search, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
+import { useAuth } from "@/context/AuthContext";
 import { inquiryAdminApi } from "../../../api/inquiryAdminApi";
 import Pagination from "../../../components/admin/common/Pagination";
 import ConfirmDialog from "../../../components/admin/common/ConfirmDialog";
@@ -20,6 +21,8 @@ const TYPE_LABEL = { price: "Price", availability: "Availability", wholesale: "W
 const waLink = (phone) => `https://wa.me/${String(phone).replace(/\D/g, "").replace(/^0/, "880")}`;
 
 export default function InquiriesManagement() {
+    // Staff cannot delete (the API refuses it too).
+    const { isAdmin } = useAuth();
     const [rows, setRows] = useState([]);
     const [counts, setCounts] = useState({});
     const [loading, setLoading] = useState(true);
@@ -153,9 +156,11 @@ export default function InquiriesManagement() {
                                                 <option key={s}>{s}</option>
                                             ))}
                                         </select>
+                                        {isAdmin && (
                                         <button onClick={() => setToDelete(r)} className="rounded-md p-2 text-gray-400 hover:bg-red-50 hover:text-red-600" title="Delete">
                                             <Trash2 size={15} />
                                         </button>
+                                        )}
                                     </div>
                                 </div>
 

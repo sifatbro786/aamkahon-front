@@ -8,6 +8,10 @@ export const reviewApi = {
         axiosInstance.patch(`/admin/reviews/${reviewId}/status`, payload),
     remove: (reviewId) => axiosInstance.delete(`/admin/reviews/${reviewId}`),
     addBulkDemo: (payload) => axiosInstance.post("/admin/reviews/bulk", payload),
+    // Admin-entered reviews (no customer accounts). Body { productId, reviewerName,
+    // rating, comment?, source?, reviewedAt?, reviewerDistrict? } -> { success, review }
+    createAdmin: (payload) => axiosInstance.post("/admin/reviews", payload),
+    updateAdmin: (reviewId, payload) => axiosInstance.put(`/admin/reviews/${reviewId}`, payload),
 
     // ── Public / storefront (Phase 4) ────────────────────────────────────
     //
@@ -20,19 +24,6 @@ export const reviewApi = {
     // histogram must fill the gaps itself rather than indexing the array.
     getForProduct: (productId, params) =>
         axiosInstance.get(`/reviews/product/${productId}`, { params }),
-
-    // POST /api/reviews  (auth required)
-    // Body: { productId, rating, comment }
-    // Saves with status "pending" — a new review does NOT appear in the list
-    // until an admin approves it. The UI has to say so, or people will assume
-    // it failed and post again (the server rejects a second one with 400,
-    // "You have already reviewed this product").
-    create: ({ productId, rating, comment }) =>
-        axiosInstance.post("/reviews", { productId, rating, comment }),
-
-    update: (reviewId, payload) => axiosInstance.put(`/reviews/${reviewId}`, payload),
-    removeOwn: (reviewId) => axiosInstance.delete(`/reviews/${reviewId}`),
-    getMine: () => axiosInstance.get("/reviews/my-reviews"),
 
     // GET /api/reviews/featured -> { success, count, reviews }
     // Added in Phase 4 for the homepage testimonials strip: approved, 4 stars

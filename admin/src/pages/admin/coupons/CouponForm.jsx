@@ -25,7 +25,9 @@ const EMPTY = {
 };
 
 // yyyy-MM-dd for <input type="date">
-const toDateInput = (v) => (v ? new Date(v).toISOString().slice(0, 10) : "");
+// Dates are Bangladesh days (server: utils/bdDate.js stores 00:00 to 23:59
+// Asia/Dhaka). Read them back in the same zone, or an edit shifts a day.
+const toDateInput = (v) => (v ? new Date(v).toLocaleDateString("en-CA", { timeZone: "Asia/Dhaka" }) : "");
 
 const flattenCats = (nodes, depth = 0, acc = []) => {
     nodes.forEach((n) => {
@@ -173,8 +175,9 @@ const CouponForm = () => {
             return toast.error("Discount value must be greater than 0");
         if (!form.startDate || !form.expiryDate)
             return toast.error("Start and expiry dates are required");
-        if (new Date(form.startDate) >= new Date(form.expiryDate))
-            return toast.error("Start date must be before expiry date");
+        // Same day is fine: a one-day coupon runs 00:00 to 23:59.
+        if (form.startDate > form.expiryDate)
+            return toast.error("Expiry date cannot be before the start date");
         if (form.appliesTo === "products" && form.productRestrictions.length === 0)
             return toast.error("Select at least one product, or change Applies To");
         if (form.appliesTo === "categories" && form.categoryRestrictions.length === 0)
@@ -321,7 +324,7 @@ const CouponForm = () => {
                         </div>
                         {isFreeShipping && (
                             <p className="mt-2 text-xs text-gray-400">
-                                Free shipping coupons don't carry a discount value — shipping is
+                                Free shipping coupons don&apos;t carry a discount value — shipping is
                                 zeroed at checkout instead.
                             </p>
                         )}

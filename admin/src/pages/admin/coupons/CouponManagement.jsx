@@ -220,8 +220,8 @@ const CouponManagement = () => {
                                             {c.maxUsage > 0 ? ` / ${c.maxUsage}` : " / \u221E"}
                                         </td>
                                         <td className="px-4 py-3 text-xs text-gray-500">
-                                            {new Date(c.startDate).toLocaleDateString("en-GB")} –{" "}
-                                            {new Date(c.expiryDate).toLocaleDateString("en-GB")}
+                                            {new Date(c.startDate).toLocaleDateString("en-GB", { timeZone: "Asia/Dhaka" })} –{" "}
+                                            {new Date(c.expiryDate).toLocaleDateString("en-GB", { timeZone: "Asia/Dhaka" })}
                                         </td>
                                         <td className="px-4 py-3">
                                             <StatusPill coupon={c} />

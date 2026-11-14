@@ -30,7 +30,9 @@ export const ADMIN_ROUTES = [
     ["reviews", p(() => import("./src/pages/admin/reviews/ReviewManagement.jsx"))],
     ["sections", p(() => import("./src/pages/admin/sections/SectionManagement.jsx"))],
     ["offers", p(() => import("./src/pages/admin/offers/OfferManagement.jsx"))],
-    ["page-meta", p(() => import("./src/pages/admin/pageMeta/PageMetaManagement.jsx"))],
+    // Hidden for Aamkahon: the storefront does not read page meta (each page
+    // sets its own metadata). Re-enable with the nav item.
+    // ["page-meta", p(() => import("./src/pages/admin/pageMeta/PageMetaManagement.jsx"))],
     ["navbar", p(() => import("./src/pages/admin/navbar/NavbarConfiguration.jsx"))],
     ["season", p(() => import("./src/pages/admin/storefront/SeasonSettings.jsx"))],
     ["our-story", p(() => import("./src/pages/admin/storefront/StorySettings.jsx"))],
@@ -38,7 +40,13 @@ export const ADMIN_ROUTES = [
     ["hero-content", p(() => import("./src/pages/admin/hero/HeroContentManagement.jsx"))],
 ];
 
-/** Match "products/abc/edit" -> { Component, params: { id: "abc" } } */
+// Pages staff may open (everything else is admin only, and the API refuses it
+// too: middlewares/authMiddleware.js `team` vs `admin`). Keep in sync with the
+// `staff: true` items in src/layouts/admin/adminNavConfig.js.
+export const STAFF_ROUTES = new Set(["orders", "pre-bookings", "orders/new", "orders/:id/invoice", "orders/:id", "inquiries", "customers", "stock"]);
+export const STAFF_HOME = "/admin/orders";
+
+/** Match "products/abc/edit" -> { Component, params: { id: "abc" }, pattern } */
 export function matchAdminRoute(path) {
     const segs = path.split("/").filter(Boolean);
     for (const [pattern, Component] of ADMIN_ROUTES) {
@@ -52,7 +60,7 @@ export function matchAdminRoute(path) {
             }
             return s === segs[i];
         });
-        if (ok) return { Component, params };
+        if (ok) return { Component, params, pattern };
     }
     return null;
 }

@@ -1,16 +1,17 @@
-/* eslint-disable no-unused-vars */
+ 
 // src/layouts/admin/AdminLayout.jsx
 import { useState } from "react";
 import { Outlet, NavLink, useNavigate, useLocation, Link } from "@/admin/router";
 import { Menu, X, LogOut, ChevronsLeft, ChevronsRight } from "lucide-react";
 import toast from "react-hot-toast";
 import { useAuth } from "../../hooks/useAuth";
-import { adminNavGroups, adminNavFlat } from "./adminNavConfig";
+import { adminNavFlat, navGroupsFor } from "./adminNavConfig";
 
 const SIDEBAR_COLLAPSE_KEY = "admin:sidebarCollapsed";
 
 const AdminLayout = () => {
     const { user, logout } = useAuth();
+    const isAdmin = user?.role === "admin";
     const navigate = useNavigate();
     const location = useLocation();
     const [mobileOpen, setMobileOpen] = useState(false);
@@ -53,7 +54,9 @@ const AdminLayout = () => {
                             <Link to="/" className="truncate text-lg font-bold text-gray-900">
                                 Aamkahon Admin
                             </Link>
-                            <p className="truncate text-xs text-gray-500">{user?.email}</p>
+                            <p className="truncate text-xs text-gray-500">
+                                {user?.email} · {isAdmin ? "Admin" : "Staff"}
+                            </p>
                         </div>
                     )}
                     {!forceExpanded && (
@@ -68,7 +71,7 @@ const AdminLayout = () => {
                 </div>
 
                 <nav className="flex-1 overflow-y-auto px-3 py-4">
-                    {adminNavGroups.map((group) => (
+                    {navGroupsFor(isAdmin).map((group) => (
                         <div key={group.label} className="mb-5">
                             {!isCollapsed && (
                                 <p className="px-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-gray-400">

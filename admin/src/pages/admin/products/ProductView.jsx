@@ -5,6 +5,7 @@ import { ArrowLeft, Pencil } from "lucide-react";
 import toast from "react-hot-toast";
 import { productApi } from "../../../api/productApi";
 import { variantFinalPrice, formatPrice } from "../../../components/admin/products/productPricing";
+import { PRODUCT_FIELDS } from "../../../config/productFields";
 
 const Row = ({ label, children }) => (
     <div className="flex justify-between gap-4 border-b border-gray-100 py-2 text-sm last:border-0">
@@ -63,8 +64,8 @@ const ProductView = () => {
                     <div>
                         <h1 className="text-xl font-bold text-gray-900">{product.name}</h1>
                         <p className="text-sm text-gray-500">
-                            {product.sku ? `SKU: ${product.sku}` : "No SKU"} ·{" "}
-                            {product.brand || "Generic"}
+                            {product.sku ? `SKU: ${product.sku}` : "No SKU"}
+                            {PRODUCT_FIELDS.brand ? ` · ${product.brand || "Generic"}` : ""}
                         </p>
                     </div>
                 </div>
@@ -189,7 +190,7 @@ const ProductView = () => {
                         <Row label="Stock">{product.stock}</Row>
                         <Row label="Low Stock Alert">{product.lowStockAlert ?? 5}</Row>
                         <Row label="Status">{product.isActive ? "Active" : "Inactive"}</Row>
-                        <Row label="Featured">{product.isFeatured ? "Yes" : "No"}</Row>
+                        {PRODUCT_FIELDS.featured && <Row label="Featured">{product.isFeatured ? "Yes" : "No"}</Row>}
                     </Card>
 
                     <Card title="Organization">
@@ -199,23 +200,27 @@ const ProductView = () => {
 
                     <Card title="Shipping">
                         <Row label="Weight">{product.weight ?? 0} kg</Row>
-                        <Row label="Dimensions (L×W×H)">
-                            {`${product.dimensions?.length ?? 0} × ${product.dimensions?.width ?? 0} × ${product.dimensions?.height ?? 0} cm`}
-                        </Row>
-                        <Row label="Shipping Class">{product.shippingClass || "Standard"}</Row>
+                        {PRODUCT_FIELDS.dimensions && (
+                            <Row label="Dimensions (L×W×H)">
+                                {`${product.dimensions?.length ?? 0} × ${product.dimensions?.width ?? 0} × ${product.dimensions?.height ?? 0} cm`}
+                            </Row>
+                        )}
+                        {PRODUCT_FIELDS.shippingClass && <Row label="Shipping Class">{product.shippingClass || "Standard"}</Row>}
                     </Card>
 
                     {(product.metaTitle ||
                         product.metaDescription ||
-                        product.metaKeywords?.length) && (
+                        (PRODUCT_FIELDS.metaKeywords && product.metaKeywords?.length > 0)) && (
                         <Card title="SEO">
                             <Row label="Meta Title">{product.metaTitle || "—"}</Row>
                             <Row label="Meta Description">{product.metaDescription || "—"}</Row>
-                            <Row label="Keywords">
-                                {product.metaKeywords?.length
-                                    ? product.metaKeywords.join(", ")
-                                    : "—"}
-                            </Row>
+                            {PRODUCT_FIELDS.metaKeywords && (
+                                <Row label="Keywords">
+                                    {product.metaKeywords?.length
+                                        ? product.metaKeywords.join(", ")
+                                        : "—"}
+                                </Row>
+                            )}
                         </Card>
                     )}
                 </div>

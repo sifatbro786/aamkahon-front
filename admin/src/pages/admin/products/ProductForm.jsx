@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+ 
 // src/pages/admin/products/ProductForm.jsx
 import {
     ArrowLeft,
@@ -29,6 +29,7 @@ import productFaqData from "../../../components/admin/products/productFaqData";
 import { productFinalPrice, formatPrice } from "../../../components/admin/products/productPricing";
 import { WHOLESALE_TIER } from "@/lib/config";
 import { PRODUCT_PRESETS, applyPreset } from "../../../config/productPresets";
+import { PRODUCT_FIELDS } from "../../../config/productFields";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -624,17 +625,19 @@ const ProductForm = () => {
                                             ))}
                                         </select>
                                     </div>
-                                    <div>
-                                        {labelRow(
-                                            "Brand",
-                                            "Defaults to 'Generic' if left unchanged.",
-                                        )}
-                                        <input
-                                            value={form.brand}
-                                            onChange={(e) => set({ brand: e.target.value })}
-                                            className={inputCls}
-                                        />
-                                    </div>
+                                    {PRODUCT_FIELDS.brand && (
+                                        <div>
+                                            {labelRow(
+                                                "Brand",
+                                                "Defaults to 'Generic' if left unchanged.",
+                                            )}
+                                            <input
+                                                value={form.brand}
+                                                onChange={(e) => set({ brand: e.target.value })}
+                                                className={inputCls}
+                                            />
+                                        </div>
+                                    )}
                                     <div>
                                         {labelRow(
                                             "SKU",
@@ -1087,7 +1090,7 @@ const ProductForm = () => {
                                             className={inputCls}
                                         />
                                     </div>
-                                    {["length", "width", "height"].map((dim) => (
+                                    {PRODUCT_FIELDS.dimensions && ["length", "width", "height"].map((dim) => (
                                         <div key={dim}>
                                             {labelRow(
                                                 `${dim[0].toUpperCase()}${dim.slice(1)} (cm)`,
@@ -1111,6 +1114,12 @@ const ProductForm = () => {
                                         </div>
                                     ))}
                                 </div>
+                                {!PRODUCT_FIELDS.dimensions && (
+                                    <p className="text-xs text-gray-500">
+                                        Delivery is charged by weight. Products with packs use each pack&apos;s weight from Variants; this is the fallback.
+                                    </p>
+                                )}
+                                {PRODUCT_FIELDS.shippingClass && (
                                 <div className="max-w-xs">
                                     {labelRow(
                                         "Shipping Class",
@@ -1128,6 +1137,7 @@ const ProductForm = () => {
                                         ))}
                                     </select>
                                 </div>
+                                )}
                             </div>
                         )}
 
@@ -1159,6 +1169,7 @@ const ProductForm = () => {
                                         className={`${inputCls} resize-y`}
                                     />
                                 </div>
+                                {PRODUCT_FIELDS.metaKeywords && (
                                 <div>
                                     {labelRow("Meta Keywords", "Comma-separated keywords.")}
                                     <input
@@ -1171,6 +1182,7 @@ const ProductForm = () => {
                                         Separate keywords with commas
                                     </p>
                                 </div>
+                                )}
                             </div>
                         )}
 
@@ -1189,6 +1201,7 @@ const ProductForm = () => {
                                         Active — visible in the storefront
                                     </span>
                                 </label>
+                                {PRODUCT_FIELDS.featured && (
                                 <label className="flex items-center gap-3">
                                     <input
                                         type="checkbox"
@@ -1200,6 +1213,7 @@ const ProductForm = () => {
                                         Featured — can appear in curated sections
                                     </span>
                                 </label>
+                                )}
                             </div>
                         )}
                     </section>

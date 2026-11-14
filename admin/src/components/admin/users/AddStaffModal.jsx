@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { adminUsersApi } from "../../../api/adminApi";
 import { assignableRoles } from "./userConstants";
 
-const EMPTY = { name: "", email: "", phoneNumber: "", password: "", role: "user" };
+const EMPTY = { name: "", email: "", phoneNumber: "", password: "", role: "staff" };
 
 const AddStaffModal = ({ open, onClose, onCreated, actingUserRole }) => {
     const [form, setForm] = useState(EMPTY);

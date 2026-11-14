@@ -13,14 +13,18 @@
 //   - pre-booking and in-season items cannot share a bag (the backend refuses
 //     to price a mixed cart, so we stop it at add time with an explanation)
 //   - the static demo build always stays in guest mode
+//   - Aamkahon has NO customer accounts: the cart is always the guest
+//     (localStorage) cart, even when a team member is signed in for /admin.
+//     The backend does not mount /api/cart, and createOrder is guest only.
+//     The server-cart branches stay below for stores on the base that have
+//     accounts (see the comment in CartProvider).
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 
 import { cartApi } from "@/lib/api/cartApi";
 import { errorMessage } from "@/lib/api/client";
-import { CART_STORAGE_KEY, IS_STATIC, WHOLESALE_TIER } from "@/lib/config";
+import { CART_STORAGE_KEY, WHOLESALE_TIER } from "@/lib/config";
 import { lineUnitPrice } from "@/lib/store/cartLine";
 import { variantCartKey } from "@/lib/store/variants";
-import { useAuth } from "@/context/AuthContext";
 import { mediaUrl } from "@/lib/media";
 
 const CartContext = createContext(null);
@@ -92,9 +96,10 @@ function fromServerItem(item) {
 }
 
 export function CartProvider({ children }) {
-    const { isAuthenticated: authed, loading: authLoading } = useAuth();
-    // The demo has no server cart to talk to.
-    const isAuthenticated = authed && !IS_STATIC;
+    // Base (stores with accounts): `const { isAuthenticated: authed, loading:
+    // authLoading } = useAuth(); const isAuthenticated = authed && !IS_STATIC;`
+    const isAuthenticated = false;
+    const authLoading = false;
 
     const [isOpen, setIsOpen] = useState(false);
     const [items, setItems] = useState([]);

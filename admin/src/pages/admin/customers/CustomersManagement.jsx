@@ -4,6 +4,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Download, MessageCircle, Pencil, Phone, Plus, RefreshCw, Search, Trash2, Upload } from "lucide-react";
 import toast from "react-hot-toast";
+import { useAuth } from "@/context/AuthContext";
 import { customerAdminApi } from "../../../api/customerAdminApi";
 import Pagination from "../../../components/admin/common/Pagination";
 import ConfirmDialog from "../../../components/admin/common/ConfirmDialog";
@@ -16,6 +17,8 @@ const waLink = (phone) => `https://wa.me/88${phone}`;
 const fmtDate = (d) => (d ? new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "");
 
 export default function CustomersManagement() {
+    // Staff cannot import, export or delete (the API refuses it too).
+    const { isAdmin } = useAuth();
     const [rows, setRows] = useState([]);
     const [loading, setLoading] = useState(true);
     const [total, setTotal] = useState(0);
@@ -106,12 +109,16 @@ export default function CustomersManagement() {
                     </p>
                 </div>
                 <div className="ml-auto flex flex-wrap gap-2">
+                    {isAdmin && (
+                    <>
                     <button onClick={exportCsv} disabled={exporting} className="inline-flex items-center gap-1.5 rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50" title="Exports the current filter. Customers who opted out are left out.">
                         <Download size={16} /> {exporting ? "Exporting..." : "Export CSV"}
                     </button>
                     <button onClick={() => setImporting(true)} className="inline-flex items-center gap-1.5 rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 hover:bg-gray-50">
                         <Upload size={16} /> Import CSV
                     </button>
+                    </>
+                    )}
                     <button onClick={() => setEditing({})} className="inline-flex items-center gap-1.5 rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white hover:bg-gray-800">
                         <Plus size={16} /> Add customer
                     </button>
@@ -208,7 +215,7 @@ export default function CustomersManagement() {
                                                 <a href={`tel:${c.phone}`} className="rounded p-1.5 text-gray-500 hover:bg-gray-100" title="Call"><Phone size={15} /></a>
                                                 <a href={waLink(c.phone)} target="_blank" rel="noreferrer" className="rounded p-1.5 text-gray-500 hover:bg-gray-100" title="WhatsApp"><MessageCircle size={15} /></a>
                                                 <button onClick={() => setEditing(c)} className="rounded p-1.5 text-gray-500 hover:bg-gray-100" title="Edit"><Pencil size={15} /></button>
-                                                <button onClick={() => setToDelete(c)} className="rounded p-1.5 text-red-500 hover:bg-red-50" title="Delete"><Trash2 size={15} /></button>
+                                                {isAdmin && <button onClick={() => setToDelete(c)} className="rounded p-1.5 text-red-500 hover:bg-red-50" title="Delete"><Trash2 size={15} /></button>}
                                             </div>
                                         </td>
                                     </tr>

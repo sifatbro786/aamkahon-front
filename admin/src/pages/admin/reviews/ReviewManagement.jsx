@@ -1,11 +1,15 @@
 // src/pages/admin/reviews/ReviewManagement.jsx
 import { useCallback, useEffect, useState } from "react";
-import { RefreshCw, Star, MessageSquareText, Clock, Trash2 } from "lucide-react";
+import { RefreshCw, Star, MessageSquareText, Clock, Trash2, Plus, Pencil } from "lucide-react";
 import toast from "react-hot-toast";
 import reviewApi from "../../../api/reviewApi";
 import Pagination from "../../../components/admin/common/Pagination";
 import ConfirmDialog from "../../../components/admin/common/ConfirmDialog";
 import ReviewDetailsModal from "../../../components/admin/reviews/ReviewDetailsModal";
+import ReviewFormModal from "../../../components/admin/reviews/ReviewFormModal";
+
+const SOURCE_LABEL = { facebook: "Facebook", phone: "Phone", whatsapp: "WhatsApp", website: "Website", other: "Other" };
+const reviewerName = (r) => r.user?.name || r.reviewerName || "Customer";
 import { STATUSES, statusMeta } from "../../../components/admin/reviews/reviewConstants";
 
 const fmtDate = (d) =>
@@ -55,6 +59,8 @@ const ReviewManagement = () => {
     const [actionBusy, setActionBusy] = useState(false);
     const [deleteTarget, setDeleteTarget] = useState(null);
     const [deleting, setDeleting] = useState(false);
+    // null = closed, {} = new, review = edit
+    const [editing, setEditing] = useState(null);
 
     useEffect(() => {
         setPage(1);
@@ -129,7 +135,7 @@ const ReviewManagement = () => {
             <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                     <h1 className="text-xl font-bold text-gray-900">Review Management</h1>
-                    <p className="text-sm text-gray-500">Manage and moderate customer reviews</p>
+                    <p className="text-sm text-gray-500">Add real customer reviews (Facebook, phone, WhatsApp) and manage them</p>
                 </div>
                 <div className="flex items-center gap-2">
                     <select
@@ -144,6 +150,13 @@ const ReviewManagement = () => {
                             </option>
                         ))}
                     </select>
+                    <button
+                        onClick={() => setEditing({})}
+                        className="flex items-center gap-1.5 rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white hover:bg-gray-800"
+                    >
+                        <Plus size={14} />
+                        Add review
+                    </button>
                     <button
                         onClick={load}
                         className="flex items-center gap-1.5 rounded-md border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
@@ -216,7 +229,7 @@ const ReviewManagement = () => {
                             ) : (
                                 reviews.map((r) => {
                                     const sMeta = statusMeta(r.status);
-                                    const userName = r.user?.name || "Demo Customer";
+                                    const userName = reviewerName(r);
                                     return (
                                         <tr key={r._id} className="hover:bg-gray-50">
                                             <td className="px-4 py-3">
@@ -229,7 +242,7 @@ const ReviewManagement = () => {
                                                             {userName}
                                                         </p>
                                                         <p className="truncate text-xs text-gray-400">
-                                                            {r.user?.email || "—"}
+                                                            {[SOURCE_LABEL[r.source], r.reviewerDistrict].filter(Boolean).join(" · ") || "—"}
                                                         </p>
                                                     </div>
                                                 </div>
@@ -258,7 +271,7 @@ const ReviewManagement = () => {
                                                 </span>
                                             </td>
                                             <td className="px-4 py-3 text-xs text-gray-500">
-                                                {fmtDate(r.createdAt)}
+                                                {fmtDate(r.reviewedAt || r.createdAt)}
                                             </td>
                                             <td className="px-4 py-3">
                                                 <div className="flex items-center justify-end gap-3">
@@ -267,6 +280,9 @@ const ReviewManagement = () => {
                                                         className="rounded-md border border-gray-300 px-3 py-1 text-xs font-medium text-gray-700 hover:bg-gray-50"
                                                     >
                                                         View
+                                                    </button>
+                                                    <button onClick={() => setEditing(r)} title="Edit" className="text-gray-500 hover:text-gray-900">
+                                                        <Pencil size={15} />
                                                     </button>
                                                     <button
                                                         onClick={() => setDeleteTarget(r)}
@@ -297,12 +313,23 @@ const ReviewManagement = () => {
                 onDelete={(r) => setDeleteTarget(r)}
             />
 
+            {editing && (
+                <ReviewFormModal
+                    review={editing}
+                    onClose={() => setEditing(null)}
+                    onSaved={() => {
+                        setEditing(null);
+                        load();
+                    }}
+                />
+            )}
+
             <ConfirmDialog
                 open={Boolean(deleteTarget)}
                 title="Delete this review?"
                 message={
                     deleteTarget
-                        ? `This review by "${deleteTarget.user?.name || "Demo Customer"}" will be permanently removed. If it was approved, the product's rating will be recalculated. This cannot be undone.`
+                        ? `This review by "${reviewerName(deleteTarget)}" will be permanently removed. If it was approved, the product's rating will be recalculated. This cannot be undone.`
                         : ""
                 }
                 loading={deleting}

@@ -287,6 +287,18 @@ html[data-intro-seen] #ak-intro {
         transform: none;
     }
 }
+/* Offer popup (components/layout/OfferPopup.js) */
+@keyframes ak-fade {
+    from {
+        opacity: 0;
+    }
+}
+@keyframes ak-pop {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+}
 @keyframes ak-load {
     to {
         transform: scaleX(1);
