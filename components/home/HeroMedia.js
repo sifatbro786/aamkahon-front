@@ -29,6 +29,13 @@ const MOBILE_POSTER = "/videos/hero-poster.jpg";
  *
  * Videos are muted through the ref before play(): React does not render the
  * `muted` attribute into server HTML and browsers refuse unmuted autoplay.
+ *
+ * Desktop video slides sit on top of their poster (admin field posterUrl,
+ * optimised through next/image) and fade in only once frames are playing, so
+ * a slow connection shows a still instead of a black box. The poster also
+ * replaces the video for reduced motion, and when the video errors or the
+ * browser refuses autoplay; such a slide then counts as a photo, otherwise the
+ * slider would wait for an `ended` event that never comes.
  */
 export default function HeroMedia({ slides, mobile }) {
     const device = useSyncExternalStore(subscribe, () => (window.matchMedia(MQ).matches ? "desktop" : "mobile"), () => null);
@@ -38,27 +45,44 @@ export default function HeroMedia({ slides, mobile }) {
     const [paused, setPaused] = useState(false);
     const [mobileFailed, setMobileFailed] = useState(false);
     const [muted, setMuted] = useState(true);
+    // Desktop video slides that cannot play (error or autoplay refused), by url.
+    const [stalled, setStalled] = useState(() => new Set());
+    // Url of the desktop video that is actually showing frames.
+    const [playingUrl, setPlayingUrl] = useState(null);
     const videoRef = useRef(null);
 
     const mobileItem = !mobile || mobileFailed ? FALLBACK_MOBILE : mobile;
     const current = list[index % list.length];
-    const activeIsVideo = device === "mobile" ? mobileItem.mediaType === "video" : current.mediaType === "video";
+    const mobilePoster = mediaUrl(mobileItem.posterUrl || MOBILE_POSTER);
+    // A desktop video slide plays unless it is stalled, or reduced motion is on
+    // and there is a poster to show instead.
+    const playsVideo = (s) => s.mediaType === "video" && !stalled.has(s.mediaUrl) && !(reduced && s.posterUrl);
+    const stall = (url) => setStalled((prev) => (prev.has(url) ? prev : new Set(prev).add(url)));
+    const activeIsVideo = device === "mobile" ? mobileItem.mediaType === "video" : playsVideo(current);
 
     // Auto advance on desktop. Paused while a desktop video slide plays, on
     // hover over the indicators, when the tab is hidden, or for reduced motion.
     useEffect(() => {
-        if (device !== "desktop" || list.length < 2 || paused || reduced || current.mediaType === "video") return;
+        if (device !== "desktop" || list.length < 2 || paused || reduced || playsVideo(current)) return;
         const t = setTimeout(() => {
             if (!document.hidden) setIndex((i) => (i + 1) % list.length);
         }, SLIDE_MS);
         return () => clearTimeout(t);
-    }, [device, list.length, paused, reduced, index, current.mediaType]);
+        // playsVideo reads stalled/reduced, both listed.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [device, list.length, paused, reduced, index, current.mediaType, stalled]);
 
     useEffect(() => {
         const v = videoRef.current;
         if (!v) return;
         v.muted = true;
-        v.play().catch(() => {});
+        const url = device === "desktop" ? current.mediaUrl : null;
+        v.play().catch((err) => {
+            // AbortError = the element was swapped mid-play, not a refusal.
+            if (url && err?.name !== "AbortError") stall(url);
+        });
+        // current.mediaUrl changes with index.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [device, index, mobileItem.mediaUrl]);
 
     const toggleSound = () => {
@@ -74,8 +98,10 @@ export default function HeroMedia({ slides, mobile }) {
             {/* First paint, before we know the breakpoint. */}
             {!device && (
                 <>
-                    <Image src={MOBILE_POSTER} alt="" fill priority sizes="100vw" className="object-cover md:hidden" />
-                    {list[0].mediaType === "image" && <Image src={mediaUrl(list[0].mediaUrl)} alt="" fill priority sizes="100vw" className="hidden object-cover md:block" />}
+                    <Image src={mobileItem.mediaType === "image" ? mediaUrl(mobileItem.mediaUrl) : mobilePoster} alt="" fill priority sizes="100vw" className="object-cover md:hidden" />
+                    {(list[0].mediaType === "image" || list[0].posterUrl) && (
+                        <Image src={mediaUrl(list[0].mediaType === "image" ? list[0].mediaUrl : list[0].posterUrl)} alt="" fill priority sizes="100vw" className="hidden object-cover md:block" />
+                    )}
                 </>
             )}
 
@@ -86,7 +112,7 @@ export default function HeroMedia({ slides, mobile }) {
                         key={mobileItem.mediaUrl}
                         className="absolute inset-0 size-full object-cover"
                         src={mediaUrl(mobileItem.mediaUrl)}
-                        poster={MOBILE_POSTER}
+                        poster={mobilePoster}
                         autoPlay
                         muted
                         loop
@@ -105,19 +131,34 @@ export default function HeroMedia({ slides, mobile }) {
                     return (
                         <div key={s._id || s.mediaUrl} className={`absolute inset-0 transition-opacity duration-[1400ms] ease-out ${on ? "opacity-100" : "opacity-0"}`} aria-hidden={!on}>
                             {s.mediaType === "video" ? (
-                                on && (
-                                    <video
-                                        ref={videoRef}
-                                        className="absolute inset-0 size-full object-cover"
-                                        src={mediaUrl(s.mediaUrl)}
-                                        autoPlay
-                                        muted
-                                        playsInline
-                                        preload="auto"
-                                        onEnded={() => setIndex((x) => (x + 1) % list.length)}
-                                        loop={list.length < 2}
-                                    />
-                                )
+                                <>
+                                    {(s.posterUrl || !playsVideo(s)) && (
+                                        <Image
+                                            src={s.posterUrl ? mediaUrl(s.posterUrl) : FALLBACK_DESKTOP[0].mediaUrl}
+                                            alt=""
+                                            fill
+                                            priority={i === 0}
+                                            sizes="100vw"
+                                            className="object-cover"
+                                        />
+                                    )}
+                                    {on && playsVideo(s) && (
+                                        <video
+                                            ref={videoRef}
+                                            key={s.mediaUrl}
+                                            className={`absolute inset-0 size-full object-cover transition-opacity duration-700 ${playingUrl === s.mediaUrl ? "opacity-100" : "opacity-0"}`}
+                                            src={mediaUrl(s.mediaUrl)}
+                                            autoPlay
+                                            muted
+                                            playsInline
+                                            preload="auto"
+                                            onPlaying={() => setPlayingUrl(s.mediaUrl)}
+                                            onError={() => stall(s.mediaUrl)}
+                                            onEnded={() => setIndex((x) => (x + 1) % list.length)}
+                                            loop={list.length < 2}
+                                        />
+                                    )}
+                                </>
                             ) : (
                                 <Image
                                     src={mediaUrl(s.mediaUrl)}

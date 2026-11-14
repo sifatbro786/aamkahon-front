@@ -21,7 +21,7 @@ const DEVICES = [
         key: "desktop",
         label: "Desktop and tablet",
         icon: Monitor,
-        spec: "Landscape slides. Photo: at least 2000 px wide, subject on the right (the text sits on the left). Video slide: MP4 (H.264), 1920×1080, 10 to 20 s, under 15 MB; the slider moves on when it ends.",
+        spec: "Landscape slides. Photo: at least 2000 px wide, subject on the right (the text sits on the left). Video slide: MP4 (H.264), 1920×1080, 10 to 20 s, under 15 MB, plus a poster image; the slider moves on when it ends.",
     },
     {
         key: "mobile",
@@ -37,12 +37,31 @@ const preview = (u) => (isAbsolute(u) ? u : u || "");
 function MediaCard({ device, record, onSaved, slide, onDelete, onMove, isFirst, isLast, nextOrder }) {
     const [mediaType, setMediaType] = useState(record?.mediaType || "image");
     const [mediaUrl, setMediaUrl] = useState(record?.mediaUrl || "");
+    // Still image shown until the video plays (and instead of it for reduced
+    // motion or when it fails). Video records only.
+    const [posterUrl, setPosterUrl] = useState(record?.posterUrl || "");
     const [label, setLabel] = useState(record?.label || "");
     // Aamkahon: media can belong to one season (Admin > Homepage & season).
     const [season, setSeason] = useState(record?.season || "all");
     const [busy, setBusy] = useState(false);
     const fileRef = useRef(null);
+    const posterRef = useRef(null);
     const Icon = device.icon;
+
+    const uploadPoster = async (file) => {
+        if (!file) return;
+        setBusy(true);
+        try {
+            const { data } = await uploadApi.uploadSingle(file);
+            setPosterUrl(data.imageUrl || data.file?.url || "");
+            toast.success("Poster uploaded. Press Save to publish.");
+        } catch (err) {
+            toast.error(err.response?.data?.message || "Upload failed");
+        } finally {
+            setBusy(false);
+            if (posterRef.current) posterRef.current.value = "";
+        }
+    };
 
     const upload = async (file) => {
         if (!file) return;
@@ -70,7 +89,15 @@ function MediaCard({ device, record, onSaved, slide, onDelete, onMove, isFirst, 
         if (!mediaUrl.trim()) return toast.error("Add a file or a URL first");
         setBusy(true);
         try {
-            const payload = { mediaType, mediaUrl: mediaUrl.trim(), deviceType: device.key, isActive: true, label: label.trim(), season };
+            const payload = {
+                mediaType,
+                mediaUrl: mediaUrl.trim(),
+                posterUrl: mediaType === "video" ? posterUrl.trim() : "",
+                deviceType: device.key,
+                isActive: true,
+                label: label.trim(),
+                season,
+            };
             if (record?._id) await heroApi.updateContent(record._id, payload);
             else await heroApi.createContent({ ...payload, title: "Mangoes picked late, on purpose", subtitle: "Rajshahi orchards to your door.", order: nextOrder ?? 0 });
             toast.success(`${device.label} hero saved`);
@@ -116,7 +143,7 @@ function MediaCard({ device, record, onSaved, slide, onDelete, onMove, isFirst, 
             <div className={`mt-4 overflow-hidden rounded-md bg-gray-900 ${device.key === "desktop" ? "aspect-video" : "mx-auto aspect-[9/16] max-h-80"}`}>
                 {mediaUrl ? (
                     mediaType === "video" ? (
-                        <video key={mediaUrl} src={preview(mediaUrl)} muted loop autoPlay playsInline className="size-full object-cover" />
+                        <video key={mediaUrl} src={preview(mediaUrl)} poster={posterUrl ? preview(posterUrl) : undefined} muted loop autoPlay playsInline className="size-full object-cover" />
                     ) : (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img src={preview(mediaUrl)} alt="" className="size-full object-cover" />
@@ -165,6 +192,28 @@ function MediaCard({ device, record, onSaved, slide, onDelete, onMove, isFirst, 
                     <Upload size={14} /> Upload
                 </button>
             </div>
+
+            {mediaType === "video" && (
+                <div className="mt-4">
+                    <p className="text-sm text-gray-700">
+                        Poster image <span className="text-gray-400">(shown while the video loads, and instead of it when it cannot play)</span>
+                    </p>
+                    <div className="mt-1 flex items-center gap-3">
+                        <div className={`shrink-0 overflow-hidden rounded bg-gray-100 ${device.key === "desktop" ? "aspect-video w-24" : "aspect-[9/16] w-12"}`}>
+                            {posterUrl ? (
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img src={preview(posterUrl)} alt="" className="size-full object-cover" />
+                            ) : null}
+                        </div>
+                        <input value={posterUrl} onChange={(e) => setPosterUrl(e.target.value)} placeholder="/videos/hero-poster.jpg" className={field} />
+                        <input ref={posterRef} type="file" hidden accept="image/jpeg,image/png,image/webp" onChange={(e) => uploadPoster(e.target.files?.[0])} />
+                        <button type="button" disabled={busy} onClick={() => posterRef.current?.click()} className="inline-flex shrink-0 items-center gap-1.5 rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50">
+                            <Upload size={14} /> Upload
+                        </button>
+                    </div>
+                    {!posterUrl && <p className="mt-1 text-xs text-amber-700">Recommended: use the video&apos;s first frame, same size as the video, JPG under 300 KB.</p>}
+                </div>
+            )}
 
             <button type="button" disabled={busy} onClick={save} className="mt-4 w-full rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-50">
                 {busy ? "Working..." : "Save"}

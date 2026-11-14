@@ -276,7 +276,18 @@ Decisions:
 - [x] 7.2 Owner spotlight (2026-11-12): components/story/OwnerSpotlight.js on /story (portrait,
       name, role, quote, note, facts) and the homepage StoryBlock leads with the owner.
       Admin > Our Story (photo upload). ACTION: client gives owner name + best portrait.
-- [ ] 7.3 Hero: desktop video already supported; add a poster image field + check on desktop.
+- [x] 7.3 Hero video poster (2026-11-14). HeroContent.posterUrl (video records only, cleared
+      for photos), returned in /api/hero items. Admin hero-content POST/PUT now have
+      express-validator rules (URLs must be /path, #anchor or http(s)). Admin Homepage hero:
+      "Poster image" field + upload under every video card, shown in the preview.
+      Storefront HeroMedia: desktop video slide sits on its poster (next/image, priority on
+      slide 1) and fades in on `playing`; first paint shows the poster; reduced motion shows
+      the poster instead of the video; video error or refused autoplay -> poster, and the
+      slide is timed like a photo (slider can no longer get stuck waiting for `ended`).
+      Phone poster = record posterUrl, else /videos/hero-poster.jpg. Seed: phone record has
+      posterUrl. Fixtures regenerated.
+      NOT browser tested here (no browser in Claude's shell, next build needs Windows swc):
+      Sifat runs `npm run build` and checks desktop with a real landscape video + poster.
 - [ ] 7.4 Product form presets for mango / ghee / gur / achar (unit, pack sizes, weight,
       shelf life, storage, origin, attribute suggestions). (Wholesale tier flag done 2026-11-14.)
 - [ ] 7.5 Dashboard for food: season calendar, batch / best-before, top districts.
@@ -284,6 +295,10 @@ Decisions:
 ### Commit messages (fixes + 7.1 + 7.2)
 - amkahon-back:  `feat: season-driven storefront settings, FAQ API, order views and stock-safe product edits`
 - amkahon-front: `feat: season CMS, FAQ, owner spotlight, active nav link; split orders/pre-bookings`
+
+### Commit messages (7.3)
+- amkahon-back:  `feat: hero video poster field with validated admin hero routes`
+- amkahon-front: `feat: hero video poster, fade-in and stall-safe desktop slider`
 
 ### Phase 8 — courier integrations
 - [ ] 8.1 Courier fields on Order (provider, consignment id, tracking link, status) + manual

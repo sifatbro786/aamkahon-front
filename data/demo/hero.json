@@ -59,6 +59,7 @@
       "label": "Orchard",
       "mediaType": "video",
       "mediaUrl": "/videos/hero-loop.mp4",
+      "posterUrl": "/videos/hero-poster.jpg",
       "deviceType": "mobile",
       "order": 0
     }
