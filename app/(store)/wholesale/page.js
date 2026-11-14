@@ -4,23 +4,35 @@ import InquiryForm from "@/components/product/InquiryForm";
 import { WhatsAppIcon } from "@/components/ui/BrandIcons";
 import { getProducts } from "@/lib/data/catalog";
 import { plural, taka } from "@/lib/format";
+import { WHOLESALE_TIER } from "@/lib/config";
 import { unitOf } from "@/lib/store/productView";
 import { SITE, whatsappText } from "@/lib/site";
 
 export const metadata = {
     title: "Wholesale and export",
-    description: "Wholesale mango and khejurer gur prices from Aamkahon, Rajshahi. Automatic bulk pricing by the box, export grade on quote.",
+    description: "Wholesale mango and khejurer gur from Aamkahon, Rajshahi. Call or WhatsApp for a seasonal quote; export grade on request.",
     alternates: { canonical: "/wholesale" },
 };
 
-const STEPS = [
-    { t: "Add the boxes", d: "Order online as usual. Once a line reaches its wholesale count, the lower price is applied automatically at checkout." },
-    { t: "Pay how you like", d: "Cash on delivery, bKash, Nagad or card. Pre-bookings take a small advance and the rest on delivery." },
-    { t: "We pack and ship", d: "Ventilated cartons, weight based courier charges, to all 64 districts." },
-];
+// Aamkahon sells wholesale by phone, in season, at prices agreed on the call
+// (the order is then entered in Admin > New phone order). With the automatic
+// tier switched on (lib/config.js) the first step describes that instead.
+const STEPS = WHOLESALE_TIER
+    ? [
+          { t: "Add the boxes", d: "Order online as usual. Once a line reaches its wholesale count, the lower price is applied automatically at checkout." },
+          { t: "Pay how you like", d: "Cash on delivery, bKash, Nagad or card. Pre-bookings take a small advance and the rest on delivery." },
+          { t: "We pack and ship", d: "Ventilated cartons, weight based courier charges, to all 64 districts." },
+      ]
+    : [
+          { t: "Call or send a request", d: "Tell us the variety, quantity and where it is going. Call, WhatsApp, or use the form below." },
+          { t: "We quote for your order", d: "Wholesale prices move with the season and the harvest, so we quote each order and confirm the dispatch date." },
+          { t: "We pack and ship", d: "Ventilated cartons, sent by courier or truck to all 64 districts. You get an invoice for every order." },
+      ];
 
 export default async function WholesalePage() {
-    const { products } = await getProducts({ wholesale: "true", limit: 50, sortBy: "displayOrder", sortOrder: "asc" });
+    const { products } = WHOLESALE_TIER
+        ? await getProducts({ wholesale: "true", limit: 50, sortBy: "displayOrder", sortOrder: "asc" })
+        : { products: [] };
     // One row per pack size that has a wholesale price.
     const rows = products.flatMap((p) =>
         p.hasVariants
@@ -34,10 +46,10 @@ export default async function WholesalePage() {
                 <div className="wrap grid gap-10 py-16 md:py-24 lg:grid-cols-12">
                     <div className="lg:col-span-7">
                         <p className="label text-mango">Wholesale and export</p>
-                        <h1 className="mt-4 text-display font-medium">Bulk prices, without the paperwork</h1>
+                        <h1 className="mt-4 text-display font-medium">{WHOLESALE_TIER ? "Bulk prices, without the paperwork" : "Wholesale, one phone call away"}</h1>
                         <p className="mt-6 max-w-xl text-lg leading-relaxed text-paper/75">
-                            Shops, offices, sweet makers, wedding caterers and corporate gifting. Wholesale applies by the box count on each line, no
-                            account or approval needed. For tonnes and export, we quote.
+                            Shops, offices, sweet makers, wedding caterers and corporate gifting. Wholesale is taken in season, by phone, at a
+                            price we agree for your order. For tonnes and export, we quote the same way.
                         </p>
                         <div className="mt-8 flex flex-wrap gap-3">
                             <a href="#quote" className="btn btn-mango">

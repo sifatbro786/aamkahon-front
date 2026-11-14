@@ -246,6 +246,20 @@ Decisions:
 - Storefront header marks the active link (lib/activeLink.js: path + query match, most
   specific wins; useSearchParams under Suspense). Admin sidebar already had it.
 
+### Base sync + fixes (2026-11-14)
+- Footpath base now has every generic fix and feature from Aamkahon (list in
+  amkahon-back/BASE_CANDIDATES.md). Footpath also got header active link by query.
+- Wholesale: automatic tier switched OFF on both sides (NEXT_PUBLIC_WHOLESALE_TIER /
+  WHOLESALE_TIER). Product form hides the tier and variant wholesale price, tab is
+  "Selling & Season"; shop filter, product ladders, cart tier hints hidden;
+  /wholesale and the homepage band now say "call or WhatsApp for a quote".
+  Wholesale orders = Admin > Orders > New phone order with the agreed price.
+- Both backends: PII-free logging (utils/logger.js), campaign cron lock (services/jobLock.js).
+- Commits: amkahon-back `chore: wholesale tier flag, redacted logging, cron lock`;
+  amkahon-front `feat: hide wholesale tier behind a flag, phone wholesale copy`;
+  footpath-backend `feat: port Aamkahon fixes (pricing, delivery, stock, phone orders, customers)`;
+  footpath-frontend `feat(admin): customers, stock, phone orders, invoice; checkout delivery fix`.
+
 ### Phase 7 — content and catalogue for food products
 - [x] 7.1 Season CMS + FAQ (2026-11-12). Backend: models/StorefrontSettings.js (singleton:
       activeSeason mango|winter|all, per season announcement + hero copy + homepage block
@@ -264,7 +278,7 @@ Decisions:
       Admin > Our Story (photo upload). ACTION: client gives owner name + best portrait.
 - [ ] 7.3 Hero: desktop video already supported; add a poster image field + check on desktop.
 - [ ] 7.4 Product form presets for mango / ghee / gur / achar (unit, pack sizes, weight,
-      shelf life, storage, origin, attribute suggestions), hide wholesale tab behind a flag.
+      shelf life, storage, origin, attribute suggestions). (Wholesale tier flag done 2026-11-14.)
 - [ ] 7.5 Dashboard for food: season calendar, batch / best-before, top districts.
 
 ### Commit messages (fixes + 7.1 + 7.2)

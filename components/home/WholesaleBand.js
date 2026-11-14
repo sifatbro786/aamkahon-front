@@ -6,8 +6,9 @@ import { cheapestVariant, priceBasisLabel, unitOf, wholesaleTier } from "@/lib/s
 import { SITE, whatsappText } from "@/lib/site";
 
 /**
- * Wholesale explained with a real product's numbers rather than adjectives:
- * the same box at retail, at the wholesale tier, and the export route.
+ * Wholesale band. Aamkahon takes wholesale by phone (no automatic tier,
+ * lib/config.js WHOLESALE_TIER), so it invites a call. When a store turns the
+ * tier on, the table shows a real product's retail vs wholesale numbers.
  */
 export default function WholesaleBand({ example }) {
     const variant = example ? cheapestVariant(example) : null;
@@ -23,12 +24,13 @@ export default function WholesaleBand({ example }) {
                         Buying for a shop, an office or a wedding?
                     </h2>
                     <p className="mt-5 max-w-md text-[17px] leading-relaxed text-paper/75">
-                        Wholesale prices apply on their own once your order reaches the box count. No account to open, no
-                        separate catalogue. For tonnes and export, we quote.
+                        {tier
+                            ? "Wholesale prices apply on their own once your order reaches the box count. For tonnes and export, we quote."
+                            : "Call or WhatsApp us with the variety and quantity. We quote a price for your order, in season, and arrange the delivery."}
                     </p>
                     <div className="mt-8 flex flex-wrap gap-3">
                         <Link href="/wholesale" className="btn btn-mango">
-                            Wholesale terms
+                            How wholesale works
                         </Link>
                         <a href={whatsappText("Hi Aamkahon, I want a wholesale quote.")} target="_blank" rel="noopener noreferrer" className="btn btn-ghost-light">
                             <MessageCircle size={17} aria-hidden /> WhatsApp {SITE.phone}

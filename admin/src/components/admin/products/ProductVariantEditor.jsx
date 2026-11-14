@@ -2,6 +2,7 @@
 import { useMemo, useState } from "react";
 import { Plus, Trash2, Wand2, Eye, X, AlertTriangle } from "lucide-react";
 import { variantFinalPrice, formatPrice } from "./productPricing";
+import { WHOLESALE_TIER } from "@/lib/config";
 
 /* ----------------------------- helpers ----------------------------------- */
 const norm = (s) => (s ?? "").toString().trim();
@@ -557,8 +558,10 @@ const ProductVariantEditor = ({
                                     </p>
                                 )}
 
-                                {/* Aamkahon: wholesale price for this pack + packed weight */}
+                                {/* Wholesale price for this pack (only with the automatic tier on,
+                                    lib/config.js WHOLESALE_TIER) + packed weight */}
                                 <div className="mt-3 grid grid-cols-2 gap-3">
+                                    {WHOLESALE_TIER && (
                                     <div>
                                         <label className="mb-1 block text-xs font-medium text-gray-500">
                                             Wholesale price (BDT)
@@ -572,6 +575,7 @@ const ProductVariantEditor = ({
                                             className="w-full rounded-md border border-gray-300 px-2.5 py-1.5 text-sm focus:border-gray-900 focus:outline-none"
                                         />
                                     </div>
+                                    )}
                                     <div>
                                         <label className="mb-1 block text-xs font-medium text-gray-500">
                                             Packed weight (kg)

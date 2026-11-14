@@ -17,7 +17,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 
 import { cartApi } from "@/lib/api/cartApi";
 import { errorMessage } from "@/lib/api/client";
-import { CART_STORAGE_KEY, IS_STATIC } from "@/lib/config";
+import { CART_STORAGE_KEY, IS_STATIC, WHOLESALE_TIER } from "@/lib/config";
 import { lineUnitPrice } from "@/lib/store/cartLine";
 import { variantCartKey } from "@/lib/store/variants";
 import { useAuth } from "@/context/AuthContext";
@@ -76,7 +76,7 @@ function fromServerItem(item) {
         // Server stored the tiered price; keep the retail price for the label.
         price: Number(variant ? variant.price : product.price) || Number(item.priceAtPurchase) || 0,
         wholesale:
-            product.wholesale?.enabled && product.wholesale.minQty
+            WHOLESALE_TIER && product.wholesale?.enabled && product.wholesale.minQty
                 ? { minQty: product.wholesale.minQty, price: Number(variant ? variant.wholesalePrice : product.wholesale.price) || null }
                 : null,
         quantity: Number(item.quantity) || 1,

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
 import { AVAILABILITY, SORTS, shopHref } from "@/lib/catalogParams";
+import { WHOLESALE_TIER } from "@/lib/config";
 
 /**
  * Search, sort and filters. Every change is a URL change (router.push), so
@@ -72,6 +73,7 @@ export function ShopFilters({ current, categories }) {
                 </div>
             </fieldset>
 
+            {WHOLESALE_TIER && (
             <label className="flex cursor-pointer items-center justify-between gap-4">
                 <span>
                     <span className="block font-medium">Wholesale price available</span>
@@ -84,6 +86,7 @@ export function ShopFilters({ current, categories }) {
                     className="size-5 accent-[var(--color-mango-deep)]"
                 />
             </label>
+            )}
         </div>
     );
 

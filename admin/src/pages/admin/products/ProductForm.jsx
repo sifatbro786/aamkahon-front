@@ -27,12 +27,13 @@ import ProductVariantEditor from "../../../components/admin/products/ProductVari
 import InfoTip from "../../../components/admin/products/InfoTip";
 import productFaqData from "../../../components/admin/products/productFaqData";
 import { productFinalPrice, formatPrice } from "../../../components/admin/products/productPricing";
+import { WHOLESALE_TIER } from "@/lib/config";
 
 const SECTIONS = [
     { id: "basic", label: "Basic Information", icon: Info },
     { id: "pricing", label: "Pricing", icon: DollarSign },
     // Aamkahon: wholesale tier, price visibility, availability, pre-booking
-    { id: "selling", label: "Wholesale & Season", icon: CalendarClock },
+    { id: "selling", label: WHOLESALE_TIER ? "Wholesale & Season" : "Selling & Season", icon: CalendarClock },
     { id: "inventory", label: "Inventory", icon: Boxes },
     { id: "media", label: "Media", icon: ImageIcon },
     { id: "variants", label: "Variants", icon: Layers },
@@ -682,7 +683,7 @@ const ProductForm = () => {
                         {/* ============ INVENTORY ============ */}
                         {active === "selling" && (
                             <div className="space-y-6">
-                                <h2 className="text-base font-semibold text-gray-900">Wholesale &amp; Season</h2>
+                                <h2 className="text-base font-semibold text-gray-900">{WHOLESALE_TIER ? "Wholesale & Season" : "Selling & Season"}</h2>
                                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                                     <div>
                                         {labelRow("Bangla name", "Shown under the English name, e.g. হিমসাগর.")}
@@ -728,6 +729,10 @@ const ProductForm = () => {
                                     </p>
                                 </div>
 
+                                {/* Automatic wholesale tier: hidden while the feature is off
+                                    (lib/config.js WHOLESALE_TIER). Aamkahon sells wholesale by
+                                    phone, entered in Orders > New phone order. */}
+                                {WHOLESALE_TIER && (
                                 <div className="rounded-lg border border-gray-200 p-4">
                                     <label className="flex items-center gap-2 text-sm font-medium text-gray-900">
                                         <input
@@ -756,6 +761,8 @@ const ProductForm = () => {
                                         </div>
                                     )}
                                 </div>
+
+                                )}
 
                                 <div className="rounded-lg border border-gray-200 p-4">
                                     {labelRow("Availability", "Pre-booking sells without stock and takes an advance; out of season is browse only.")}
