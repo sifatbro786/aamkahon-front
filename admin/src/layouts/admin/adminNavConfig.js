@@ -23,6 +23,8 @@ import {
     SunSnow,
     UserRound,
     HelpCircle,
+    PackageCheck,
+    ScrollText,
 } from "lucide-react";
 
 // Each `path` maps 1:1 to a backend admin route module (see server.js mounts):
@@ -58,6 +60,7 @@ export const adminNavGroups = [
             // Aamkahon: levels, stock in/out/count, ledger history.
             { label: "Stock", path: "/admin/stock", staff: true, icon: Boxes, built: true },
             { label: "Shipping", path: "/admin/shipping", icon: Truck, built: true },
+            { label: "Couriers", path: "/admin/couriers", icon: PackageCheck, built: true },
         ],
     },
     {
@@ -79,6 +82,7 @@ export const adminNavGroups = [
             { label: "Product Sections", path: "/admin/sections", icon: LayoutGrid, built: true },
             { label: "Our Story", path: "/admin/our-story", icon: UserRound, built: true },
             { label: "FAQ", path: "/admin/faq", icon: HelpCircle, built: true },
+            { label: "Policy Pages", path: "/admin/policy-pages", icon: ScrollText, built: true },
         ],
     },
     {

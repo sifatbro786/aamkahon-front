@@ -4,7 +4,7 @@
 export default function GlobalError({ reset }) {
     return (
         <html lang="en">
-            <body style={{ margin: 0, minHeight: "100vh", display: "grid", placeItems: "center", background: "#16120d", color: "#faf5ea", fontFamily: "system-ui, sans-serif", textAlign: "center", padding: 24 }}>
+            <body style={{ margin: 0, minHeight: "100vh", display: "grid", placeItems: "center", background: "#16120d", color: "#ffffff", fontFamily: "system-ui, sans-serif", textAlign: "center", padding: 24 }}>
                 <div>
                     <p style={{ color: "#f29a1f", letterSpacing: "0.08em", fontSize: 12, textTransform: "uppercase" }}>Aamkahon</p>
                     <h1 style={{ fontWeight: 500, fontSize: 32, margin: "12px 0" }}>The site is having a moment</h1>

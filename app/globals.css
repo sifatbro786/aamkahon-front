@@ -5,7 +5,9 @@
  *   mango   the orange of the fruit outline and wordmark
  *   leaf    the lime of the leaves and the "story of mangoes" line
  *   ink     the black of the logo plate and business card
- * plus a cream "paper" (cut mango flesh) and a gur brown for the winter range.
+ * plus "paper" (the page: clean white since Nov 2026, client asked for the
+ * dashboard's white instead of cream; paper-2/3 and line are neutral to match)
+ * and a gur brown for the winter range.
  * Deep variants exist because the logo colours fail contrast as small text on
  * cream; use mango/leaf for fills and on ink, mango-deep/leaf-deep for text.
  */
@@ -13,10 +15,10 @@
     --color-ink: #16120d;
     --color-ink-2: #221c15;
     --color-ink-soft: #3b3229;
-    --color-paper: #faf5ea;
-    --color-paper-2: #f3ead6;
-    --color-paper-3: #ebdfc6;
-    --color-line: #e2d5bb;
+    --color-paper: #ffffff;
+    --color-paper-2: #f5f5f4;
+    --color-paper-3: #e9e8e5;
+    --color-line: #e5e4e1;
     --color-line-dark: #3a3128;
     --color-muted: #6f6355;
     --color-mango: #f29a1f;

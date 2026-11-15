@@ -369,6 +369,45 @@ Decisions:
       read dates back in Asia/Dhaka; one-day coupons allowed. Base candidate (Footpath has it too).
       Existing coupons/offers: open Edit and press Update once to re-save the dates.
 
+### Client round 2026-11-15 (9 points)
+1. Storefront paper is white (#fff); paper-2/3 and line are neutral greys. Other colours unchanged.
+2. Seed reviews use the admin-entry format (reviewerName, reviewerDistrict, source, reviewedAt, no user).
+   A plain `npm run seed` rewrites old-format seeded reviews.
+3. Policy pages CMS: Admin > Storefront Content > Policy Pages edits /privacy, /terms and the new
+   /refund-policy (footer link + sitemap + checkout note). Plain text (blank line = paragraph, "- " =
+   bullet). Unsaved pages show data/demo/pages.json (generated from seed POLICY_PAGES). Refund copy is a
+   starting draft: client must confirm.
+4. /order/success redesigned: confirmation #, "Thank you, {name}!", Google Maps embed of the address
+   (no API key, non-interactive, "Open map" link), state card (polls ~1 min while payment is Pending),
+   order details (contact, payment, address/pickup, courier + method), summary panel (desktop) /
+   collapsible bar (phone). /order/fail and /order/cancel unchanged.
+5. Checkout error was config, not code: SSLCOMMERZ_STORE_ID in .env is a placeholder ("sadsad"), so
+   both COD (advance) and full online fail at gateway init. Needs real sandbox credentials. Customers now
+   see a safe message (502 GATEWAY_INIT_FAILED); the order is kept as Cancelled with the reason in admin
+   notes. The first 400 on calculate came from calling it before the delivery choice was complete; the
+   checkout now waits until delivery type + branch are chosen.
+6. Next warnings: product page awaits params inside <Suspense> (skeleton), hero/story images use
+   loading="eager" (priority is deprecated in Next 16), <html data-scroll-behavior="smooth">.
+   "Rendering with server caches disabled" lines are dev-only info.
+7. Product page shows stock of the selected pack (small line under the quantity).
+8. Customer list columns: Order no, Name, Phone, Address, Courier (+ courier filter). Customer.orderNo
+   and courier follow the latest order; CSV import/export carry them. Demo customers seeded in that
+   format (tag "demo", `npm run seed -- --purge-demo-customers` removes them).
+9. Couriers: Admin > Catalog > Couriers (AJR no COD + not default; Sundarban, Steadfast COD + default).
+   Product form "Delivery by" ticks couriers per product. Checkout offers only couriers every product
+   allows (mixed AJR mango + gur = "order separately" message), AJR => full payment online incl.
+   delivery. Product page shows the courier/payment terms. Order detail has a Courier card (staff can
+   change it), invoice prints it, phone order form has an optional courier. Seed split per variety is
+   a PLACEHOLDER (Gopalbhog, Khirsapat, Langra, Export Khirsapat = AJR; others Sundarban/Steadfast):
+   the client sets the real split in the product form.
+   Mango preset no longer sets "Full payment online only" (the courier decides now). Products saved
+   earlier with that box ticked stay online only: untick it on them.
+ACTION: put real SSLCommerz sandbox credentials in amkahon-back/.env, then `npm run seed` (adds
+couriers, product courier split, policy pages, demo customers, rewrites demo reviews), then
+`npm run build` in amkahon-front.
+Commits: back `feat: couriers per product, policy pages API, order-book customers, safe gateway errors`;
+front `feat: courier choice + terms, policy pages CMS, refund page, new order success page, white theme`
+
 ### Commit messages (fixes + 7.1 + 7.2)
 - amkahon-back:  `feat: season-driven storefront settings, FAQ API, order views and stock-safe product edits`
 - amkahon-front: `feat: season CMS, FAQ, owner spotlight, active nav link; split orders/pre-bookings`

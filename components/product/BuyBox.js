@@ -1,5 +1,5 @@
 "use client";
-import { CalendarClock, Check } from "lucide-react";
+import { CalendarClock, Check, Truck } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import QtyStepper from "@/components/ui/QtyStepper";
@@ -15,7 +15,7 @@ import { whatsappText } from "@/lib/site";
  * Variant, quantity and add to bag. Prices printed here are display only:
  * the bag and checkout reprice through the server (wholesale tier included).
  */
-export default function BuyBox({ product }) {
+export default function BuyBox({ product, couriers = [] }) {
     const { addItem } = useCart();
     const pre = isPreOrder(product);
     const unit = unitOf(product);
@@ -153,16 +153,65 @@ export default function BuyBox({ product }) {
                 </button>
             </div>
             {minQty > 1 && <p className="mt-2 text-[13px] text-muted">Minimum order {minQty} {plural(minQty, unit)}.</p>}
-            {!pre && !soldOut && stock <= 10 && <p className="mt-2 text-[13px] text-mango-deep">Only {stock} left.</p>}
+            {/* Stock of the selected pack (or the product). Shown small and
+                always, so a buyer of 120 kg knows before the bag refuses it. */}
+            {!pre && complete && (
+                <p className={`mt-2 text-[13px] ${soldOut ? "text-danger" : stock <= 10 ? "text-mango-deep" : "text-muted"}`} aria-live="polite">
+                    {soldOut ? (
+                        <>{product.hasVariants ? `${basis} is out of stock` : "Out of stock"}</>
+                    ) : (
+                        <>
+                            <span className="num font-medium">{stock}</span> {plural(stock, product.hasVariants ? "pack" : unit)} in stock
+                            {product.hasVariants ? <> ({basis})</> : null}
+                        </>
+                    )}
+                </p>
+            )}
             {tier && !tierOn && (
                 <p className="mt-2 text-[13px] text-leaf-deep">
                     Order {tier.minQty} or more for {taka(tier.price)} each.
                 </p>
             )}
 
+            <CourierTerms couriers={couriers} pre={pre} />
+
             <a href={waText} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex items-center gap-2 text-[15px] text-ink/80 hover:text-ink">
                 <WhatsAppIcon size={18} className="text-leaf-deep" /> Prefer to order on WhatsApp?
             </a>
+        </div>
+    );
+}
+
+/**
+ * Which couriers carry this product and what that means for payment. The
+ * server applies the same rule at checkout (services/couriers.js); this is
+ * the heads-up so an AJR mango buyer is not surprised by full prepayment.
+ */
+function CourierTerms({ couriers, pre }) {
+    if (!couriers.length) return null;
+    const prepaidOnly = couriers.every((c) => !c.codAllowed);
+    return (
+        <div className={`mt-7 rounded-lg border p-4 text-[14px] ${prepaidOnly ? "border-mango/40 bg-mango-soft/60" : "border-line"}`}>
+            <p className="flex items-center gap-2 font-medium">
+                <Truck size={17} className="text-mango-deep" aria-hidden />
+                Delivery by {couriers.map((c) => c.name).join(" or ")}
+            </p>
+            <ul className="mt-2.5 space-y-1.5">
+                {couriers.map((c) => (
+                    <li key={c.key} className="flex flex-wrap justify-between gap-x-4 gap-y-0.5">
+                        <span className="text-ink/80">{c.name}</span>
+                        <span className={c.codAllowed ? "text-muted" : "font-medium text-mango-deep"}>
+                            {c.codAllowed ? "Cash on delivery or online" : "Full payment online, delivery included"}
+                        </span>
+                    </li>
+                ))}
+            </ul>
+            {prepaidOnly && !pre && (
+                <p className="mt-2.5 text-[13px] text-ink/75">
+                    {couriers[0].name} does not collect cash, so the product price and the delivery charge are paid in full at checkout.
+                </p>
+            )}
+            {prepaidOnly && pre && <p className="mt-2.5 text-[13px] text-ink/75">Pay the advance now; the balance and delivery are paid online before dispatch.</p>}
         </div>
     );
 }

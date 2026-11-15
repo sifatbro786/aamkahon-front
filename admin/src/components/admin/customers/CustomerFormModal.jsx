@@ -1,14 +1,17 @@
 // Add / edit one customer. Phone is normalised and de-duplicated server side.
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import toast from "react-hot-toast";
 import { customerAdminApi } from "../../../api/customerAdminApi";
+import { courierApi } from "../../../api/courierApi";
 
 const field = "w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-gray-400";
 
 export default function CustomerFormModal({ customer, onClose, onSaved }) {
     const isEdit = Boolean(customer?._id);
     const [form, setForm] = useState({
+        orderNo: customer?.orderNo || "",
+        courier: customer?.courier || "",
         name: customer?.name || "",
         phone: customer?.phone || "",
         district: customer?.district || "",
@@ -19,6 +22,13 @@ export default function CustomerFormModal({ customer, onClose, onSaved }) {
         marketingOptIn: customer?.marketingOptIn ?? true,
     });
     const [saving, setSaving] = useState(false);
+    const [couriers, setCouriers] = useState([]);
+    useEffect(() => {
+        courierApi
+            .list()
+            .then(({ data }) => setCouriers(data.couriers || []))
+            .catch(() => {});
+    }, []);
     const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.type === "checkbox" ? e.target.checked : e.target.value }));
 
     const submit = async (e) => {
@@ -47,6 +57,20 @@ export default function CustomerFormModal({ customer, onClose, onSaved }) {
                     </button>
                 </div>
                 <div className="grid gap-4 p-5 sm:grid-cols-2">
+                    <label className="text-sm text-gray-700">
+                        Order no
+                        <input className={`${field} mt-1 font-mono`} value={form.orderNo} onChange={set("orderNo")} maxLength={40} placeholder="Latest order" />
+                    </label>
+                    <label className="text-sm text-gray-700">
+                        Courier
+                        <select className={`${field} mt-1`} value={form.courier} onChange={set("courier")}>
+                            <option value="">None</option>
+                            {couriers.map((c) => (
+                                <option key={c.key} value={c.key}>{c.name}</option>
+                            ))}
+                            {form.courier && !couriers.some((c) => c.key === form.courier) && <option value={form.courier}>{form.courier}</option>}
+                        </select>
+                    </label>
                     <label className="text-sm text-gray-700">
                         Name
                         <input className={`${field} mt-1`} value={form.name} onChange={set("name")} maxLength={120} />

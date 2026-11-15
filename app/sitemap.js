@@ -15,6 +15,7 @@ export default async function sitemap() {
         page("/track-order", 0.3),
         page("/privacy", 0.2),
         page("/terms", 0.2),
+        page("/refund-policy", 0.2),
         ...categories.map((c) => page(`/shop?category=${c.slug}`, 0.7)),
         ...products.map((p) => page(`/product/${p.slug}`, 0.8)),
     ];

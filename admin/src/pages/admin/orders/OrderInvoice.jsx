@@ -136,6 +136,7 @@ function Sheet({ order, pos, a, where, subtotal, paid, due }) {
                     <div className={pos ? "mt-1" : ""}>
                         <p className="text-xs font-semibold uppercase text-gray-500">Deliver to</p>
                         <p>{where}</p>
+                        {order.courier?.name && <p className="font-medium">Courier: {order.courier.name}</p>}
                         {order.trackingNumber && <p>Tracking {order.carrier ? `${order.carrier} ` : ""}{order.trackingNumber}</p>}
                     </div>
                 </div>

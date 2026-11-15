@@ -63,7 +63,7 @@ export default async function StoryPage() {
                 {CHAPTERS.map((c, i) => (
                     <section key={c.title} className={`grid items-center gap-8 py-10 md:grid-cols-2 md:gap-16 md:py-14 ${i % 2 ? "md:[&>*:first-child]:order-2" : ""}`}>
                         <div className="relative aspect-[4/3] overflow-hidden rounded-card bg-paper-2">
-                            <Image src={c.img} alt={c.alt} fill sizes="(min-width: 768px) 45vw, 100vw" className="object-cover" />
+                            <Image src={c.img} alt={c.alt} fill loading={i < 2 ? "eager" : "lazy"} sizes="(min-width: 768px) 45vw, 100vw" className="object-cover" />
                         </div>
                         <div>
                             <span className="num text-[14px] text-mango-deep">{String(i + 1).padStart(2, "0")}</span>

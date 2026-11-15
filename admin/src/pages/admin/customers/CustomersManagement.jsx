@@ -6,6 +6,7 @@ import { Download, MessageCircle, Pencil, Phone, Plus, RefreshCw, Search, Trash2
 import toast from "react-hot-toast";
 import { useAuth } from "@/context/AuthContext";
 import { customerAdminApi } from "../../../api/customerAdminApi";
+import { courierApi, courierLabel } from "../../../api/courierApi";
 import Pagination from "../../../components/admin/common/Pagination";
 import ConfirmDialog from "../../../components/admin/common/ConfirmDialog";
 import CustomerFormModal from "../../../components/admin/customers/CustomerFormModal";
@@ -14,7 +15,6 @@ import CustomerImportModal from "../../../components/admin/customers/CustomerImp
 const SOURCE_LABEL = { manual: "Manual", import: "Imported", order: "Order", inquiry: "Inquiry" };
 const select = "rounded-md border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-gray-400";
 const waLink = (phone) => `https://wa.me/88${phone}`;
-const fmtDate = (d) => (d ? new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "");
 
 export default function CustomersManagement() {
     // Staff cannot import, export or delete (the API refuses it too).
@@ -28,7 +28,15 @@ export default function CustomersManagement() {
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState("");
     const [q, setQ] = useState("");
-    const [filters, setFilters] = useState({ source: "", tag: "", optIn: "", sort: "newest" });
+    const [filters, setFilters] = useState({ source: "", tag: "", courier: "", optIn: "", sort: "newest" });
+    const [couriers, setCouriers] = useState([]);
+
+    useEffect(() => {
+        courierApi
+            .list()
+            .then(({ data }) => setCouriers(data.couriers || []))
+            .catch(() => {});
+    }, []);
     const [editing, setEditing] = useState(null); // {} for new, customer for edit
     const [importing, setImporting] = useState(false);
     const [toDelete, setToDelete] = useState(null);
@@ -134,7 +142,7 @@ export default function CustomersManagement() {
                             setSearch(e.target.value);
                             setPage(1);
                         }}
-                        placeholder="Name, phone, district"
+                        placeholder="Order no, name, phone, address"
                         className="w-full rounded-md border border-gray-200 bg-white py-2 pl-9 pr-3 text-sm outline-none focus:border-gray-400"
                     />
                 </div>
@@ -148,6 +156,12 @@ export default function CustomersManagement() {
                     <option value="">All tags</option>
                     {tags.map((t) => (
                         <option key={t} value={t}>{t}</option>
+                    ))}
+                </select>
+                <select className={select} value={filters.courier} onChange={setFilter("courier")}>
+                    <option value="">All couriers</option>
+                    {couriers.map((c) => (
+                        <option key={c.key} value={c.key}>{c.name}</option>
                     ))}
                 </select>
                 <select className={select} value={filters.optIn} onChange={setFilter("optIn")}>
@@ -177,39 +191,37 @@ export default function CustomersManagement() {
                         <table className="w-full text-left text-sm">
                             <thead className="bg-gray-50 text-xs uppercase text-gray-500">
                                 <tr>
+                                    <th className="px-4 py-3">Order no</th>
                                     <th className="px-4 py-3">Name</th>
                                     <th className="px-4 py-3">Phone</th>
-                                    <th className="px-4 py-3">District</th>
-                                    <th className="px-4 py-3">Tags</th>
-                                    <th className="px-4 py-3">Source</th>
-                                    <th className="px-4 py-3 text-right">Orders</th>
-                                    <th className="px-4 py-3">Added</th>
+                                    <th className="px-4 py-3">Address</th>
+                                    <th className="px-4 py-3">Courier</th>
                                     <th className="px-4 py-3" />
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100">
                                 {rows.map((c) => (
                                     <tr key={c._id} className="hover:bg-gray-50/60">
+                                        <td className="whitespace-nowrap px-4 py-3">
+                                            <span className="font-mono text-gray-900">{c.orderNo || <span className="text-gray-300">none</span>}</span>
+                                            {c.ordersPlaced > 1 && <span className="block text-xs text-gray-400">{c.ordersPlaced} orders</span>}
+                                        </td>
                                         <td className="px-4 py-3">
                                             <span className="font-medium text-gray-900">{c.name || <span className="text-gray-400">No name</span>}</span>
                                             {!c.marketingOptIn && <span className="ml-2 rounded-full bg-gray-200 px-2 py-0.5 text-xs text-gray-600">opted out</span>}
                                             {c.note && <p className="mt-0.5 max-w-xs truncate text-xs text-gray-500">{c.note}</p>}
                                         </td>
-                                        <td className="px-4 py-3 font-mono text-gray-800">{c.phone}</td>
-                                        <td className="px-4 py-3 text-gray-600">{c.district}</td>
-                                        <td className="px-4 py-3">
-                                            <div className="flex max-w-[220px] flex-wrap gap-1">
-                                                {(c.tags || []).map((t) => (
-                                                    <span key={t} className="rounded bg-gray-100 px-1.5 py-0.5 text-xs text-gray-600">{t}</span>
-                                                ))}
-                                            </div>
+                                        <td className="whitespace-nowrap px-4 py-3 font-mono text-gray-800">{c.phone}</td>
+                                        <td className="px-4 py-3 text-gray-600">
+                                            <span className="block max-w-[280px]">{[c.address, c.district].filter(Boolean).join(", ") || <span className="text-gray-300">none</span>}</span>
                                         </td>
-                                        <td className="px-4 py-3 text-gray-600">{SOURCE_LABEL[c.source] || c.source}</td>
-                                        <td className="px-4 py-3 text-right text-gray-800">
-                                            {c.ordersPlaced || 0}
-                                            {c.lastOrderAt && <span className="block text-xs text-gray-400">{fmtDate(c.lastOrderAt)}</span>}
+                                        <td className="whitespace-nowrap px-4 py-3">
+                                            {c.courier ? (
+                                                <span className="rounded bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700">{courierLabel(couriers, c.courier)}</span>
+                                            ) : (
+                                                <span className="text-gray-300">none</span>
+                                            )}
                                         </td>
-                                        <td className="px-4 py-3 text-gray-500">{fmtDate(c.createdAt)}</td>
                                         <td className="px-4 py-3">
                                             <div className="flex justify-end gap-1">
                                                 <a href={`tel:${c.phone}`} className="rounded p-1.5 text-gray-500 hover:bg-gray-100" title="Call"><Phone size={15} /></a>

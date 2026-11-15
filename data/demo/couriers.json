@@ -1,0 +1,26 @@
+{
+  "success": true,
+  "couriers": [
+    {
+      "key": "ajr",
+      "name": "AJR",
+      "codAllowed": false,
+      "note": "Mango only. Pay the full price and delivery online before dispatch.",
+      "isDefault": false
+    },
+    {
+      "key": "sundarban",
+      "name": "Sundarban Courier",
+      "codAllowed": true,
+      "note": "Cash on delivery or online payment.",
+      "isDefault": true
+    },
+    {
+      "key": "steadfast",
+      "name": "Steadfast",
+      "codAllowed": true,
+      "note": "Cash on delivery or online payment.",
+      "isDefault": true
+    }
+  ]
+}

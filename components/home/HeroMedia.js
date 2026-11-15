@@ -98,9 +98,9 @@ export default function HeroMedia({ slides, mobile }) {
             {/* First paint, before we know the breakpoint. */}
             {!device && (
                 <>
-                    <Image src={mobileItem.mediaType === "image" ? mediaUrl(mobileItem.mediaUrl) : mobilePoster} alt="" fill priority sizes="100vw" className="object-cover md:hidden" />
+                    <Image src={mobileItem.mediaType === "image" ? mediaUrl(mobileItem.mediaUrl) : mobilePoster} alt="" fill loading="eager" fetchPriority="high" sizes="100vw" className="object-cover md:hidden" />
                     {(list[0].mediaType === "image" || list[0].posterUrl) && (
-                        <Image src={mediaUrl(list[0].mediaType === "image" ? list[0].mediaUrl : list[0].posterUrl)} alt="" fill priority sizes="100vw" className="hidden object-cover md:block" />
+                        <Image src={mediaUrl(list[0].mediaType === "image" ? list[0].mediaUrl : list[0].posterUrl)} alt="" fill loading="eager" fetchPriority="high" sizes="100vw" className="hidden object-cover md:block" />
                     )}
                 </>
             )}
@@ -122,7 +122,7 @@ export default function HeroMedia({ slides, mobile }) {
                         onError={() => setMobileFailed(true)}
                     />
                 ) : (
-                    <Image src={mediaUrl(mobileItem.mediaUrl)} alt="" fill priority sizes="100vw" className="object-cover" onError={() => setMobileFailed(true)} />
+                    <Image src={mediaUrl(mobileItem.mediaUrl)} alt="" fill loading="eager" fetchPriority="high" sizes="100vw" className="object-cover" onError={() => setMobileFailed(true)} />
                 ))}
 
             {device === "desktop" &&
@@ -137,7 +137,8 @@ export default function HeroMedia({ slides, mobile }) {
                                             src={s.posterUrl ? mediaUrl(s.posterUrl) : FALLBACK_DESKTOP[0].mediaUrl}
                                             alt=""
                                             fill
-                                            priority={i === 0}
+                                            loading="eager"
+                                            fetchPriority={i === 0 ? "high" : "auto"}
                                             sizes="100vw"
                                             className="object-cover"
                                         />
@@ -164,7 +165,8 @@ export default function HeroMedia({ slides, mobile }) {
                                     src={mediaUrl(s.mediaUrl)}
                                     alt=""
                                     fill
-                                    priority={i === 0}
+                                    loading="eager"
+                                            fetchPriority={i === 0 ? "high" : "auto"}
                                     sizes="100vw"
                                     // Slow zoom on the visible slide only; restarts each time it comes round.
                                     className={`object-cover ${on && !reduced ? "animate-[ak-kenburns_7s_ease-out_forwards]" : ""}`}

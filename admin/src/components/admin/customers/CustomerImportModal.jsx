@@ -9,10 +9,12 @@ import { guessColumns, normalizeBdPhone, parseCsv } from "../../../utils/csv";
 
 const FIELDS = [
     ["phone", "Phone (required)"],
+    ["orderNo", "Order no"],
     ["name", "Name"],
-    ["district", "District"],
-    ["email", "Email"],
     ["address", "Address"],
+    ["district", "District"],
+    ["courier", "Courier"],
+    ["email", "Email"],
     ["tags", "Tags"],
 ];
 const CHUNK = 1000;
@@ -94,6 +96,8 @@ export default function CustomerImportModal({ onClose, onDone }) {
             district: pick(r, "district"),
             email: pick(r, "email"),
             address: pick(r, "address"),
+            orderNo: pick(r, "orderNo"),
+            courier: pick(r, "courier"),
             tags: pick(r, "tags"),
         }));
         const tagList = tags.split(",").map((t) => t.trim()).filter(Boolean);
@@ -144,7 +148,7 @@ export default function CustomerImportModal({ onClose, onDone }) {
                         >
                             <FileUp size={28} />
                             <span className="font-medium">Choose or drop a .csv file</span>
-                            <span className="text-sm text-gray-500">Needs at least a phone column. Name, district, email, address and tags are optional. Excel: File, Save As, CSV UTF-8.</span>
+                            <span className="text-sm text-gray-500">Needs at least a phone column. Order no, name, address, district, courier (AJR, Sundarban, Steadfast), email and tags are optional. Excel: File, Save As, CSV UTF-8.</span>
                         </button>
                     ) : (
                         <>
@@ -187,8 +191,9 @@ export default function CustomerImportModal({ onClose, onDone }) {
                                             <th className="px-3 py-2">#</th>
                                             <th className="px-3 py-2">Phone</th>
                                             <th className="px-3 py-2">Name</th>
-                                            <th className="px-3 py-2">District</th>
-                                            <th className="px-3 py-2">Email</th>
+                                            <th className="px-3 py-2">Order no</th>
+                                            <th className="px-3 py-2">Address</th>
+                                            <th className="px-3 py-2">Courier</th>
                                             <th className="px-3 py-2">Tags</th>
                                             <th className="px-3 py-2">Check</th>
                                         </tr>
@@ -202,8 +207,9 @@ export default function CustomerImportModal({ onClose, onDone }) {
                                                     <td className="px-3 py-1.5 text-gray-400">{i + (hasHeader ? 2 : 1)}</td>
                                                     <td className="px-3 py-1.5 font-mono">{c.phone || v("phone")}</td>
                                                     <td className="px-3 py-1.5">{v("name")}</td>
-                                                    <td className="px-3 py-1.5">{v("district")}</td>
-                                                    <td className="px-3 py-1.5">{v("email")}</td>
+                                                    <td className="px-3 py-1.5">{v("orderNo")}</td>
+                                                    <td className="px-3 py-1.5">{[v("address"), v("district")].filter(Boolean).join(", ")}</td>
+                                                    <td className="px-3 py-1.5">{v("courier")}</td>
                                                     <td className="px-3 py-1.5">{v("tags")}</td>
                                                     <td className="px-3 py-1.5 text-xs">{c.status === "ok" ? "OK" : c.status === "duplicate" ? "Repeated" : "Invalid number"}</td>
                                                 </tr>

@@ -10,6 +10,7 @@ import axiosInstance from "../../../api/axiosInstance";
 import { customerAdminApi } from "../../../api/customerAdminApi";
 import { manualOrderApi } from "../../../api/manualOrderApi";
 import { stockApi } from "../../../api/stockApi";
+import { courierApi } from "../../../api/courierApi";
 
 const field = "w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-gray-400";
 const card = "rounded-lg border border-gray-200 bg-white p-5";
@@ -100,6 +101,14 @@ export default function PhoneOrderForm() {
     const [address, setAddress] = useState({ district: "", upazila: "", addressLine1: "", addressLine2: "" });
     const [deliveryType, setDeliveryType] = useState("");
     const [courierBranch, setCourierBranch] = useState("");
+    const [courier, setCourier] = useState("");
+    const [couriers, setCouriers] = useState([]);
+    useEffect(() => {
+        courierApi
+            .list()
+            .then(({ data }) => setCouriers((data.couriers || []).filter((c) => c.isActive)))
+            .catch(() => {});
+    }, []);
     const [lines, setLines] = useState([]); // { key, product, options, quantity, unitPrice }
     const [discount, setDiscount] = useState("");
     const [shippingCharge, setShippingCharge] = useState("");
@@ -166,6 +175,7 @@ export default function PhoneOrderForm() {
             address,
             deliveryType: deliveryType || undefined,
             courierBranch: deliveryType === "Courier" ? courierBranch || undefined : undefined,
+            courier: courier || undefined,
             items: lines.map((l) => ({ productId: l.product._id, options: l.options, quantity: Number(l.quantity), unitPrice: l.unitPrice === "" ? undefined : Number(l.unitPrice) })),
             discount: discount === "" ? undefined : Number(discount),
             shippingCharge: shippingCharge === "" ? undefined : Number(shippingCharge),
@@ -173,7 +183,7 @@ export default function PhoneOrderForm() {
             status,
             note: note || undefined,
         }),
-        [customer, address, deliveryType, courierBranch, lines, discount, shippingCharge, payment, status, note],
+        [customer, address, deliveryType, courierBranch, courier, lines, discount, shippingCharge, payment, status, note],
     );
     const ready = customer.name.trim() && customer.phone.trim() && address.district && address.upazila && lines.length > 0 && lines.every((l) => !l.product.hasVariants || l.options);
 
@@ -284,6 +294,14 @@ export default function PhoneOrderForm() {
                                     <input className={field} placeholder="House, road, village *" value={address.addressLine1} onChange={(e) => setAddress({ ...address, addressLine1: e.target.value })} />
                                     <input className={field} placeholder="Landmark (optional)" value={address.addressLine2} onChange={(e) => setAddress({ ...address, addressLine2: e.target.value })} />
                                 </>
+                            )}
+                            {couriers.length > 0 && (
+                                <select className={`${field} sm:col-span-2`} value={courier} onChange={(e) => setCourier(e.target.value)}>
+                                    <option value="">Courier (optional, can be set later)</option>
+                                    {couriers.map((c) => (
+                                        <option key={c.key} value={c.key}>{c.name}{c.codAllowed ? "" : " (no COD, take full payment)"}</option>
+                                    ))}
+                                </select>
                             )}
                         </div>
                     </section>

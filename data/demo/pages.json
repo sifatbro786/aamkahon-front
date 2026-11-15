@@ -1,0 +1,138 @@
+{
+  "privacy": {
+    "success": true,
+    "page": {
+      "slug": "privacy",
+      "title": "Privacy policy",
+      "metaDescription": "How Aamkahon collects, uses and protects your personal information.",
+      "intro": "Aamkahon is a small family business. We treat your details the way we would want ours treated: we collect little, keep it safe, and use it only to get your order to you.",
+      "sections": [
+        {
+          "_id": "44154e56eda861d3959ed5d1",
+          "title": "What we collect",
+          "body": "We collect only what we need to take, deliver and support your order:\n\n- Your name, mobile number and, if you give it, your email address.\n- Your delivery address, district and upazila, or the courier branch you choose.\n- Your orders, pre-bookings and any inquiries you send us.\n\nWe do not collect card, bKash or Nagad details. Payments happen on the SSLCommerz page and those details never reach our servers."
+        },
+        {
+          "_id": "90f6be784b4e539879cb9287",
+          "title": "How we use it",
+          "body": "- To confirm, pack and deliver your order, and to call you about delivery.\n- To tell you when a pre-booked variety is harvested and ready to ship.\n- To answer price, wholesale and export inquiries.\n- To send order emails such as receipts.\n\nWe do not sell or rent your information. We may send you season news by SMS; reply STOP or tell us and we will take your number off the list."
+        },
+        {
+          "_id": "6c8a0ad5be3960f4d78672f7",
+          "title": "Who we share it with",
+          "body": "Only with the people needed to complete your order:\n\n- The courier (AJR, Sundarban or Steadfast) receives your name, phone and address.\n- SSLCommerz processes your online payment under its own privacy policy.\n- Our hosting and email providers store data on our behalf.\n\nWe may share information if Bangladeshi law requires it."
+        },
+        {
+          "_id": "12d8f4dceb4336d6d4910b95",
+          "title": "Cookies and local storage",
+          "body": "We do not use advertising cookies. Your browser keeps your shopping bag, and if you ticked it, your delivery details, so they survive a refresh. Clearing your browser data removes them."
+        },
+        {
+          "_id": "a670cb23774a0e0cc7455fe6",
+          "title": "How long we keep it",
+          "body": "Order records are kept for as long as accounting and tax rules require. Inquiries are kept for up to two years."
+        },
+        {
+          "_id": "2d36ab8cbd02d9e2f0fb2c76",
+          "title": "Your choices",
+          "body": "You can ask for a copy of what we hold about you, or ask us to correct or delete it. Contact us using the details below and we will reply within seven working days."
+        },
+        {
+          "_id": "0f7916eb914e9571594ffa67",
+          "title": "Contact",
+          "body": "Aamkahon Agro, Rajshahi, Bangladesh. Phone or WhatsApp 01301-377225. Facebook: facebook.com/AAMKAHON."
+        }
+      ],
+      "updatedAt": "2026-11-01T00:00:00.000Z"
+    }
+  },
+  "terms": {
+    "success": true,
+    "page": {
+      "slug": "terms",
+      "title": "Terms and conditions",
+      "metaDescription": "Ordering, pre-booking, payment and delivery terms for Aamkahon.",
+      "intro": "These terms cover buying from Aamkahon online, including pre-booking. Placing an order means you accept them.",
+      "sections": [
+        {
+          "_id": "c3ee8d4e2f2b81731cdf7de2",
+          "title": "Orders and prices",
+          "body": "All prices are in Bangladeshi Taka. The price you pay is the one shown at checkout, calculated on our server from the live product price, your coupon and the delivery charge.\n\nSome products show Price on request or Price TBA. Those cannot be ordered online; send us an inquiry and we will quote.\n\nWe may cancel an order if a price or stock error is found, and refund anything you paid in full."
+        },
+        {
+          "_id": "f394a20c1337f618b6bd71e3",
+          "title": "Wholesale",
+          "body": "Wholesale orders are taken by phone or WhatsApp in season. The agreed price is confirmed before payment."
+        },
+        {
+          "_id": "da9c25ad60d8ca5957acc9cc",
+          "title": "Pre-booking",
+          "body": "- Pre-booking reserves fruit from the coming harvest at the listed price.\n- You pay the advance shown at checkout online. The balance and delivery charge are paid before or on delivery.\n- Harvest dates follow the Aamkahon mango calendar and may move by a few days with the weather. We call before dispatch."
+        },
+        {
+          "_id": "532becdb05ed0c30fc6725cb",
+          "title": "Couriers and payment",
+          "body": "Each product page shows which couriers can carry it.\n\n- AJR (some mango varieties): the product price and delivery charge are paid in full online before dispatch. No cash on delivery.\n- Sundarban and Steadfast: cash on delivery or online. For cash on delivery, the delivery charge and COD fee are paid online when you order and the product price is paid to the courier.\n\nOnline payments are processed by SSLCommerz (cards, bKash, Nagad and others)."
+        },
+        {
+          "_id": "30b24eae322ff6559851a2ae",
+          "title": "Delivery",
+          "body": "Delivery is charged by weight and zone and shown at checkout before you pay. Please check the box in front of the delivery person where possible."
+        },
+        {
+          "_id": "7bf1174a5227b8acaacd1462",
+          "title": "Returns and refunds",
+          "body": "Returns, cancellations and refunds are covered by our Refund and return policy, linked at the bottom of every page."
+        },
+        {
+          "_id": "0db4edf43a496f55751793f0",
+          "title": "Governing law",
+          "body": "These terms are governed by the laws of Bangladesh. Questions: call 01301-377225."
+        }
+      ],
+      "updatedAt": "2026-11-01T00:00:00.000Z"
+    }
+  },
+  "refund": {
+    "success": true,
+    "page": {
+      "slug": "refund",
+      "title": "Refund and return policy",
+      "metaDescription": "When and how Aamkahon replaces or refunds mango, gur and ghee orders.",
+      "intro": "Mangoes and gur are fresh food, so returns work differently from a clothes shop. This page says exactly what we replace or refund, and how fast.",
+      "sections": [
+        {
+          "_id": "379aff0bf02e27167a136e01",
+          "title": "Damaged, rotten or short delivery",
+          "body": "Tell us within 24 hours of delivery by phone or WhatsApp (01301-377225) with:\n\n- your order number,\n- photos of the box and the affected fruit or jar,\n- an unboxing video if you have one.\n\nWe replace the affected quantity with your next delivery or refund it, your choice."
+        },
+        {
+          "_id": "532180d0dad830770eda93f9",
+          "title": "What we cannot take back",
+          "body": "- Opened or partly eaten products that arrived in good condition.\n- Natural differences in size, colour or sweetness within a variety.\n- Fruit spoiled after delivery by storage (for example kept in a closed bag or a fridge before ripening).\n- Claims made more than 24 hours after delivery."
+        },
+        {
+          "_id": "728151dabd148b54a00212ba",
+          "title": "Cancelling an order",
+          "body": "- Before dispatch: cancel by phone and we refund everything you paid online.\n- After dispatch: the delivery charge cannot be refunded. If you refuse a cash on delivery parcel, the delivery and return charge paid online is not refunded."
+        },
+        {
+          "_id": "2127b10c566383138c2d2bdd",
+          "title": "Pre-booking",
+          "body": "- Cancel more than 15 days before the expected harvest date: the advance is refunded in full.\n- Cancel later: the advance is refunded less packing costs already incurred.\n- If we cannot supply your variety because of crop failure, we refund the advance in full or offer another variety, your choice."
+        },
+        {
+          "_id": "4c95a2541f10088ec6b12b74",
+          "title": "How refunds are paid",
+          "body": "Online payments are refunded through SSLCommerz to the same card, bKash or Nagad account within 7 to 10 working days of approval. Cash on delivery amounts are refunded to your bKash or Nagad number."
+        },
+        {
+          "_id": "500b9486c7e4c83a9ab162c2",
+          "title": "Contact",
+          "body": "Aamkahon Agro, Rajshahi, Bangladesh. Phone or WhatsApp 01301-377225. Facebook: facebook.com/AAMKAHON."
+        }
+      ],
+      "updatedAt": "2026-11-01T00:00:00.000Z"
+    }
+  }
+}

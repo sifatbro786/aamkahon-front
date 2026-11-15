@@ -57,6 +57,10 @@
           "discountValue": 0,
           "price": 1350,
           "currency": "BDT",
+          "couriers": [
+            "ajr"
+          ],
+          "codAllowed": true,
           "isUnderCampaign": false,
           "campaignDiscount": {
             "isActive": false,
@@ -232,6 +236,10 @@
           "discountValue": 0,
           "price": 1500,
           "currency": "BDT",
+          "couriers": [
+            "ajr"
+          ],
+          "codAllowed": true,
           "isUnderCampaign": false,
           "campaignDiscount": {
             "isActive": false,
@@ -406,6 +414,10 @@
           "discountValue": 0,
           "price": 1300,
           "currency": "BDT",
+          "couriers": [
+            "ajr"
+          ],
+          "codAllowed": true,
           "isUnderCampaign": false,
           "campaignDiscount": {
             "isActive": false,
@@ -581,6 +593,11 @@
           "discountValue": 0,
           "price": 1250,
           "currency": "BDT",
+          "couriers": [
+            "sundarban",
+            "steadfast"
+          ],
+          "codAllowed": true,
           "isUnderCampaign": false,
           "campaignDiscount": {
             "isActive": false,
@@ -751,6 +768,11 @@
           "discountValue": 0,
           "price": 1050,
           "currency": "BDT",
+          "couriers": [
+            "sundarban",
+            "steadfast"
+          ],
+          "codAllowed": true,
           "isUnderCampaign": false,
           "campaignDiscount": {
             "isActive": false,
@@ -921,6 +943,11 @@
           "discountValue": 0,
           "price": 1200,
           "currency": "BDT",
+          "couriers": [
+            "sundarban",
+            "steadfast"
+          ],
+          "codAllowed": true,
           "isUnderCampaign": false,
           "campaignDiscount": {
             "isActive": false,
@@ -1091,6 +1118,11 @@
           "discountValue": null,
           "price": null,
           "currency": "BDT",
+          "couriers": [
+            "sundarban",
+            "steadfast"
+          ],
+          "codAllowed": true,
           "isUnderCampaign": false,
           "campaignDiscount": null,
           "stock": 0,
@@ -1252,6 +1284,10 @@
           "discountValue": null,
           "price": null,
           "currency": "BDT",
+          "couriers": [
+            "ajr"
+          ],
+          "codAllowed": true,
           "isUnderCampaign": false,
           "campaignDiscount": null,
           "stock": 0,
@@ -1387,6 +1423,8 @@
           "discountValue": 0,
           "price": 650,
           "currency": "BDT",
+          "couriers": [],
+          "codAllowed": true,
           "isUnderCampaign": false,
           "campaignDiscount": {
             "isActive": false,
@@ -1574,6 +1612,8 @@
           "discountValue": 0,
           "price": 550,
           "currency": "BDT",
+          "couriers": [],
+          "codAllowed": true,
           "isUnderCampaign": false,
           "campaignDiscount": {
             "isActive": false,
@@ -1741,6 +1781,8 @@
           "discountValue": 0,
           "price": 750,
           "currency": "BDT",
+          "couriers": [],
+          "codAllowed": true,
           "isUnderCampaign": false,
           "campaignDiscount": {
             "isActive": false,

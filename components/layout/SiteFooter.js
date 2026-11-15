@@ -91,6 +91,9 @@ export default function SiteFooter() {
                         <Link href="/terms" className="hover:text-paper">
                             Terms and conditions
                         </Link>
+                        <Link href="/refund-policy" className="hover:text-paper">
+                            Refund policy
+                        </Link>
                     </nav>
                     <p>
                         Developed by{" "}

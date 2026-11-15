@@ -15,7 +15,7 @@ import { forgetCheckoutDetails, loadCheckoutDetails, saveCheckoutDetails } from 
 import { rememberGuestOrderToken } from "@/lib/store/orderAccess";
 import { SITE } from "@/lib/site";
 
-const EMPTY = { name: "", phone: "", email: "", district: "", upazila: "", addressLine1: "", addressLine2: "", deliveryType: "", courierBranch: "" };
+const EMPTY = { name: "", phone: "", email: "", district: "", upazila: "", addressLine1: "", addressLine2: "", deliveryType: "", courierBranch: "", courier: "" };
 
 /**
  * Single page checkout (port of the Footpath flow):
@@ -70,7 +70,19 @@ export default function CheckoutView() {
     // the whole bag. The server decides (checkout/calculate codAvailable);
     // the cart snapshot only lets us hide COD before an address exists.
     const itemsOnlineOnly = !isPreOrderBag && items.some((i) => i.codAllowed === false);
-    const paymentMethod = isPreOrderBag || itemsOnlineOnly ? "SSLCommerz" : method;
+
+    // Courier company (AJR / Sundarban / Steadfast). Options come from the
+    // server (every product in the bag must allow the courier); the last
+    // calculation's list is kept while a new one loads.
+    const [courierOptions, setCourierOptions] = useState([]);
+    const courierKey = courierOptions.length === 1 ? courierOptions[0].key : courierOptions.some((c) => c.key === address.courier) ? address.courier : "";
+    const chosenCourier = courierOptions.find((c) => c.key === courierKey) || null;
+    const courierOnlineOnly = Boolean(chosenCourier && !chosenCourier.codAllowed);
+
+    const paymentMethod = isPreOrderBag || itemsOnlineOnly || courierOnlineOnly ? "SSLCommerz" : method;
+    // Ask the server only once the delivery choice is complete; a half-filled
+    // choice used to fire calculate and come back 400 ("Choose a delivery option").
+    const deliveryReady = Boolean(locationType) && (!hasChoice || Boolean(address.deliveryType)) && (!isCourier || Boolean(address.courierBranch));
     const payload = useMemo(
         () => ({
             isGuest: isGuestCart,
@@ -79,14 +91,28 @@ export default function CheckoutView() {
             locationType,
             deliveryType: deliveryType || undefined,
             courierBranch: isCourier ? address.courierBranch || undefined : undefined,
+            courier: courierKey || undefined,
             paymentMethod,
             shippingAddress: { district: address.district, upazila: address.upazila },
         }),
-        [isGuestCart, guestItems, coupon, locationType, deliveryType, isCourier, address.courierBranch, paymentMethod, address.district, address.upazila],
+        [isGuestCart, guestItems, coupon, locationType, deliveryType, isCourier, address.courierBranch, courierKey, paymentMethod, address.district, address.upazila],
     );
-    const { totals, isCalculating, needsAddress, error: calcError } = useCalculation(payload, items.length > 0);
+    const { totals, isCalculating, needsAddress, error: calcError } = useCalculation(payload, items.length > 0 && deliveryReady);
     const placeOrder = usePlaceOrder();
-    const onlineOnly = !isPreOrderBag && (itemsOnlineOnly || totals?.codAvailable === false);
+    const onlineOnly = !isPreOrderBag && (itemsOnlineOnly || courierOnlineOnly || totals?.codAvailable === false);
+
+    // Keep the latest server list (state, not derived, so it survives the
+    // gap while a recalculation is in flight). Deferred a tick: no
+    // synchronous setState inside an effect.
+    const serverCouriers = totals?.courierOptions;
+    useEffect(() => {
+        if (!Array.isArray(serverCouriers)) return;
+        let alive = true;
+        Promise.resolve().then(() => alive && setCourierOptions(serverCouriers));
+        return () => {
+            alive = false;
+        };
+    }, [serverCouriers]);
 
     const update = (patch) => {
         setDraft((d) => ({ ...d, ...patch }));
@@ -109,6 +135,7 @@ export default function CheckoutView() {
         else if (hasChoice && !address.deliveryType) e.deliveryType = "Choose a delivery option.";
         if (isCourier && !address.courierBranch) e.courierBranch = "Choose a branch.";
         if (!isCourier && !address.addressLine1.trim()) e.addressLine1 = "We need a street address for home delivery.";
+        if (courierOptions.length > 1 && !courierKey) e.courier = "Choose a courier.";
         setErrors(e);
         return Object.keys(e).length === 0;
     };
@@ -138,6 +165,7 @@ export default function CheckoutView() {
                 locationType,
                 deliveryType,
                 courierBranch: isCourier ? address.courierBranch : undefined,
+                courier: courierKey || undefined,
                 isGuest: true,
                 guestEmail: address.email.trim() || undefined,
                 guestItems,
@@ -261,6 +289,31 @@ export default function CheckoutView() {
                                 </>
                             )}
                         </div>
+                        {courierOptions.length > 0 && (
+                            <fieldset className="mt-6">
+                                <legend className="text-[14px]">Courier</legend>
+                                {courierOptions.length === 1 ? (
+                                    <p className="mt-2 rounded-lg border border-line p-4 text-[14px]">
+                                        <span className="font-medium">Ships by {courierOptions[0].name}.</span>{" "}
+                                        <span className="text-muted">{courierOptions[0].codAllowed ? "Cash on delivery or online." : "No cash on delivery: price and delivery are paid online now."}</span>
+                                    </p>
+                                ) : (
+                                    <div className="mt-2 grid gap-3 sm:grid-cols-2">
+                                        {courierOptions.map((c) => (
+                                            <label key={c.key} className={`flex cursor-pointer items-start gap-3 rounded-lg border p-4 ${courierKey === c.key ? "border-ink bg-paper-2" : "border-line"}`}>
+                                                <input type="radio" name="courier" className="mt-1 accent-[var(--color-ink)]" checked={courierKey === c.key} onChange={() => update({ courier: c.key })} />
+                                                <span>
+                                                    <span className="block font-medium">{c.name}</span>
+                                                    <span className="text-[13px] text-muted">{c.note || (c.codAllowed ? "Cash on delivery or online" : "Full payment online")}</span>
+                                                </span>
+                                            </label>
+                                        ))}
+                                    </div>
+                                )}
+                                {errors.courier && <p className="mt-1 text-[13px] text-danger">{errors.courier}</p>}
+                            </fieldset>
+                        )}
+
                         <label className="mt-5 flex items-start gap-3 text-[14px] text-muted">
                             <input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} className="mt-0.5 size-4 accent-[var(--color-ink)]" />
                             <span>Remember these details on this device for next time. Untick on a shared phone or computer.</span>
@@ -280,7 +333,7 @@ export default function CheckoutView() {
                             <div className="mt-5 rounded-lg border border-ink bg-paper-2 p-4">
                                 <p className="font-medium">Pay in full online</p>
                                 <p className="mt-1 text-[14px] text-muted">
-                                    Something in your bag travels with a courier that does not collect cash, so the price and delivery are paid now through SSLCommerz (bKash, Nagad, cards, net banking).
+                                    {courierOnlineOnly ? `${chosenCourier.name} does not collect cash` : "Something in your bag travels with a courier that does not collect cash"}, so the price and delivery are paid now through SSLCommerz (bKash, Nagad, cards, net banking).
                                 </p>
                             </div>
                         ) : (
@@ -315,7 +368,7 @@ export default function CheckoutView() {
 
                 <aside className="min-w-0">
                     <div className="lg:sticky lg:top-32">
-                        <OrderSummary items={items} totals={totals} isCalculating={isCalculating} needsAddress={needsAddress || !locationType} />
+                        <OrderSummary items={items} totals={totals} isCalculating={isCalculating} needsAddress={needsAddress || !deliveryReady} />
                         {calcError && (
                             <p role="alert" className="mt-3 text-[14px] text-danger">
                                 {calcError}
@@ -332,6 +385,17 @@ export default function CheckoutView() {
                         </button>
                         <p className="mt-3 text-center text-[13px] text-muted">
                             You will finish payment on SSLCommerz. Questions? Call {SITE.phone}.
+                        </p>
+                        <p className="mt-2 text-center text-[13px] text-muted">
+                            By ordering you accept our{" "}
+                            <Link href="/terms" className="underline underline-offset-2 hover:text-ink">
+                                terms
+                            </Link>{" "}
+                            and{" "}
+                            <Link href="/refund-policy" className="underline underline-offset-2 hover:text-ink">
+                                refund policy
+                            </Link>
+                            .
                         </p>
                     </div>
                 </aside>

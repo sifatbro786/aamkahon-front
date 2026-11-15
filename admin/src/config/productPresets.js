@@ -15,7 +15,9 @@ export const PRODUCT_PRESETS = [
         id: "mango",
         label: "Mango",
         unit: "box",
-        codAllowed: false, // AJR courier: item + delivery paid online
+        // Payment follows the courier now (Admin > Couriers; AJR = prepaid),
+        // so mango no longer forces online payment by itself.
+        codAllowed: true,
         availability: "pre_order",
         packOption: "Pack",
         packs: [

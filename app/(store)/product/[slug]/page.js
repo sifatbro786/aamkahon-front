@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 import AplusContent from "@/components/product/AplusContent";
 import BuyBox from "@/components/product/BuyBox";
@@ -10,7 +11,7 @@ import Stars from "@/components/ui/Stars";
 import Badge from "@/components/ui/Badge";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import { SITE_URL } from "@/lib/config";
-import { getProductBySlug, getProductReviews, getProducts, getRelated } from "@/lib/data/catalog";
+import { getCouriers, getProductBySlug, getProductReviews, getProducts, getRelated } from "@/lib/data/catalog";
 import { fullDate } from "@/lib/format";
 import { allImages, mediaUrl } from "@/lib/media";
 import { availabilityBadge, displayPrice, foodFacts, harvestDate, isPriceHidden, unitOf } from "@/lib/store/productView";
@@ -41,13 +42,43 @@ export async function generateMetadata({ params }) {
     };
 }
 
-export default async function ProductPage({ params }) {
+// `params` is awaited inside <Suspense> so a navigation paints the skeleton
+// at once instead of blocking on the slug (Cache Components "instant" rule).
+export default function ProductPage({ params }) {
+    return (
+        <Suspense fallback={<ProductSkeleton />}>
+            <ProductContent params={params} />
+        </Suspense>
+    );
+}
+
+function ProductSkeleton() {
+    return (
+        <div className="wrap pb-16 pt-8 md:pt-10" aria-busy="true">
+            <div className="h-4 w-48 rounded bg-paper-2" />
+            <div className="mt-8 grid gap-10 lg:grid-cols-2 lg:gap-16">
+                <div className="aspect-square animate-pulse rounded-card bg-paper-2" />
+                <div className="space-y-4 lg:pt-2">
+                    <div className="h-5 w-24 rounded-full bg-paper-2" />
+                    <div className="h-12 w-3/4 rounded bg-paper-2" />
+                    <div className="h-20 w-full rounded bg-paper-2" />
+                    <div className="h-12 w-40 rounded bg-paper-2" />
+                </div>
+            </div>
+        </div>
+    );
+}
+
+async function ProductContent({ params }) {
     const { slug } = await params;
     if (slug === PLACEHOLDER) notFound();
     const product = await getProductBySlug(slug);
     if (!product || product.isActive === false) notFound();
 
-    const [related, reviewData] = await Promise.all([getRelated(product, 4), getProductReviews(product._id)]);
+    const [related, reviewData, couriers] = await Promise.all([getRelated(product, 4), getProductReviews(product._id), getCouriers()]);
+    // Couriers this product may use: its own list, else the store defaults
+    // (same rule as amkahon-back services/couriers.js).
+    const allowedCouriers = product.couriers?.length ? couriers.filter((c) => product.couriers.includes(c.key)) : couriers.filter((c) => c.isDefault !== false);
     const images = allImages(product);
     const badge = availabilityBadge(product);
     const hidden = isPriceHidden(product);
@@ -139,7 +170,7 @@ export default async function ProductPage({ params }) {
                                     </div>
                                 </>
                             ) : (
-                                <BuyBox product={product} />
+                                <BuyBox product={product} couriers={allowedCouriers} />
                             )}
                         </div>
 

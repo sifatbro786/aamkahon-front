@@ -7,9 +7,10 @@
           "_id": "83dd7341600d808952ebfeae",
           "product": "1a71b55f607b154fde0cd77f",
           "user": {
-            "_id": "6874ec7dfd6df3452fea55e9",
             "name": "Tanvir Rahman"
           },
+          "reviewerDistrict": "Gazipur",
+          "source": "facebook",
           "rating": 5,
           "comment": "গত বছর গোপালভোগ নিয়েছিলাম, বাজারের আমের সাথে কোনো তুলনাই হয় না। প্যাকিংও খুব ভালো ছিল।",
           "status": "approved",
@@ -20,9 +21,10 @@
           "_id": "da01253da7fe808f36090bfb",
           "product": "1a71b55f607b154fde0cd77f",
           "user": {
-            "_id": "d552911fac2a52435c30f9eb",
             "name": "Nusrat Jahan"
           },
+          "reviewerDistrict": "Dhaka",
+          "source": "facebook",
           "rating": 5,
           "comment": "Ordered two boxes last season. Every single mango was ripe and sweet, nothing sour or chemical smelling. Booking again for 2027.",
           "status": "approved",
@@ -49,9 +51,10 @@
           "_id": "98219e9b0dd127487ac9d733",
           "product": "d1ee9777f7873aad865325d7",
           "user": {
-            "_id": "4d12f8e1218594c85f878ab6",
             "name": "Ayesha Siddiqua"
           },
+          "reviewerDistrict": "Sylhet",
+          "source": "facebook",
           "rating": 4,
           "comment": "Very sweet and fragrant. Took one extra day to reach Sylhet, but the fruit held up fine.",
           "status": "approved",
@@ -62,9 +65,10 @@
           "_id": "3bffb3202b84ea3bbe84ada0",
           "product": "d1ee9777f7873aad865325d7",
           "user": {
-            "_id": "571a84bca569cf17c95bd03e",
             "name": "Mahmudul Hasan"
           },
+          "reviewerDistrict": "Dhaka",
+          "source": "whatsapp",
           "rating": 5,
           "comment": "Proper Rajshahi Khirsapat. The box arrived in Dhaka in two days and only one fruit was bruised, which they replaced next order.",
           "status": "approved",
@@ -95,9 +99,10 @@
           "_id": "95dcba112adabb54b0051611",
           "product": "35f7b3415229e22b8c586cc0",
           "user": {
-            "_id": "23f1fe06ecda08b6612a2641",
             "name": "Farzana Akter"
           },
+          "reviewerDistrict": "Chattogram",
+          "source": "phone",
           "rating": 5,
           "comment": "Langra stays green so I was nervous, but they ripened perfectly on the counter in two days. Kids loved them.",
           "status": "approved",
@@ -124,9 +129,10 @@
           "_id": "8c8ec8067a20e6a163389a53",
           "product": "aff15646820f300f3a537398",
           "user": {
-            "_id": "418899fdcfce72e64159f196",
             "name": "Sharmin Sultana"
           },
+          "reviewerDistrict": "Khulna",
+          "source": "facebook",
           "rating": 5,
           "comment": "আম্রপালি এত মিষ্টি হতে পারে জানতাম না। ছোট সাইজ কিন্তু স্বাদ অসাধারণ।",
           "status": "approved",
@@ -153,9 +159,10 @@
           "_id": "029ee492e80929b4cecb725c",
           "product": "c58845bf5f9a13e41c0e5384",
           "user": {
-            "_id": "21d6ef5e289a88e572b07f12",
             "name": "Rakib Hossain"
           },
+          "reviewerDistrict": "Bogura",
+          "source": "phone",
           "rating": 4,
           "comment": "We buy Fazli in bulk for our sweet shop. Good size, fair wholesale price, and they call before dispatch.",
           "status": "approved",
@@ -182,9 +189,10 @@
           "_id": "3c43c7edeaaf2f90981ff0e6",
           "product": "efba1a937b7c6f7f92e7def6",
           "user": {
-            "_id": "d552911fac2a52435c30f9eb",
             "name": "Nusrat Jahan"
           },
+          "reviewerDistrict": "Dhaka",
+          "source": "whatsapp",
           "rating": 5,
           "comment": "শীতের পিঠার জন্য পাটালি নিলাম। ঘ্রাণটাই আসল খেজুরের গুড়ের মতো।",
           "status": "approved",
@@ -195,9 +203,10 @@
           "_id": "befb02153b4ccca3af1f105a",
           "product": "efba1a937b7c6f7f92e7def6",
           "user": {
-            "_id": "a8c905bd2e3fb5a6b37a8d12",
             "name": "Imran Chowdhury"
           },
+          "reviewerDistrict": "Narayanganj",
+          "source": "facebook",
           "rating": 5,
           "comment": "Real patali gur, slightly smoky and not overly sweet. You can tell there is no sugar mixed in.",
           "status": "approved",
@@ -224,9 +233,10 @@
           "_id": "8960999171603cf9f5d4bd29",
           "product": "14b46cfe7d9dcd9fe86ef414",
           "user": {
-            "_id": "6874ec7dfd6df3452fea55e9",
             "name": "Tanvir Rahman"
           },
+          "reviewerDistrict": "Cumilla",
+          "source": "facebook",
           "rating": 5,
           "comment": "The clay pot jhola gur is exactly like what we had in the village. Perfect for payesh.",
           "status": "approved",
@@ -253,9 +263,10 @@
           "_id": "70f399838553999cbd6c42a2",
           "product": "0e8aa463a9e0899bcc5fac72",
           "user": {
-            "_id": "23f1fe06ecda08b6612a2641",
             "name": "Farzana Akter"
           },
+          "reviewerDistrict": "Dhaka",
+          "source": "website",
           "rating": 5,
           "comment": "Nolen gur this good is hard to find in Dhaka. Light, floral, gone in a week at our house.",
           "status": "approved",
@@ -282,9 +293,10 @@
           "_id": "a470cd09fef3c69ef58b277c",
           "product": "9e946cff85e40f92e3b1525b",
           "user": {
-            "_id": "4d12f8e1218594c85f878ab6",
             "name": "Ayesha Siddiqua"
           },
+          "reviewerDistrict": "Rajshahi",
+          "source": "phone",
           "rating": 4,
           "comment": "Grainy, nutty ghee with a proper aroma. The paper and thread seal is a lovely touch.",
           "status": "approved",
@@ -317,9 +329,10 @@
           "slug": "nolen-gur-premium"
         },
         "user": {
-          "_id": "23f1fe06ecda08b6612a2641",
           "name": "Farzana Akter"
         },
+        "reviewerDistrict": "Dhaka",
+        "source": "website",
         "rating": 5,
         "comment": "Nolen gur this good is hard to find in Dhaka. Light, floral, gone in a week at our house.",
         "status": "approved",
@@ -334,9 +347,10 @@
           "slug": "khejurer-patali-gur"
         },
         "user": {
-          "_id": "d552911fac2a52435c30f9eb",
           "name": "Nusrat Jahan"
         },
+        "reviewerDistrict": "Dhaka",
+        "source": "whatsapp",
         "rating": 5,
         "comment": "শীতের পিঠার জন্য পাটালি নিলাম। ঘ্রাণটাই আসল খেজুরের গুড়ের মতো।",
         "status": "approved",
@@ -351,9 +365,10 @@
           "slug": "khejurer-jhola-gur"
         },
         "user": {
-          "_id": "6874ec7dfd6df3452fea55e9",
           "name": "Tanvir Rahman"
         },
+        "reviewerDistrict": "Cumilla",
+        "source": "facebook",
         "rating": 5,
         "comment": "The clay pot jhola gur is exactly like what we had in the village. Perfect for payesh.",
         "status": "approved",
@@ -368,9 +383,10 @@
           "slug": "khejurer-patali-gur"
         },
         "user": {
-          "_id": "a8c905bd2e3fb5a6b37a8d12",
           "name": "Imran Chowdhury"
         },
+        "reviewerDistrict": "Narayanganj",
+        "source": "facebook",
         "rating": 5,
         "comment": "Real patali gur, slightly smoky and not overly sweet. You can tell there is no sugar mixed in.",
         "status": "approved",
@@ -385,9 +401,10 @@
           "slug": "amrapali-mango"
         },
         "user": {
-          "_id": "418899fdcfce72e64159f196",
           "name": "Sharmin Sultana"
         },
+        "reviewerDistrict": "Khulna",
+        "source": "facebook",
         "rating": 5,
         "comment": "আম্রপালি এত মিষ্টি হতে পারে জানতাম না। ছোট সাইজ কিন্তু স্বাদ অসাধারণ।",
         "status": "approved",
@@ -402,9 +419,10 @@
           "slug": "langra-mango"
         },
         "user": {
-          "_id": "23f1fe06ecda08b6612a2641",
           "name": "Farzana Akter"
         },
+        "reviewerDistrict": "Chattogram",
+        "source": "phone",
         "rating": 5,
         "comment": "Langra stays green so I was nervous, but they ripened perfectly on the counter in two days. Kids loved them.",
         "status": "approved",
@@ -419,9 +437,10 @@
           "slug": "khirsapat-mango"
         },
         "user": {
-          "_id": "571a84bca569cf17c95bd03e",
           "name": "Mahmudul Hasan"
         },
+        "reviewerDistrict": "Dhaka",
+        "source": "whatsapp",
         "rating": 5,
         "comment": "Proper Rajshahi Khirsapat. The box arrived in Dhaka in two days and only one fruit was bruised, which they replaced next order.",
         "status": "approved",
@@ -436,9 +455,10 @@
           "slug": "gopalbhog-mango"
         },
         "user": {
-          "_id": "6874ec7dfd6df3452fea55e9",
           "name": "Tanvir Rahman"
         },
+        "reviewerDistrict": "Gazipur",
+        "source": "facebook",
         "rating": 5,
         "comment": "গত বছর গোপালভোগ নিয়েছিলাম, বাজারের আমের সাথে কোনো তুলনাই হয় না। প্যাকিংও খুব ভালো ছিল।",
         "status": "approved",
@@ -453,9 +473,10 @@
           "slug": "gopalbhog-mango"
         },
         "user": {
-          "_id": "d552911fac2a52435c30f9eb",
           "name": "Nusrat Jahan"
         },
+        "reviewerDistrict": "Dhaka",
+        "source": "facebook",
         "rating": 5,
         "comment": "Ordered two boxes last season. Every single mango was ripe and sweet, nothing sour or chemical smelling. Booking again for 2027.",
         "status": "approved",
@@ -470,9 +491,10 @@
           "slug": "premium-gawa-ghee"
         },
         "user": {
-          "_id": "4d12f8e1218594c85f878ab6",
           "name": "Ayesha Siddiqua"
         },
+        "reviewerDistrict": "Rajshahi",
+        "source": "phone",
         "rating": 4,
         "comment": "Grainy, nutty ghee with a proper aroma. The paper and thread seal is a lovely touch.",
         "status": "approved",
@@ -487,9 +509,10 @@
           "slug": "surma-fazli-mango"
         },
         "user": {
-          "_id": "21d6ef5e289a88e572b07f12",
           "name": "Rakib Hossain"
         },
+        "reviewerDistrict": "Bogura",
+        "source": "phone",
         "rating": 4,
         "comment": "We buy Fazli in bulk for our sweet shop. Good size, fair wholesale price, and they call before dispatch.",
         "status": "approved",
@@ -504,9 +527,10 @@
           "slug": "khirsapat-mango"
         },
         "user": {
-          "_id": "4d12f8e1218594c85f878ab6",
           "name": "Ayesha Siddiqua"
         },
+        "reviewerDistrict": "Sylhet",
+        "source": "facebook",
         "rating": 4,
         "comment": "Very sweet and fragrant. Took one extra day to reach Sylhet, but the fruit held up fine.",
         "status": "approved",

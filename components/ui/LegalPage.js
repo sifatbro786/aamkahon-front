@@ -1,15 +1,46 @@
+import { fullDate } from "@/lib/format";
+
 /**
- * Shared layout for policy pages. Sections are plain data so the client's
- * lawyer (or the owner) can edit wording without touching markup.
+ * Policy page layout. Content comes from Admin > Policy Pages
+ * (GET /api/pages/:slug) as plain text: a blank line starts a new paragraph,
+ * lines starting "- " form a bullet list. Rendered as text nodes only.
  */
-export default function LegalPage({ eyebrow, title, updated, intro, sections }) {
+export function parseBody(text = "") {
+    const blocks = [];
+    for (const chunk of String(text).replace(/\r\n/g, "\n").split(/\n\s*\n/)) {
+        const lines = chunk.split("\n").map((l) => l.trim()).filter(Boolean);
+        if (!lines.length) continue;
+        // A chunk can mix a lead-in line and bullets; keep their order.
+        let para = [];
+        let list = [];
+        const flushPara = () => para.length && (blocks.push({ type: "p", text: para.join(" ") }), (para = []));
+        const flushList = () => list.length && (blocks.push({ type: "ul", items: list }), (list = []));
+        for (const l of lines) {
+            if (/^[-•*]\s+/.test(l)) {
+                flushPara();
+                list.push(l.replace(/^[-•*]\s+/, ""));
+            } else {
+                flushList();
+                para.push(l);
+            }
+        }
+        flushPara();
+        flushList();
+    }
+    return blocks;
+}
+
+const anchor = (title, i) => `${i + 1}-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`;
+
+export default function LegalPage({ eyebrow = "Policy", page }) {
+    const sections = (page?.sections || []).map((s, i) => ({ ...s, id: anchor(s.title, i) }));
     return (
         <article className="wrap py-14 md:py-20">
             <header className="max-w-3xl border-b border-line pb-10">
                 <p className="label text-mango-deep">{eyebrow}</p>
-                <h1 className="mt-3 text-h2 font-medium">{title}</h1>
-                <p className="mt-4 text-sm text-muted">Last updated {updated}</p>
-                {intro && <p className="mt-6 text-[17px] leading-relaxed text-ink/80">{intro}</p>}
+                <h1 className="mt-3 text-h2 font-medium">{page?.title}</h1>
+                {page?.updatedAt && <p className="mt-4 text-sm text-muted">Last updated {fullDate(page.updatedAt)}</p>}
+                {page?.intro && <p className="mt-6 whitespace-pre-line text-[17px] leading-relaxed text-ink/80">{page.intro}</p>}
             </header>
 
             <div className="mt-10 grid gap-10 lg:grid-cols-12">
@@ -25,23 +56,23 @@ export default function LegalPage({ eyebrow, title, updated, intro, sections }) 
                         ))}
                     </ol>
                 </nav>
-                <div className="max-w-3xl space-y-12 lg:col-span-9">
+                <div className="min-w-0 max-w-3xl space-y-12 lg:col-span-9">
                     {sections.map((s, i) => (
                         <section key={s.id} id={s.id} className="scroll-mt-28">
                             <h2 className="flex items-baseline gap-3 text-xl font-medium tracking-tight">
                                 <span className="num text-[14px] text-mango-deep">{String(i + 1).padStart(2, "0")}</span>
                                 {s.title}
                             </h2>
-                            <div className="mt-4 space-y-4 text-[16px] leading-relaxed text-ink/80">
-                                {s.body.map((para, j) =>
-                                    Array.isArray(para) ? (
+                            <div className="mt-4 space-y-4 break-words text-[16px] leading-relaxed text-ink/80">
+                                {parseBody(s.body).map((b, j) =>
+                                    b.type === "ul" ? (
                                         <ul key={j} className="list-disc space-y-2 pl-5 marker:text-mango">
-                                            {para.map((li) => (
-                                                <li key={li}>{li}</li>
+                                            {b.items.map((li, k) => (
+                                                <li key={k}>{li}</li>
                                             ))}
                                         </ul>
                                     ) : (
-                                        <p key={j}>{para}</p>
+                                        <p key={j}>{b.text}</p>
                                     ),
                                 )}
                             </div>
@@ -52,3 +83,10 @@ export default function LegalPage({ eyebrow, title, updated, intro, sections }) 
         </article>
     );
 }
+
+/** Shared page + metadata factory for /privacy, /terms, /refund-policy. */
+export const policyMetadata = (page, path) => ({
+    title: page?.title || "Policy",
+    description: page?.metaDescription || undefined,
+    alternates: { canonical: path },
+});

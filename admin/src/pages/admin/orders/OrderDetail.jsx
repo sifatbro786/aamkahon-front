@@ -6,6 +6,7 @@ import { ArrowLeft, Save, Trash2, RefreshCw, Printer } from "lucide-react";
 import toast from "react-hot-toast";
 import { useAuth } from "@/context/AuthContext";
 import { orderApi } from "../../../api/orderApi";
+import { courierApi } from "../../../api/courierApi";
 import ConfirmDialog from "../../../components/admin/common/ConfirmDialog";
 import OrderStatusBadge from "../../../components/admin/orders/OrderStatusBadge";
 import PaymentStatusBadge from "../../../components/admin/orders/PaymentStatusBadge";
@@ -500,10 +501,7 @@ const OrderDetail = () => {
                         </p>
                     </Card>
 
-                    <Card title="Tracking Details">
-                        <Row label="Tracking Number">{order.trackingNumber || "N/A"}</Row>
-                        <Row label="Carrier">{order.carrier || "N/A"}</Row>
-                    </Card>
+                    <CourierCard order={order} onChange={(courier) => setOrder((o) => ({ ...o, courier }))} />
                 </div>
             </div>
 
@@ -518,5 +516,53 @@ const OrderDetail = () => {
         </div>
     );
 };
+
+// Courier company for this order (the customer's checkout choice, or set by
+// the team for phone orders / a change after a call). Staff may change it.
+function CourierCard({ order, onChange }) {
+    const [couriers, setCouriers] = useState([]);
+    const [value, setValue] = useState(order.courier?.key || "");
+    const [saving, setSaving] = useState(false);
+    useEffect(() => {
+        courierApi
+            .list()
+            .then(({ data }) => setCouriers(data.couriers || []))
+            .catch(() => {});
+    }, []);
+    const current = order.courier?.key || "";
+    const save = async () => {
+        setSaving(true);
+        try {
+            const { data } = await courierApi.setOrderCourier(order._id, value);
+            onChange(data.order?.courier || null);
+            toast.success("Courier updated");
+        } catch (err) {
+            toast.error(err.response?.data?.message || "Could not update courier");
+        } finally {
+            setSaving(false);
+        }
+    };
+    const chosen = couriers.find((c) => c.key === value);
+    return (
+        <Card title="Courier">
+            <div className="flex gap-2">
+                <select value={value} onChange={(e) => setValue(e.target.value)} className="min-w-0 flex-1 rounded-md border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-gray-400">
+                    <option value="">Not set</option>
+                    {couriers.filter((c) => c.isActive || c.key === current).map((c) => (
+                        <option key={c.key} value={c.key}>{c.name}</option>
+                    ))}
+                    {current && !couriers.some((c) => c.key === current) && <option value={current}>{order.courier?.name || current}</option>}
+                </select>
+                <button onClick={save} disabled={saving || value === current} className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white disabled:opacity-40">
+                    {saving ? "..." : "Save"}
+                </button>
+            </div>
+            {chosen && !chosen.codAllowed && order.paymentStatus !== "Paid" && (
+                <p className="mt-2 text-xs text-amber-700">{chosen.name} does not collect cash. Take full payment before dispatch.</p>
+            )}
+            <Row label="Tracking Number">{order.trackingNumber || "N/A"}</Row>
+        </Card>
+    );
+}
 
 export default OrderDetail;

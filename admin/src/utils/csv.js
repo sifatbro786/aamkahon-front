@@ -50,7 +50,10 @@ export function normalizeBdPhone(raw) {
     return /^01[3-9]\d{8}$/.test(d) ? d : null;
 }
 
+// Order matters: "Order number" must hit orderNo before phone's /number/.
 const HEADER_HINTS = {
+    orderNo: /(order|invoice|memo|অর্ডার)/i,
+    courier: /(courier|কুরিয়ার|parcel|delivery ?by)/i,
     name: /^(name|customer|full ?name|client|নাম)/i,
     phone: /(phone|mobile|number|contact|cell|ফোন|মোবাইল|নম্বর)/i,
     email: /e-?mail/i,
@@ -65,7 +68,7 @@ const HEADER_HINTS = {
  */
 export function guessColumns(rows) {
     const width = Math.max(...rows.slice(0, 20).map((r) => r.length), 0);
-    const map = { name: -1, phone: -1, email: -1, district: -1, address: -1, tags: -1 };
+    const map = { orderNo: -1, name: -1, phone: -1, email: -1, district: -1, address: -1, courier: -1, tags: -1 };
     const head = rows[0] || [];
     const hasHeader = head.length > 0 && !head.some((v) => normalizeBdPhone(v));
 

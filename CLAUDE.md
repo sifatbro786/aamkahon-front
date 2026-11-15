@@ -58,7 +58,7 @@ with no backend at all.
 ## Design system (storefront)
 
 Tokens in `app/globals.css` @theme, from the logo: ink (logo black), paper
-(cream), mango / mango-deep, leaf / leaf-deep, gur (winter range). Use the
+(white since 2026-11-15; was cream), mango / mango-deep, leaf / leaf-deep, gur (winter range). Use the
 -deep variants for small text on paper (contrast). Fonts self-hosted from
 npm: Google Sans Variable (Latin + Bengali) for everything, Tiro Bangla only
 for Bangla accents (`font-bangla`, always with lang="bn").
@@ -96,6 +96,11 @@ the page never scrolls sideways (checked at 390 px and 1440 px).
 - Static demo: `lib/demo/adminDemo.js` (fictional orders, inquiries, users, stats
   built from the fixtures). Admin reads need the demo token; writes return 403.
 - ESLint: React Compiler rules are warnings for admin/src (ported code, see eslint.config.mjs).
+- 2026-11-15: Couriers (`/admin/couriers`, `admin/src/api/courierApi.js`), Policy Pages
+  (`/admin/policy-pages`), product form "Delivery by", order Courier card, customer list order-book
+  columns. Storefront: `getCouriers()` / `getPolicyPage(slug)` in lib/data/catalog.js,
+  components/ui/LegalPage.js parses plain-text bodies, checkout courier picker (options from
+  /checkout/calculate), OrderSuccess map page.
 
 ## Media
 

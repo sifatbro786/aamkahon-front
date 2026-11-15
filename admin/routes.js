@@ -26,6 +26,7 @@ export const ADMIN_ROUTES = [
     ["coupons/:id/edit", p(() => import("./src/pages/admin/coupons/CouponForm.jsx"))],
     ["stock", p(() => import("./src/pages/admin/stock/StockManagement.jsx"))],
     ["shipping", p(() => import("./src/pages/admin/shipping/ShippingManagement.jsx"))],
+    ["couriers", p(() => import("./src/pages/admin/couriers/CourierManagement.jsx"))],
     ["users", p(() => import("./src/pages/admin/users/UserManagement.jsx"))],
     ["reviews", p(() => import("./src/pages/admin/reviews/ReviewManagement.jsx"))],
     ["sections", p(() => import("./src/pages/admin/sections/SectionManagement.jsx"))],
@@ -37,6 +38,7 @@ export const ADMIN_ROUTES = [
     ["season", p(() => import("./src/pages/admin/storefront/SeasonSettings.jsx"))],
     ["our-story", p(() => import("./src/pages/admin/storefront/StorySettings.jsx"))],
     ["faq", p(() => import("./src/pages/admin/storefront/FaqManagement.jsx"))],
+    ["policy-pages", p(() => import("./src/pages/admin/storefront/PolicyPages.jsx"))],
     ["hero-content", p(() => import("./src/pages/admin/hero/HeroContentManagement.jsx"))],
 ];
 

@@ -21,6 +21,7 @@ import toast from "react-hot-toast";
 import { Link, useNavigate, useParams } from "@/admin/router";
 import categoryApi from "../../../api/categoryApi";
 import { productApi } from "../../../api/productApi";
+import { courierApi } from "../../../api/courierApi";
 import ProductFaq from "../../../components/admin/products/ProductFaq";
 import ProductImageManager from "../../../components/admin/products/ProductImageManager";
 import ProductVariantEditor from "../../../components/admin/products/ProductVariantEditor";
@@ -79,6 +80,7 @@ const emptyForm = {
     priceVisibility: "show",
     minOrderQty: 1,
     codAllowed: true,
+    couriers: [],
     wholesale: { enabled: false, minQty: "", price: "" },
     availability: "in_stock",
     preOrder: { expectedDate: "", advancePercent: 25, maxQtyPerOrder: "", note: "" },
@@ -137,6 +139,15 @@ const ProductForm = () => {
             const seasonMonths = has ? f.food.seasonMonths.filter((x) => x !== m) : [...f.food.seasonMonths, m].sort((a, b) => a - b);
             return { ...f, food: { ...f.food, seasonMonths } };
         });
+
+    // Courier companies for the "Delivery by" box (Admin > Couriers).
+    const [courierList, setCourierList] = useState([]);
+    useEffect(() => {
+        courierApi
+            .list()
+            .then(({ data }) => setCourierList(data.couriers || []))
+            .catch(() => {});
+    }, []);
 
     // Attribute vocabulary for datalist autocomplete
     useEffect(() => {
@@ -213,6 +224,7 @@ const ProductForm = () => {
                         priceVisibility: p.priceVisibility || "show",
                         minOrderQty: p.minOrderQty ?? 1,
                         codAllowed: p.codAllowed !== false,
+                        couriers: p.couriers || [],
                         wholesale: {
                             enabled: !!p.wholesale?.enabled,
                             minQty: p.wholesale?.minQty ?? "",
@@ -310,6 +322,7 @@ const ProductForm = () => {
             priceVisibility: form.priceVisibility,
             minOrderQty: Math.max(1, parseInt(form.minOrderQty, 10) || 1),
             codAllowed: form.codAllowed,
+            couriers: form.couriers,
             wholesale: {
                 enabled: form.wholesale.enabled,
                 minQty: form.wholesale.minQty === "" ? null : Number(form.wholesale.minQty),
@@ -781,13 +794,39 @@ const ProductForm = () => {
                                     </div>
                                 </div>
 
+                                {courierList.length > 0 && (
+                                    <div className="rounded-lg border border-gray-200 p-4">
+                                        <p className="text-sm font-medium text-gray-900">Delivery by</p>
+                                        <p className="mt-1 text-xs text-gray-500">
+                                            Tick the couriers that may carry this product. None ticked = {courierList.filter((c) => c.isDefault && c.isActive).map((c) => c.name).join(", ") || "the default couriers"}. A courier without cash on delivery (AJR) makes the order full payment online, delivery included. Shown on the product page.
+                                        </p>
+                                        <div className="mt-3 flex flex-wrap gap-2">
+                                            {courierList.map((c) => {
+                                                const on = form.couriers.includes(c.key);
+                                                return (
+                                                    <label key={c.key} className={`flex cursor-pointer items-center gap-2 rounded-md border px-3 py-1.5 text-sm ${on ? "border-gray-900 bg-gray-900 text-white" : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50"} ${c.isActive ? "" : "opacity-50"}`}>
+                                                        <input
+                                                            type="checkbox"
+                                                            className="sr-only"
+                                                            checked={on}
+                                                            onChange={() => set({ couriers: on ? form.couriers.filter((k) => k !== c.key) : [...form.couriers, c.key] })}
+                                                        />
+                                                        {c.name}
+                                                        <span className={`text-xs ${on ? "text-gray-300" : "text-gray-400"}`}>{c.codAllowed ? "COD" : "prepaid"}</span>
+                                                    </label>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                )}
+
                                 <div className="rounded-lg border border-gray-200 p-4">
                                     <label className="flex items-center gap-2 text-sm font-medium text-gray-900">
                                         <input type="checkbox" checked={!form.codAllowed} onChange={(e) => set({ codAllowed: !e.target.checked })} />
                                         Full payment online only (no cash on delivery)
                                     </label>
                                     <p className="mt-1 text-xs text-gray-500">
-                                        Tick for products sent by a courier that does not collect cash, e.g. mango by AJR. The customer pays item price and delivery online; a bag with this product hides COD.
+                                        Forces full online payment whatever the courier. Usually not needed: choosing only AJR above already does this.
                                     </p>
                                 </div>
 
