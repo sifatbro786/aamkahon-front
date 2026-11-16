@@ -408,6 +408,29 @@ couriers, product courier split, policy pages, demo customers, rewrites demo rev
 Commits: back `feat: couriers per product, policy pages API, order-book customers, safe gateway errors`;
 front `feat: courier choice + terms, policy pages CMS, refund page, new order success page, white theme`
 
+### NEXT (next session, asked on 2026-11-16): phone confirmation + manual payments, then go live
+Client: an order is confirmed only after the team phones the customer. No SSLCommerz: manual bKash
+and Nagad (client has merchant accounts for both) and bank transfer (bank details shown with a
+picture). A bKash contact of the client will talk to the developer for the bKash API later.
+Live: client gave full Hostinger access (domain + VPS), Cloudflare in front. Phase 8 courier APIs
+after launch, one by one.
+Proposed flow (A, "call first, then payment link"): checkout only records how the customer will
+pay, no money on that page -> call queue (Confirmed / no answer xN / wrong number / fake /
+cancelled) -> "Awaiting payment" + pay link /order/:no/pay (merchant numbers, QR, bank picture,
+TrxID or slip; unique TrxID) -> staff verifies -> Processing. AJR = items + delivery, COD =
+delivery advance or nothing, pre-booking = advance. Stock held from Confirmed, auto cancel if
+unpaid in time. Later the pay page gets "Pay with bKash" (Tokenized Checkout) and bKash IPN can
+auto-verify payments to the merchant number; manual stays as fallback.
+OPEN DECISIONS (ask Sifat before coding):
+1. Use flow A?
+2. COD: delivery charge advance, or full COD with no advance?
+3. Hours allowed for the call, and for payment, before auto cancel?
+4. Pay link via an admin "send on WhatsApp" button (free) or an SMS gateway (cost)?
+Client must send: bKash + Nagad merchant numbers and account type, QR images, bank details + picture.
+bKash docs (developer.bka.sh): Tokenized Checkout recommended; Auth & Capture exists (hold, then
+capture/void; paymentId valid 24 h); refund within 60 days; TLS 1.2+; IPN covers merchant/QR/USSD
+payments too.
+
 ### Commit messages (fixes + 7.1 + 7.2)
 - amkahon-back:  `feat: season-driven storefront settings, FAQ API, order views and stock-safe product edits`
 - amkahon-front: `feat: season CMS, FAQ, owner spotlight, active nav link; split orders/pre-bookings`
@@ -430,3 +453,73 @@ front `feat: courier choice + terms, policy pages CMS, refund page, new order su
 ### Commit messages so far
 - amkahon-back:  `feat: data-driven delivery options, customer list with CSV import, online-only products`
 - amkahon-front: `feat(admin): customer list + CSV import, Dhaka courier rates, online-only payment`
+
+---
+
+## LIVE (2026-11-16)
+
+Site: https://aamkahon.com (www redirects to apex) · API: https://api.aamkahon.com (health: /health)
+Admin: https://aamkahon.com/login. Live owner password was changed on the server and is NOT the seed
+value (and is not written in this public repo). Never run `seed.js --reset-owner-password` on live: it
+puts the seed password back.
+
+### Server (Hostinger VPS, client account)
+- KVM 1 (1 vCPU, 4 GB RAM, 50 GB), Mumbai, Ubuntu 26.04, IP 200.234.47.126, timezone Asia/Dhaka.
+- 2 GB swap (/swapfile, swappiness 10): needed for `next build` on 1 CPU.
+- ufw: only OpenSSH, 80, 443. fail2ban on. Ports 3000/5030 are NOT public (nginx only).
+- Node 24 LTS (NodeSource), nginx, certbot (Let's Encrypt, auto renew, dry run passed), pm2.
+- Apps run as user `deploy` (not root). pm2 home /home/deploy/.pm2, systemd unit `pm2-deploy`
+  (starts both apps on reboot, tested). From root use `sudo -iu deploy pm2 ls` etc.
+  Do NOT run pm2 as root: it starts a second copy of the apps.
+- pm2-logrotate: 10 MB, keep 7.
+- No uploads backup (Sifat's decision). Only Hostinger weekly snapshot. uploads/ is not in git or DB.
+
+### Paths and processes
+| What | Path | pm2 name | Port |
+|---|---|---|---|
+| Backend | /var/www/aamkahon-back (.env, chmod 600) | amkahon-back (fork, 1 instance) | 5030 |
+| Frontend | /var/www/aamkahon-front (.env.production) | amkahon-front (fork, 1 instance) | 3000 |
+| nginx | /etc/nginx/sites-available/aamkahon (www redirect, apex -> 3000, api -> 5030, api body 64m) | | |
+
+Frontend .env.production: DATA_MODE=api, NEXT_PUBLIC_API_URL=https://api.aamkahon.com/api,
+API_INTERNAL_URL=http://127.0.0.1:5030/api, NEXT_PUBLIC_SITE_URL=https://aamkahon.com.
+NEXT_PUBLIC_* are baked in at build: rebuild after changing them.
+
+Backend .env (production): NODE_ENV=production, BASE_URL=https://api.aamkahon.com,
+CLIENT_URL/SITE_URL=https://aamkahon.com, FRONTEND_URL=apex + www, JWT_EXPIRE=7d, fresh JWT_SECRET,
+WHOLESALE_TIER=off. NO SSLCommerz keys (not used; startup prints a warning, ignore).
+SMTP_PASS is a dummy: emails fail ("SMTP Verification Failed" in logs) until Sifat sets a real Gmail
+app password with `nano .env` then `pm2 restart amkahon-back`.
+
+### Database
+- Live uses the COMPANY Atlas M0 cluster (cluster0.rt9yqps), database `amkahon`, which still holds
+  demo/test data on purpose (client learns the dashboard on it). VPS IP is in Atlas Network Access.
+- Local dev must NOT point at `amkahon` any more: local .env uses `amkahon_dev`.
+- Later (before real orders / public announcement): run a one-command clean script (to be written,
+  dry run first; confirm with Sifat what stays: catalogue/settings or only the admin user), then switch
+  MONGODB_URI to the CLIENT's own Atlas cluster (M0, AWS Mumbai) and seed. If real orders already exist
+  by then, migrate with mongodump/mongorestore, not JSON export.
+- M0 has no automated backups.
+
+### Deploy updates
+`aamkahon-deploy back | front | all` (root, /usr/local/bin/aamkahon-deploy): git pull --ff-only,
+npm ci, build (front builds before restart, so a failed build keeps the old site up), pm2 restart.
+
+### Known state at launch
+- Storefront checkout does NOT work yet: it still needs SSLCommerz (COD advance + pre-booking advance).
+  Orders are taken by phone/WhatsApp and entered in Admin > Orders > New phone order. Next work:
+  flow A (phone confirmation + manual bKash/Nagad/bank pay link), see "NEXT" above.
+- Seed hang at the end of seed.js = Product model declares two text indexes (Mongo allows one);
+  mongoose autoIndex stalls on disconnect. Harmless, fix in the model (and Footpath base).
+- npm audit: backend 1 high, frontend 7 moderate. Do not run `audit fix --force`; review after launch.
+
+### Post-launch TODO
+1. Flow A (order confirmation + manual payments), then bKash API.
+2. Real SMTP app password.
+3. Demo clean script + switch to client Atlas.
+4. SSH key login, then PasswordAuthentication no / PermitRootLogin prohibit-password.
+5. Cloudflare (client wants it): DNS moves to Cloudflare, backend `trust proxy` 1 -> 2 (two proxies),
+   nginx real_ip from Cloudflare ranges.
+6. Fix duplicate text index; npm audit review.
+7. Repo is public and contains seed credentials/emails: consider making both repos private
+   (then the VPS needs a GitHub deploy token for git pull).
